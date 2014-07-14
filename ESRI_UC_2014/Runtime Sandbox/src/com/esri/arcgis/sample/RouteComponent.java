@@ -246,23 +246,28 @@ public class RouteComponent implements OnSharedPreferenceChangeListener {
           if (stops == null || stops.length < 2)
             throw new Exception("Invalid stops");          
           
+          // Note: when settings features, the online services are very particular
+          // and settings "empty" features will throw a service exception. In the case
+          // where no feature were specified on the input, we want to set null on the
+          // route parameters object.
+          
           // Set the stops
           NAFeaturesAsFeature features = new NAFeaturesAsFeature();
           features.setSpatialReference(inSR);
           features.setFeatures(stops);          
-          mRouteParameters.setStops(features);
+          mRouteParameters.setStops(stops.length == 0 ? null : features);
           
           // Set the line barriers
           features = new NAFeaturesAsFeature();
           features.setSpatialReference(inSR);
           features.setFeatures(lineBarriers);
-          mRouteParameters.setPolylineBarriers(features);
+          mRouteParameters.setPolylineBarriers(lineBarriers.length == 0 ? null : features);
           
           // Set the polygon barriers
           features = new NAFeaturesAsFeature();
           features.setSpatialReference(inSR);
           features.setFeatures(polygonBarriers);
-          mRouteParameters.setPolygonBarriers(features);
+          mRouteParameters.setPolygonBarriers(polygonBarriers.length == 0 ? null : features);
           
           // Set Optimize
           if (optimize != null)
