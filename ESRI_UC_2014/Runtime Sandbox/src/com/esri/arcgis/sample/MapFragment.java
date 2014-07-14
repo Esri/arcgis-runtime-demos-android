@@ -35,10 +35,13 @@ import com.esri.arcgis.sample.FileFragment.DataType;
 import com.esri.arcgis.sample.GeocodeComponent.GeocodeCallback;
 import com.esri.arcgis.sample.GeocodeComponent.GeocodeSuggestionAdapter;
 import com.esri.arcgis.sample.RouteComponent.RouteCallback;
+import com.esri.arcgis.sample.ServiceFragment.ServiceCallback;
+import com.esri.arcgis.sample.ServiceFragment.ServiceType;
 import com.esri.core.geometry.Geometry;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.SpatialReference;
+import com.esri.core.io.UserCredentials;
 import com.esri.core.map.Graphic;
 import com.esri.core.tasks.geocode.LocatorGeocodeResult;
 import com.esri.core.tasks.geocode.LocatorReverseGeocodeResult;
@@ -83,12 +86,12 @@ public class MapFragment extends Fragment {
     return fragment;
   }
   
-  public static void requestNewInstance(Context context, String newBasemapPath, boolean isTiled) {
+  public static void requestNewInstance(Context context, String newBasemapPath, int dataType) {
     
     MapFragment fragment = new MapFragment();
     Bundle args = new Bundle();
     args.putString(BASEMAP_PATH_KEY, newBasemapPath);
-    args.putBoolean(BASEMAP_TYPE_KEY, isTiled);
+    args.putInt(BASEMAP_TYPE_KEY, dataType);
     fragment.setArguments(args);
     
     FragmentManager fm = ((Activity) context).getFragmentManager();
@@ -209,17 +212,25 @@ public class MapFragment extends Fragment {
     // Basemap.
     mBasemapComponent = new BasemapComponent(mMapView);
     
+    // In the event that the MapFragment was reloaded with a specific basemap
+    // request (change in spatial reference), we load it appropriately here.
     if (getArguments() != null) {
     
       String dataPath = getArguments().getString(BASEMAP_PATH_KEY, null);
-      boolean isTilePackage = getArguments().getBoolean(BASEMAP_TYPE_KEY, false);
+      int dataType = getArguments().getInt(BASEMAP_TYPE_KEY, -1);
       
-      if (dataPath != null && isTilePackage) {
-        mBasemapComponent.loadLocalTileLayer(dataPath);
-      } else if (dataPath != null) {
-        mBasemapComponent.loadGeodatabaseLayer(dataPath, true);
+      if (dataType != -1 && dataPath != null) {
+        
+        BasemapComponent.DataType enumValue = BasemapComponent.DataType.values()[dataType];      
+      
+        if (enumValue == BasemapComponent.DataType.GEODATABASE)
+          mBasemapComponent.loadGeodatabaseLayer(dataPath, true);
+        else if (enumValue == BasemapComponent.DataType.LOCAL_TILED_LAYER)
+          mBasemapComponent.loadLocalTileLayer(dataPath);
+        else if (enumValue == BasemapComponent.DataType.TILED_SERVICE_LAYER)
+          mBasemapComponent.loadOnlineLayer(dataPath);
       }
-      
+
     } else {
       
       mBasemapComponent.loadDefaultCanvas();
@@ -334,6 +345,31 @@ public class MapFragment extends Fragment {
       Bundle args = SettingsComponent.createBundle(mRouteComponent.getNetworkDescription(), mRouteComponent.getRouteParameters());
       SettingsComponent settings = SettingsComponent.newInstance(args);
       getFragmentManager().beginTransaction().add(R.id.container, settings).addToBackStack(null).commit();
+      return true;
+      
+    case R.id.action_load_service:
+      
+      ServiceFragment.newInstance()
+                     .bindCallback(new ServiceCallback() {
+                      
+                      @Override
+                      public void onServiceSelected(ServiceType type, String url, String user,
+                          String password) {
+                        
+                        UserCredentials credentials = null;
+                        if (!user.isEmpty()) {
+                          credentials = new UserCredentials();
+                          credentials.setUserAccount(user, password);
+                        }
+                        
+                        if (type == ServiceType.GEOCODING)
+                          mGeocodeComponent.initialize(url, credentials);
+                        else if (type == ServiceType.ROUTING)
+                          mRouteComponent.initialize(url, credentials);
+                        else if (type == ServiceType.MAP_SERVER)
+                          mBasemapComponent.loadOnlineLayer(url);
+                      }
+                    }).show(getFragmentManager(), null);
       return true;
       
     case R.id.action_navigate:
@@ -585,6 +621,8 @@ public class MapFragment extends Fragment {
           Log.e(BASEMAP_TAG, LOAD_FAILED);
           break;
         }
+          
+        mMapView.setExtent(mBasemapComponent.getActiveLayer().getFullExtent(), 0, true);
       }
     }    
   };

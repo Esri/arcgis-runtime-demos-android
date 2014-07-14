@@ -55,10 +55,20 @@ public class SettingsComponent extends PreferenceFragment {
   
   private static final String RP_DIRECTIONS_KEY = "rp_directions";
   
+  /**
+   * Default constructor.
+   */
   public SettingsComponent() {
     
   }
     
+  /**
+   * Create a new settings fragment with a bundle. The bundle should be 
+   * created using {@link SettingsComponent#createBundle(NetworkDescription, RouteParameters)}.
+   * 
+   * @param args The bundle containing default and current settings information.
+   * @return A settings Fragment.
+   */
   public static SettingsComponent newInstance(Bundle args) {
     SettingsComponent fragment = new SettingsComponent();
     fragment.setArguments(args);
@@ -79,11 +89,20 @@ public class SettingsComponent extends PreferenceFragment {
     addPreferencesFromResource(R.xml.preferences);  
     adjustSettings(getArguments());
   }    
-    
+  
+  /**
+   * Given a network description and route parameters, create an appropriate bundle
+   * for all relevant settings.
+   * 
+   * @param description A network description, can be null.
+   * @param routeParams A route parameters object, can be null.
+   * @return
+   */
   public static Bundle createBundle(NetworkDescription description, RouteParameters routeParams) {
     
     Bundle args = new Bundle();
     
+    // Assign all route parameters relative values.
     if (routeParams != null) {
       args.putString(RP_IMEDANCE_KEY, routeParams.getImpedanceAttributeName());
       args.putStringArray(RP_RESTRICTIONS_KEY, routeParams.getRestrictionAttributeNames());
@@ -94,6 +113,7 @@ public class SettingsComponent extends PreferenceFragment {
       args.putBoolean(RP_DIRECTIONS_KEY, routeParams.isReturnDirections());
     }
     
+    // Assign available restrictions, cost attributes, and directions languages.
     if (description != null) {
       
       List<RestrictionAttribute> restrictions = description.getRestrictionAttributes();
@@ -117,7 +137,14 @@ public class SettingsComponent extends PreferenceFragment {
     
     return args;      
   }
-    
+  
+  /**
+   * As most of our settings are dynamic based on the network description and the 
+   * current routing parameters, we adjust the preference after they are inflated from
+   * the layout.
+   * 
+   * @param bundle A bundle with current parameters, can be null.
+   */
   private void adjustSettings(Bundle bundle) {      
     
     if (bundle == null)

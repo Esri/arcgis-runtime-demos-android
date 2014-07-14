@@ -83,7 +83,7 @@ public class GeocodeComponent {
         
         try {
           
-          // Cleanup any oldLocators.
+          // Cleanup any old Locators.
           cleanup();
           
           mLocator = url == null ? Locator.createOnlineLocator() :

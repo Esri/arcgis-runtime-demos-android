@@ -154,7 +154,6 @@ public class MapTouchComponent extends MapOnTouchListener {
         mGraphicComponent.updateTrackedBarrier(mDrawMultipath);
       
       mDrawMultipath = null;
-      return true;
       
     } else if (mDrawMode == TouchMode.DRAG) {
       

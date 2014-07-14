@@ -15,33 +15,41 @@ import com.esri.core.geometry.Envelope;
 import com.esri.core.geometry.SpatialReference;
 
 public class BasemapComponent {
-
-  private static final String DEFAULT_STREET_MAP_SERVICE = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
   
-  private final GraphicsLayer mDefaultGraphicsLayer = new GraphicsLayer(Utils.WEB_MERCATOR, new Envelope(-100000000, -100000000, 100000000, 100000000));
+  public enum DataType {
+    GEODATABASE,
+    LOCAL_TILED_LAYER,
+    TILED_SERVICE_LAYER
+  }
+  
+  private static final Envelope sWorldExtent = new Envelope(-100000000, -100000000, 100000000, 100000000);
+  
+  private final GraphicsLayer mDefaultGraphicsLayer = new GraphicsLayer(Utils.WEB_MERCATOR, sWorldExtent);
   
   private final MapView mMapView;
   
   private final List<Layer> mActiveLayers = new ArrayList<Layer>();
   
   /**
-   * Constructs a new basemap component..
+   * Constructs a new basemap component.
    * 
    * @param mapView The MapView to bind layers to.
    */
   public BasemapComponent(MapView mapView) {
     mMapView = mapView;
+    mMapView.setMaxExtent(sWorldExtent);
   }
   
   /**
    * Loads the default online service (World Street Map) as the active
    * basemap layer. This will remove any other active basemap layers.
    */
-  public void loadDefaultOnlineLayer() {
+  public void loadOnlineLayer(String url) {
     removeActiveLayers();
-    ArcGISTiledMapServiceLayer tiledLayer = new ArcGISTiledMapServiceLayer(DEFAULT_STREET_MAP_SERVICE);
-    mMapView.addLayer(tiledLayer);
-    mActiveLayers.add(tiledLayer);
+    ArcGISTiledMapServiceLayer tiledLayer = new ArcGISTiledMapServiceLayer(url);
+    mMapView.addLayer(tiledLayer, 0);
+    mActiveLayers.add(tiledLayer);    
+    reloadMap(url, DataType.TILED_SERVICE_LAYER.ordinal());
   }
   
   /**
@@ -63,17 +71,8 @@ public class BasemapComponent {
     removeActiveLayers();
     ArcGISLocalTiledLayer baseMap = new ArcGISLocalTiledLayer(path);
     mMapView.addLayer(baseMap, 0);
-    mActiveLayers.add(baseMap);
-    
-    mMapView.post(new Runnable() {
-      
-      @Override
-      public void run() {
-        mMapView.setExtent(mActiveLayers.get(0).getFullExtent(), 0, true);
-      }
-    });
-    
-    reloadMap(path, true);
+    mActiveLayers.add(baseMap);    
+    reloadMap(path, DataType.LOCAL_TILED_LAYER.ordinal());
   }
   
   /**
@@ -98,19 +97,11 @@ public class BasemapComponent {
         mMapView.addLayer(featureLayer, 0);
       }      
       
-      mMapView.post(new Runnable() {
-        
-        @Override
-        public void run() {          
-          mMapView.setExtent(mActiveLayers.get(0).getFullExtent(), 0, true);          
-        }
-      });
-      
     } catch (Exception e) {
       
     }
     
-    reloadMap(filePath, false);
+    reloadMap(filePath, DataType.GEODATABASE.ordinal());
   }
   
   /**
@@ -120,13 +111,13 @@ public class BasemapComponent {
    * @param filePath The path to the new basemap.
    * @param isTiled Pass true if the path is to a local tiled layer.
    */
-  private void reloadMap(String filePath, boolean isTiled) {
+  private void reloadMap(String filePath, int dataType) {
     
     SpatialReference mapSr = mMapView.getSpatialReference();
     SpatialReference topSr = getActiveLayer().getDefaultSpatialReference();
     
     if (mapSr != null && topSr != null && mapSr.getID() != topSr.getID())
-      MapFragment.requestNewInstance(mMapView.getContext(), filePath, isTiled);
+      MapFragment.requestNewInstance(mMapView.getContext(), filePath, dataType);
   }
   
   /**
