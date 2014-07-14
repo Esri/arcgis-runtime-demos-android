@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Runtime Sandbox</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    
+    <!-- General Mesasage -->
+    <string name="no_base_map_loaded">No basemap loaded, please select one.</string>
+    
+    <!-- Action bar strings -->
+    <string name="action_load_network">Load Transportation Network</string>
+    <string name="action_load_locator">Load Locator</string>
+    <string name="action_load_geodatabase">Load Geodatabase</string>
+    <string name="action_clear_screen">Clear Screen</string>
+    <string name="action_place_search">Search for Places</string>
+    <string name="action_add_polygon_barrier">Add Polygon Barrier</string>
+    <string name="action_add_polyline_barrier">Add Polyline Barrier</string>
+    <string name="action_settings">Settings</string>
+    
+    <!--  Preference strings -->
+    <string name="preference_app_settings_title">Application Settings</string>
+    <string name="preference_auto_route_title">Enable Auto Routing</string>
+    <string name="preference_auto_route_summary">When enabled, routing will be invoked as soon as stops are added.</string>
+    <string name="preference_route_settings_title">Routing Settings</string>
+    
+    <string name="preference_impedance_title">Impedance</string>
+    <string name="preference_impedance_summary">Impedance determine the objective for routing, i.e. shortest distance, time, or other attributes.</string>
+    <string name="preference_restrictions_title">Restriction Attributes</string>
+    <string name="preference_restrictions_summary">Restrictions attributes can be used to enable useful routing features such as "avoid toll roads" or "avoid ferries".</string>
+
+    <string name="preference_tsp_summary">When enabled, routes will be optimized to visit stops in the most efficient order.</string>
+    <string name="preference_tsp_title">Stop Optimization</string>
+    
+    <string name="preference_tsp_first_summary">When enabled, the first stop will be preserved during optimization.</string>
+    <string name="preference_tsp_first_title">Preserve First Stop</string>
+    <string name="preference_tsp_last_summary">When enabled, the last stop will be preserve during optimization.</string>
+    <string name="preference_tsp_last_title">Preserve Last Stop</string>
+    
+    <string name="preference_directions_language_summary">Change the language that directions will be displayed in.</string>
+    <string name="preference_directions_language_title">Directions Language</string>
+    
+    <string name="preference_directions_summary">Enabled turn by turn directions.</string>
+    <string name="preference_directions_title">Directions</string>
+    
+</resources>

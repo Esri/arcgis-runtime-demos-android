@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/preference_app_settings_title" >
+        <CheckBoxPreference
+            android:key="pref_auto_route"
+            android:summary="@string/preference_auto_route_summary"
+            android:title="@string/preference_auto_route_title" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/preference_route_settings_title" >
+        
+        <CheckBoxPreference
+            android:key="pref_directions"
+            android:summary="@string/preference_directions_summary"
+            android:title="@string/preference_directions_title" />
+        
+        <CheckBoxPreference
+            android:key="pref_tsp"
+            android:summary="@string/preference_tsp_summary"
+            android:title="@string/preference_tsp_title" />
+        
+        <CheckBoxPreference 
+            android:key="pref_tsp_first"
+            android:summary="@string/preference_tsp_first_summary"
+            android:title="@string/preference_tsp_first_title"
+            android:dependency="pref_tsp"/>
+        
+         <CheckBoxPreference 
+            android:key="pref_tsp_last"
+            android:summary="@string/preference_tsp_last_summary"
+            android:title="@string/preference_tsp_last_title"
+            android:dependency="pref_tsp"/>
+        
+        <ListPreference
+            android:key="pref_impedance"
+            android:dialogTitle="@string/preference_impedance_title"
+            android:summary="@string/preference_impedance_summary"
+            android:title="@string/preference_impedance_title" />
+        
+        <MultiSelectListPreference
+            android:key="pref_restrictions"
+            android:dialogTitle="@string/preference_restrictions_title"
+            android:summary="@string/preference_restrictions_summary"
+            android:title="@string/preference_restrictions_title" />
+        
+        <ListPreference 
+            android:key="pref_directions_language"
+            android:dialogTitle="@string/preference_directions_language_title"
+            android:summary="@string/preference_directions_language_summary"
+            android:title="@string/preference_directions_language_title" />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>
