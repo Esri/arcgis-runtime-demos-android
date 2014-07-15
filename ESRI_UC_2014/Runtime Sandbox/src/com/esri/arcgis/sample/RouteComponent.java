@@ -1,5 +1,6 @@
 package com.esri.arcgis.sample;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -225,6 +226,7 @@ public class RouteComponent implements OnSharedPreferenceChangeListener {
                                final SpatialReference inSR,
                                final SpatialReference outSR,
                                final Boolean optimize,
+                               final Date startTime,
                                boolean enqueue) {
     
     if (!enqueue && mLastSolve != null && !mLastSolve.isDone())
@@ -272,6 +274,9 @@ public class RouteComponent implements OnSharedPreferenceChangeListener {
           // Set Optimize
           if (optimize != null)
             mRouteParameters.setFindBestSequence(optimize);
+          
+          // Set the start time
+          mRouteParameters.setStartTime(startTime);
           
           // Set the output spatial reference
           mRouteParameters.setOutSpatialReference(outSR);

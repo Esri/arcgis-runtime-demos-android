@@ -9,6 +9,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.SearchView.OnSuggestionListener;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +73,8 @@ public class MapFragment extends Fragment {
   private View mGeocodeCallout;
   
   private TextView mInfoView;
+  
+  private SeekBar mTimeSlider;
   
   private DirectionsComponent mDirectionsComponent;
   
@@ -161,12 +166,32 @@ public class MapFragment extends Fragment {
   }
   
   /**
+   * We listen for a change in our enable time slider preference to 
+   * hide/show it accordingly.
+   */
+  private OnSharedPreferenceChangeListener mPrefListener = new OnSharedPreferenceChangeListener() {
+    
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+        String key) {
+      
+      if (SettingsComponent.TIME_SLIDER_PREF_KEY.equals(key) && mTimeSlider != null) {
+        
+        boolean visible = sharedPreferences.getBoolean(key, false);
+        mTimeSlider.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+      }
+      
+    }
+  };
+  
+  /**
    * On pause, pause the map and unregister the routing component
    * as a listener for preference changes.
    */
   @Override
   public void onPause() {
     PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(mRouteComponent);
+    PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(mPrefListener);
     mMapView.pause();
     super.onPause();
   }
@@ -178,6 +203,7 @@ public class MapFragment extends Fragment {
   @Override
   public void onResume() {
     PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(mRouteComponent);
+    PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(mPrefListener);
     mMapView.unpause();
     super.onResume();
   }
@@ -255,10 +281,12 @@ public class MapFragment extends Fragment {
     mGraphicComponent = new GraphicComponent(mMapView);
     
     // Touch.
+    mTimeSlider = (SeekBar) rootView.findViewById(R.id.time_seek_bar);
     mMapTouchComponent = new MapTouchComponent(getActivity(), mMapView)
                              .bindComponent(mGraphicComponent)
                              .bindComponent(mRouteComponent)
-                             .bindComponent(mGeocodeComponent);
+                             .bindComponent(mGeocodeComponent)
+                             .bindTimeBar(mTimeSlider);
     
     // Attach our status listener.
     mMapView.setOnStatusChangedListener(mMapInitListener);
@@ -435,7 +463,7 @@ public class MapFragment extends Fragment {
       if (mGraphicComponent != null) {
         mGraphicComponent.updateTrackedRoute(routeShape);
         
-        if (mMapTouchComponent != null && !mMapTouchComponent.isDragging())
+        if (mMapTouchComponent != null && mMapTouchComponent.isStable())
           postExtentChange(routeShape);
       }
     }

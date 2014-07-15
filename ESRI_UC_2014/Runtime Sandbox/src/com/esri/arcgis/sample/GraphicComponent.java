@@ -50,6 +50,10 @@ public class GraphicComponent {
   
   private static final String STABLE_ID_KEY = "Stable ID";
   
+  private static final String TIME_WINDOW_START_KEY = "TimeWindowStart";
+  
+  private static final String TIME_WINDOW_END_KEY = "TimeWindowEnd";
+  
   public enum DataSource {
     STOP_GRAPHICS,
     POLYGON_GRAPHICS,
@@ -125,6 +129,30 @@ public class GraphicComponent {
       Integer stableId = (Integer) stop.getAttributeValue(STABLE_ID_KEY);
       if (stableId == id) {
         mStopGraphics.set(i, new Graphic(newGeometry, stop.getSymbol(), stop.getAttributes()));
+        break;
+      }
+    }    
+  }
+  
+  /**
+   * Update the time windows of a tracked stop.
+   * 
+   * @param id The id of the stop.
+   * @param timeWindowStart The start time window.
+   * @param timeWindowEnd The end time window.
+   */
+  public void updateTrackedStop(int id, long timeWindowStart, long timeWindowEnd) {
+    
+    for (int i = 0; i < mStopGraphics.size(); i++) {
+      
+      Graphic stop = mStopGraphics.get(i);
+      Integer stableId = (Integer) stop.getAttributeValue(STABLE_ID_KEY);
+      if (stableId == id) {
+        
+        Map<String,Object> attributes = stop.getAttributes();
+        attributes.put(TIME_WINDOW_START_KEY, timeWindowStart);
+        attributes.put(TIME_WINDOW_END_KEY, timeWindowEnd);
+        mStopGraphics.set(i, new Graphic(stop.getGeometry(), stop.getSymbol(), attributes));
         break;
       }
     }    
