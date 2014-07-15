@@ -20,6 +20,12 @@ public class Utils {
   
   private static final String TPK_EXTENSION = ".tpk";
   
+  /**
+   * Returns true if a file is a local tiled layer.
+   * 
+   * @param file The file to test.
+   * @return true if the file is a local tiled layer.
+   */
   public static boolean isLocalTiledLayer(File file) {    
     
     if (file == null || !file.exists() || file.isDirectory())

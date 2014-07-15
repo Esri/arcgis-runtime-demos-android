@@ -216,6 +216,7 @@ public class RouteComponent implements OnSharedPreferenceChangeListener {
    * @param inSR The input spatial reference. If null, the default routing engine spatial reference will be assumed.
    * @param outSR The output spatial reference. If null, the default routing engine spatial reference will be assumed.
    * @param optimize Null to use global settings, otherwise true to optimize stops.
+   * @param startTime The local start time in milliseconds past the Unix epoch, can be null.
    * @param enqueue If true, and there is an active solve, the solve will be enqueued. If false and there
    * is an active solve, this function will return immediately with a handle to the last enqueued solve.
    * @return A handle to the solve if submitted successfully, otherwise an exisitng solve handle (enqueue = false), or null.
