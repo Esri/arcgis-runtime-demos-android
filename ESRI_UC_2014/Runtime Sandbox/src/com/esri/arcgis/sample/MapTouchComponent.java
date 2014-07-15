@@ -61,21 +61,51 @@ public class MapTouchComponent extends MapOnTouchListener {
     mCallout = inflater.inflate(R.layout.callout, (ViewGroup)null);
   }
   
+  /**
+   * Bind a RouteComponent for touch enabled routing.
+   * 
+   * @param routeComponent A routing component to be used for solves.
+   * @return this for chaining API calls.
+   */
   public MapTouchComponent bindComponent(RouteComponent routeComponent) {
     mRouteComponent = routeComponent;
     return this;
   }
   
+  /**
+   * Bind a GraphicComponent to enable hit testing and adding graphics on touch events.
+   * 
+   * @param graphicComponent A graphic component to be used for adding/updating graphics.
+   * @return this for chaining API calls.
+   */
   public MapTouchComponent bindComponent(GraphicComponent graphicComponent) {
     mGraphicComponent = graphicComponent;
     return this;
   }
   
+  /**
+   * Bind a GeocodeComponent to enable reverse geocode callout display on touch.
+   * 
+   * @param geocodeComponent A geocoding component for reverse search operations.
+   * @return this for chaining API calls.
+   */
   public MapTouchComponent bindComponent(GeocodeComponent geocodeComponent) {
     mGeocodeComponent = geocodeComponent;  
     return this;
   }
   
+  /**
+   * Bind a SeekBar to be used as a time slider. If visible, the value of the time
+   * bar will be captured and used for any subsequent solves. Start time is calculated 
+   * as a 12 hour buffer on either side of the middle of the seek bar i.e.
+   * 
+   * 
+   *      |------------|-----------|
+   * -12 hours  current time   +12 hours
+   * 
+   * @param timeSlider A SeekBar to be used as a time slider.
+   * @return this for chaining API calls.
+   */
   public MapTouchComponent bindTimeBar(SeekBar timeSlider) {
     mTimeBar = timeSlider;
     
@@ -102,20 +132,28 @@ public class MapTouchComponent extends MapOnTouchListener {
     return this;
   }
   
+  /**
+   * Signal to start drawing a polygon.
+   */
   public void startDrawingPolygon() {
     mDrawMode = TouchMode.POLYGON;
     mDrawMultipath = null;
   }
   
+  /**
+   * Signal to start drawing a polyline.
+   */
   public void startDrawingPolyline() {
     mDrawMode = TouchMode.POLYLINE;
     mDrawMultipath = null;
   }
   
-  public void startDragging() {
-    mDrawMode = TouchMode.DRAG;
-  }
-  
+  /**
+   * Returns true if the touch component is not actively drawing 
+   * or dragging.
+   * 
+   * @return true if the component is in a stable (motionless) state.
+   */
   public boolean isStable() {
     return mDrawMode == TouchMode.NONE;
   }
@@ -125,6 +163,7 @@ public class MapTouchComponent extends MapOnTouchListener {
     
     if (mDrawMode == TouchMode.POLYGON || mDrawMode == TouchMode.POLYLINE) {
       
+      // If drawing a multipath add/update the geometry.
       if (mDrawMultipath == null) {
         mDrawMultipath = mDrawMode == TouchMode.POLYGON ? new Polygon() : new Polyline();
         Point startPoint = mMapView.toMapPoint(from.getX(), from.getY());
@@ -144,6 +183,8 @@ public class MapTouchComponent extends MapOnTouchListener {
       
     } else if (mDrawMode == TouchMode.DRAG) {
       
+      // If dragging, attempt to submit a solve. We do not queue the solve
+      // as we process touch events much faster than we can solve.
       if (mGraphicComponent != null) {
         
         Point mapPoint = mMapView.toMapPoint(to.getX(), to.getY());
@@ -155,6 +196,7 @@ public class MapTouchComponent extends MapOnTouchListener {
       
     } else if (mDrawMode == TouchMode.STREAM_REVERSE_GEOCODE) {
       
+      // If streaming, reverse geocode every touch event.
       reverseGeocode(to.getX(), to.getY());
       return true;
     }
@@ -165,6 +207,9 @@ public class MapTouchComponent extends MapOnTouchListener {
   @Override
   public void onLongPress(MotionEvent point) {
     
+    // On long press :
+    // - if a stop is hit, start drag re-routing
+    // - otherwise, enable stream reverse geocoding
     int[] hitGraphics = mGraphicComponent.hitTest(DataSource.STOP_GRAPHICS, point.getX(), point.getY(), HIT_TOLERANCE);
     if (hitGraphics != null && hitGraphics.length > 0) {
       mDragId = hitGraphics[0];
@@ -182,7 +227,11 @@ public class MapTouchComponent extends MapOnTouchListener {
   @Override
   public boolean onDragPointerUp(MotionEvent from, MotionEvent to) {
     
+    // On up, finish the multipath/end dragging and always reset the 
+    // current state.
+    
     if (mDrawMode == TouchMode.POLYGON || mDrawMode == TouchMode.POLYLINE) {      
+      
       Point endPoint = mMapView.toMapPoint(to.getX(), to.getY());
       mDrawMultipath.lineTo(endPoint);
       
@@ -220,6 +269,7 @@ public class MapTouchComponent extends MapOnTouchListener {
   @Override
   public boolean onDoubleTap(MotionEvent point) {
     
+    // Try to solve.
     if (submitSolve(true))
       return true;
       
@@ -233,7 +283,7 @@ public class MapTouchComponent extends MapOnTouchListener {
     
     Point mapPoint = mMapView.toMapPoint(x, y);
     
-    // Attempt a hit test on our stops graphics layer. If no stop graphic
+    // Attempt a hit test on our graphics layers. If no graphic
     // was selected, return false (we did not consume the hit).
     
     // First, try to hit our stops layer.
@@ -316,6 +366,13 @@ public class MapTouchComponent extends MapOnTouchListener {
     return false;
   }
   
+  /**
+   * Attempt to reverse geocode.
+   * 
+   * @param x Screen x coordinate.
+   * @param y Screen y coordinate.
+   * @return true if the operation was submitted.
+   */
   private boolean reverseGeocode(float x, float y) {
     
     if (mGeocodeComponent == null)
@@ -326,6 +383,13 @@ public class MapTouchComponent extends MapOnTouchListener {
     return true;
   }
   
+  /**
+   * Calculate the start time if a time slider is bound and visible.
+   * See {@link #bindTimeBar(SeekBar)} for more information on how
+   * this value is calculated.
+   * 
+   * @return The start time of the route, or null if a time bar is not bound/visible.
+   */
   private Long getStartTime() {
     
     if (mTimeBar == null || mTimeBar.getVisibility() != View.VISIBLE)
@@ -343,6 +407,12 @@ public class MapTouchComponent extends MapOnTouchListener {
     return (long)newTime;
   }
 
+  /**
+   * Submit a solve to the bound routing component.
+   * 
+   * @param enqueue If true, the solve will the added to the solve queue.
+   * @return false if there are not enough stops or no bound Graphic/Route component.
+   */
   private boolean submitSolve(boolean enqueue) {
     
     if (mGraphicComponent == null)

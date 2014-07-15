@@ -14,10 +14,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
 
+/**
+ * A DialogFragment useful for adjusting time windows.
+ * The inflated view will have two TimePickers corresponding 
+ * to the start and end time windows respectively.
+ */
 public class TimeWindowFragment extends DialogFragment {
   
+  /**
+   * Simple callback for time window changes.
+   */
   public interface TimeWindowCallback {
     
+    /**
+     * Invoked when time windows have been updated and accepted. This will
+     * not be invoked if the dialog is dismissed without hitting the positive button.
+     * 
+     * @param timeWindowStart The time window start (milliseconds past the Unix epoch).
+     * @param timeWindowEnd The time window end (milliseconds past the Unix epoch).
+     */
     void onTimeWindowUpdated(Long timeWindowStart, Long timeWindowEnd);
     
   }
@@ -42,7 +57,7 @@ public class TimeWindowFragment extends DialogFragment {
   }
   
   /**
-   * Bind a callback to be invoked when a service is selected.
+   * Bind a callback to be invoked when time windows are updated successfully.
    * If null is supplied, the current callback will be removed.
    * 
    * @param callback The callback to be invoked.
@@ -71,21 +86,26 @@ public class TimeWindowFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
               
+              // Clear focus to ensure typed values are captured.
               startPicker.clearFocus();
               endPicker.clearFocus();
               
+              // Get the current time.
               Calendar calendar = Calendar.getInstance();
               
               int year = calendar.get(Calendar.YEAR);
               int month = calendar.get(Calendar.MONTH);
               int day = calendar.get(Calendar.DAY_OF_MONTH);
               
+              // Adjust hours and minutes on the start time window.
               calendar.set(year, month, day, startPicker.getCurrentHour(), startPicker.getCurrentMinute());
               long startWindow = calendar.getTimeInMillis();
               
+              // Adjust hours and minutes on the end time window.
               calendar.set(year, month, day, endPicker.getCurrentHour(), endPicker.getCurrentMinute());
               long endWindow = calendar.getTimeInMillis();
               
+              // Invoke the callback.
               if (mCallback != null)
                 mCallback.onTimeWindowUpdated(startWindow, endWindow);              
             }
