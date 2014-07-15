@@ -23,8 +23,8 @@
     
     <!--  Preference strings -->
     <string name="preference_app_settings_title">Application Settings</string>
-    <string name="preference_auto_route_title">Enable Auto Routing</string>
-    <string name="preference_auto_route_summary">When enabled, routing will be invoked as soon as stops are added.</string>
+    <string name="preference_enable_slider_title">Enable Time Slider</string>
+    <string name="preference_enable_slider_summary">When enabled, the route start time can be adjusted using a time slider.</string>
     <string name="preference_route_settings_title">Routing Settings</string>
     
     <string name="preference_impedance_title">Impedance</string>
@@ -45,5 +45,9 @@
     
     <string name="preference_directions_summary">Enabled turn by turn directions.</string>
     <string name="preference_directions_title">Directions</string>
+    
+    <!-- UI Strings -->
+    <string name="time_window_start_text">Time Window Start</string>
+    <string name="time_window_end_text">Time Window End</string>
     
 </resources>

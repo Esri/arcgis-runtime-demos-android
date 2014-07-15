@@ -21,6 +21,8 @@ import com.esri.core.tasks.na.RouteParameters;
 
 public class SettingsComponent extends PreferenceFragment {
 
+  public static final String TIME_SLIDER_PREF_KEY = "pref_enable_slider";
+  
   public static final String IMPEDANCE_PREF_KEY = "pref_impedance";
   
   public static final String RESTRICTIONS_PREF_KEY = "pref_restrictions";

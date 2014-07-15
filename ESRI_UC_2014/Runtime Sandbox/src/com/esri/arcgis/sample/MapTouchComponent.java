@@ -1,15 +1,22 @@
 package com.esri.arcgis.sample;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.esri.android.map.MapOnTouchListener;
 import com.esri.android.map.MapView;
 import com.esri.arcgis.sample.GraphicComponent.DataSource;
+import com.esri.arcgis.sample.TimeWindowFragment.TimeWindowCallback;
 import com.esri.core.geometry.MultiPath;
 import com.esri.core.geometry.Point;
 import com.esri.core.geometry.Polygon;
@@ -26,6 +33,8 @@ public class MapTouchComponent extends MapOnTouchListener {
   
   private GraphicComponent mGraphicComponent;
   
+  private SeekBar mTimeBar;
+  
   private static final int HIT_TOLERANCE = 20;
   
   private MultiPath mDrawMultipath = null;
@@ -41,6 +50,7 @@ public class MapTouchComponent extends MapOnTouchListener {
     POLYLINE,
     DRAG,
     STREAM_REVERSE_GEOCODE,
+    TIME_SLIDE,
     NONE
   }
   
@@ -66,6 +76,32 @@ public class MapTouchComponent extends MapOnTouchListener {
     return this;
   }
   
+  public MapTouchComponent bindTimeBar(SeekBar timeSlider) {
+    mTimeBar = timeSlider;
+    
+    // Bind a listener for when the time slider changes.
+    if (mTimeBar != null) {
+      mTimeBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+          mDrawMode = TouchMode.NONE;
+        }
+        
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+          mDrawMode = TouchMode.TIME_SLIDE;
+        }
+        
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+          submitSolve(false);          
+        }
+      });
+    }
+    return this;
+  }
+  
   public void startDrawingPolygon() {
     mDrawMode = TouchMode.POLYGON;
     mDrawMultipath = null;
@@ -80,8 +116,8 @@ public class MapTouchComponent extends MapOnTouchListener {
     mDrawMode = TouchMode.DRAG;
   }
   
-  public boolean isDragging() {
-    return mDrawMode == TouchMode.DRAG;
+  public boolean isStable() {
+    return mDrawMode == TouchMode.NONE;
   }
   
   @Override
@@ -214,7 +250,29 @@ public class MapTouchComponent extends MapOnTouchListener {
           
           mMapView.getCallout().hide();
         }
-      });      
+      });
+      
+      
+      mCallout.findViewById(R.id.callout_add_button).setOnClickListener(new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+          
+          TimeWindowFragment.newInstance()
+          .bindCallback(new TimeWindowCallback() {
+            
+            @Override
+            public void onTimeWindowUpdated(Long timeWindowStart, Long timeWindowEnd) {
+              
+              if (mGraphicComponent != null)
+                mGraphicComponent.updateTrackedStop(id, timeWindowStart, timeWindowEnd);
+            }
+          }).show(((Activity)mMapView.getContext()).getFragmentManager(), null); 
+          
+          mMapView.getCallout().hide();
+        }
+      });
+      
       return true;
     }
     
@@ -267,6 +325,23 @@ public class MapTouchComponent extends MapOnTouchListener {
     mGeocodeComponent.submitReverseGeocode(mapPoint, mMapView.getSpatialReference(), mMapView.getSpatialReference());
     return true;
   }
+  
+  private Long getStartTime() {
+    
+    if (mTimeBar == null || mTimeBar.getVisibility() != View.VISIBLE)
+      return null;
+    
+    Calendar now = Calendar.getInstance();
+    long currentTime = now.getTimeInMillis();
+    
+    long twelveHoursMillis = 12 * 3600 * 1000;
+    
+    double percent = ((double)mTimeBar.getProgress() - 50.0)/50.0;
+    double advance = percent * twelveHoursMillis;
+    double newTime = currentTime + advance;
+    
+    return (long)newTime;
+  }
 
   private boolean submitSolve(boolean enqueue) {
     
@@ -277,6 +352,7 @@ public class MapTouchComponent extends MapOnTouchListener {
     Graphic[] stops = mGraphicComponent.getStops();
     Graphic[] polygonBarriers = mGraphicComponent.getPolygonBarriers();
     Graphic[] polylineBarriers = mGraphicComponent.getPolylineBarriers();
+    Date startTime = getStartTime() == null ? null : new Date(getStartTime());
     if (stops.length > 1 && mRouteComponent != null) {
       
       mRouteComponent.submitSolve(
@@ -286,6 +362,7 @@ public class MapTouchComponent extends MapOnTouchListener {
           mMapView.getSpatialReference(),
           mMapView.getSpatialReference(),
           null,
+          startTime,
           enqueue);
       didSubmit = true;
     }
