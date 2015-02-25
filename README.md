@@ -3,7 +3,7 @@
 This is a repo to house Android demo applications that have been built by the Esri ArcGIS Runtime SDK for Android development team. Various demo apps from conferences, events and workshops will be placed in this single repo so they are easy to find.
 
 ## Features
-Top level folders will identify the event for which demos have been built so they are easier to find (e.g. UC_2014). Within those folders will be Application folder names.
+Top level folders will identify the event for which demos have been built so they are easier to find (e.g. UC-2014). Within those folders will be Application folder names.
 
 ## Instructions
 
