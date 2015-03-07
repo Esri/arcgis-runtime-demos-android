@@ -23,7 +23,6 @@ public class BasemapSearchPresenter extends AsyncTask<Void, Void, ArrayList<Base
     // callback interface
     public OnTaskCompleted delegate = null;
 
-
     // create a portal object with null credentials
     Portal portal;
 

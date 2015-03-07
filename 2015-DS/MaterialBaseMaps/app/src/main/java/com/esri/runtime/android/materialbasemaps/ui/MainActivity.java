@@ -14,8 +14,9 @@ import com.esri.runtime.android.materialbasemaps.R;
 import com.esri.runtime.android.materialbasemaps.model.BasemapAdapter;
 import com.esri.runtime.android.materialbasemaps.model.BasemapClickListener;
 import com.esri.runtime.android.materialbasemaps.model.BasemapItem;
-import com.esri.runtime.android.materialbasemaps.presenter.BasemapSearchPresenter;
+import com.esri.runtime.android.materialbasemaps.presenter.FetchBasemapsItemId;
 import com.esri.runtime.android.materialbasemaps.presenter.OnTaskCompleted;
+import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,6 @@ public class MainActivity extends Activity{
 
     private BasemapAdapter mBasemapAdapter;
     private ArrayList<BasemapItem> mBasemapList;
-    private BasemapSearchPresenter mBasemapSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class MainActivity extends Activity{
     }
 
     public void fetchBasemaps(){
-        mBasemapSearch = new BasemapSearchPresenter(new OnTaskCompleted() {
+        TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
             @Override
             public void processResults(ArrayList<BasemapItem> basemapItems) {
                 mProgressBar.setVisibility(View.INVISIBLE);
@@ -73,8 +73,7 @@ public class MainActivity extends Activity{
                 mBasemapList.addAll(basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
             }
-        });
-        mBasemapSearch.execute();
+        }));
     }
 
     public void sendPortalId(Context context, String portalId){
