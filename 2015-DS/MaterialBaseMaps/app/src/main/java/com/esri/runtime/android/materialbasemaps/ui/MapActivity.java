@@ -46,6 +46,8 @@ public class MapActivity extends Activity{
                         public void run() {
                             mMapView = new MapView(getApplicationContext(), webmap, null, null);
                             setContentView(mMapView);
+                            mMapView.enableWrapAround(true);
+                            mMapView.setEsriLogoVisible(true);
                         }
                     });
                 }
