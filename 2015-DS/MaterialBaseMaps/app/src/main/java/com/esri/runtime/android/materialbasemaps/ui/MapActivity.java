@@ -91,8 +91,8 @@ public class MapActivity extends Activity{
      * to be used.  Goes back to UI thread to use the WebMap as a new MapView to display in
      * the ViewGroup layout.  Centers and zooms to default Palm Springs location.
      *
-     * @param portalItemId
-     * @param portalUrl
+     * @param portalItemId represents the basemap to be used as a new webmap
+     * @param portalUrl represents the portal url to look up the portalItemId
      */
     private void loadWebMapIntoMapView(final String portalItemId, final String portalUrl){
         TaskExecutor.getInstance().getThreadPool().submit(new Callable<Void>() {
