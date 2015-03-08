@@ -10,5 +10,5 @@ public interface BasemapClickListener {
      *
      * @param position position of the clicked basemap
      */
-    public void onImageClick(int position, String itemID);
+    public void onImageClick(int position, String itemID, String title);
 }

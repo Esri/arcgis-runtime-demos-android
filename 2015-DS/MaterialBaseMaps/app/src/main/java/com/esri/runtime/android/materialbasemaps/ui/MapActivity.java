@@ -64,12 +64,14 @@ public class MapActivity extends Activity{
         setContentView(R.layout.map_activity);
         // layout to add MapView to
         relativeMapLayout = (RelativeLayout) findViewById(R.id.relative);
-        // receive portal id of the basemap to add to the map
+        // receive portal id and title of the basemap to add to the map
         Intent intent = getIntent();
         String itemId = intent.getExtras().getString("portalId");
+        String title = intent.getExtras().getString("title");
         // adds back button to action bar
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(title);
         // load the basemap on a background thread
         loadWebMapIntoMapView(itemId, portalUrl);
 
