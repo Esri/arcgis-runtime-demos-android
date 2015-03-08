@@ -5,17 +5,26 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Outline;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.core.geometry.Envelope;
+import com.esri.core.geometry.GeometryEngine;
+import com.esri.core.geometry.LinearUnit;
+import com.esri.core.geometry.Point;
+import com.esri.core.geometry.SpatialReference;
+import com.esri.core.geometry.Unit;
 import com.esri.core.portal.Portal;
 import com.esri.core.portal.WebMap;
 import com.esri.runtime.android.materialbasemaps.R;
@@ -23,14 +32,30 @@ import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
 import java.util.concurrent.Callable;
 
+/**
+ * Activity for Map and floating action bar button.
+ */
 public class MapActivity extends Activity{
 
     final private String portalUrl = "http://www.arcgis.com";
 
     MapView mMapView;
-    LocationDisplayManager mLocationDisplayManager;
-    RelativeLayout relativeMapLayout;
 
+    // GPS location tracking
+    private boolean mIsLocationTracking;
+    private Point mLocation = null;
+    private String mMapViewState;
+
+    // The circle area specified by search_radius and input lat/lon serves
+    // searching purpose.
+    // It is also used to construct the extent which map zooms to after the first
+    // GPS fix is retrieved.
+    private final static double SEARCH_RADIUS = 10;
+
+    private static final String KEY_IS_LOCATION_TRACKING = "IsLocationTracking";
+
+    RelativeLayout relativeMapLayout;
+    ImageButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +72,9 @@ public class MapActivity extends Activity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         // load the basemap on a background thread
         loadWebMapIntoMapView(itemId, portalUrl);
+
+        fab = (ImageButton) findViewById(R.id.fab);
+
         // floating action bar settings
         ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
@@ -55,14 +83,19 @@ public class MapActivity extends Activity{
                 outline.setOval(0, 0, size, size);
             }
         };
-        findViewById(R.id.fab).setOutlineProvider(viewOutlineProvider);
-
+        fab.setOutlineProvider(viewOutlineProvider);
 
     }
 
     public void onClick(View view){
-        if(mMapView.isLoaded()){
-
+        // Toggle location tracking on or off
+        if (mIsLocationTracking) {
+            mMapView.getLocationDisplayManager().stop();
+            mIsLocationTracking = false;
+            fab.setImageResource(R.mipmap.ic_action_location_off);
+        } else {
+            startLocationTracking();
+            fab.setImageResource(R.mipmap.ic_action_location_found);
         }
     }
 
@@ -129,6 +162,13 @@ public class MapActivity extends Activity{
                                     if(mMapView == source && status == STATUS.INITIALIZED){
                                         // zoom in into Palm Springs
                                         mMapView.centerAndZoom(33.829547, -116.515882, 14);
+
+//                                        if (mMapViewState == null) {
+//                                            // Starting location tracking will cause zoom to My Location
+//                                            startLocationTracking();
+//                                        } else {
+//                                            mMapView.restoreState(mMapViewState);
+//                                        }
                                     }
                                 }
                             });
@@ -143,13 +183,72 @@ public class MapActivity extends Activity{
         });
     }
 
+    /**
+     * Starts tracking GPS location.
+     */
+    void startLocationTracking() {
+        LocationDisplayManager locDispMgr = mMapView.getLocationDisplayManager();
+        locDispMgr.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
+        locDispMgr.setAllowNetworkLocation(true);
+        locDispMgr.setLocationListener(new LocationListener() {
+
+            boolean locationChanged = false;
+
+            // Zooms to the current location when first GPS fix arrives
+            @Override
+            public void onLocationChanged(Location loc) {
+                Point wgspoint = new Point(loc.getLongitude(), loc.getLatitude());
+                mLocation = (Point) GeometryEngine.project(wgspoint, SpatialReference.create(4326),
+                        mMapView.getSpatialReference());
+                if (!locationChanged) {
+                    locationChanged = true;
+                    Unit mapUnit = mMapView.getSpatialReference().getUnit();
+                    double zoomWidth = Unit.convertUnits(SEARCH_RADIUS, Unit.create(LinearUnit.Code.MILE_US), mapUnit);
+                    Envelope zoomExtent = new Envelope(mLocation, zoomWidth, zoomWidth);
+                    mMapView.setExtent(zoomExtent);
+                }
+            }
+
+            @Override
+            public void onProviderDisabled(String arg0) {
+            }
+
+            @Override
+            public void onProviderEnabled(String arg0) {
+            }
+
+            @Override
+            public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+            }
+        });
+        locDispMgr.start();
+        mIsLocationTracking = true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(KEY_IS_LOCATION_TRACKING, mIsLocationTracking);
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
 }
