@@ -1,7 +1,6 @@
 package com.esri.runtime.android.materialbasemaps.ui;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
