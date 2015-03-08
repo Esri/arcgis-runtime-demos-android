@@ -100,15 +100,6 @@ public class MapActivity extends Activity{
                             mMapView.enableWrapAround(true);
                             mMapView.setEsriLogoVisible(true);
 
-                            mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
-                                @Override
-                                public void onStatusChanged(Object source, STATUS status) {
-                                    if(mMapView == source && status == STATUS.INITIALIZED){
-//                                        mMapView.addView(findViewById(R.id.fab));
-                                    }
-                                }
-                            });
-
                         }
                     });
                 }
