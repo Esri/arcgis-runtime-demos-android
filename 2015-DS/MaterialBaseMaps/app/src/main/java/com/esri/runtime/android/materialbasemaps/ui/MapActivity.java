@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
@@ -60,8 +59,9 @@ public class MapActivity extends Activity{
     }
 
     public void onClick(View view){
-        //TODO: implement onClick button, working as toast arrives when currently tapped
-        Toast.makeText(getApplicationContext(), "FAB Tapped!", Toast.LENGTH_SHORT).show();
+        if(mMapView.isLoaded()){
+
+        }
     }
 
     @Override
