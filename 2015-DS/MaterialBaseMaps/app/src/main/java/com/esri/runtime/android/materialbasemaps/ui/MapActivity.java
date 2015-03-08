@@ -4,10 +4,13 @@ package com.esri.runtime.android.materialbasemaps.ui;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Outline;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.RelativeLayout;
 
 import com.esri.android.map.MapView;
@@ -24,7 +27,7 @@ public class MapActivity extends Activity{
     final private String portalUrl = "http://www.arcgis.com";
 
     MapView mMapView;
-    RelativeLayout rl;
+    RelativeLayout relativeMapLayout;
 
 
     @Override
@@ -33,8 +36,7 @@ public class MapActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_activity);
 
-        rl = (RelativeLayout) findViewById(R.id.relative);
-//        mMapView = (MapView) findViewById(R.id.map);
+        relativeMapLayout = (RelativeLayout) findViewById(R.id.relative);
 
         Intent intent = getIntent();
         String itemId = intent.getExtras().getString("portalId");
@@ -44,14 +46,14 @@ public class MapActivity extends Activity{
 
         loadWebMapIntoMapView(itemId, portalUrl);
 
-//        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
-//            @Override
-//            public void getOutline(View view, Outline outline) {
-//                int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
-//                outline.setOval(0, 0, size, size);
-//            }
-//        };
-//        findViewById(R.id.fab).setOutlineProvider(viewOutlineProvider);
+        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+                outline.setOval(0, 0, size, size);
+            }
+        };
+        findViewById(R.id.fab).setOutlineProvider(viewOutlineProvider);
 
 
     }
@@ -89,12 +91,11 @@ public class MapActivity extends Activity{
                         @Override
                         public void run() {
                             mMapView = new MapView(getApplicationContext(), webmap, null, null);
-//                            setContentView(mMapView);
 
                             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
                             mMapView.setLayoutParams(lp);
-                            rl.addView(mMapView);
+                            relativeMapLayout.addView(mMapView);
 
                             mMapView.enableWrapAround(true);
                             mMapView.setEsriLogoVisible(true);
