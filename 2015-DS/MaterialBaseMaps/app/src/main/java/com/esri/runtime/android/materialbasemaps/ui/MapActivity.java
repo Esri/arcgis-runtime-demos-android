@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.RelativeLayout;
 
+import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.core.portal.Portal;
@@ -27,6 +28,7 @@ public class MapActivity extends Activity{
     final private String portalUrl = "http://www.arcgis.com";
 
     MapView mMapView;
+    LocationDisplayManager mLocationDisplayManager;
     RelativeLayout relativeMapLayout;
 
 
@@ -83,6 +85,15 @@ public class MapActivity extends Activity{
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Creates a new WebMap on a background thread based on the portal item id of the basemap
+     * to be used.  Goes back to UI thread to use the WebMap as a new MapView to display in
+     * the ViewGroup layout.  Centers and zooms to default Palm Springs location.
+     *
+     * @param portalItemId
+     * @param portalUrl
+     */
     private void loadWebMapIntoMapView(final String portalItemId, final String portalUrl){
         TaskExecutor.getInstance().getThreadPool().submit(new Callable<Void>() {
             @Override
