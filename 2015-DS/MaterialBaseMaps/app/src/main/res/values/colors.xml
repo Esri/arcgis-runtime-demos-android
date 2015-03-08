@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="windowBackground">#BBDEFB</color>
+    <color name="accent">#ffc400</color>
+    <color name="text_primary">#D9FFFFFF</color>
+    <color name="text_secondary">#D9000000</color>
+    <color name="photo_tint">#88101010</color>
+    <color name="fab_color">#F44336</color>
+</resources>
