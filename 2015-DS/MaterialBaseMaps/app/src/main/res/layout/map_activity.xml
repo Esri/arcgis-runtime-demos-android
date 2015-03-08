@@ -35,6 +35,6 @@
         android:background="@drawable/fab_ripple"
         android:elevation="@dimen/button_elevation"
         android:onClick="onClick"
-        android:src="@drawable/ic_action_add"/>
+        android:src="@mipmap/ic_action_location_off"/>
 
 </RelativeLayout>

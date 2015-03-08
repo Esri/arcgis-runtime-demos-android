@@ -3,7 +3,7 @@
     android:color="?android:colorPrimary">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/fab_color" />
+            <solid android:color="@color/primary_dark" />
         </shape>
     </item>
 
