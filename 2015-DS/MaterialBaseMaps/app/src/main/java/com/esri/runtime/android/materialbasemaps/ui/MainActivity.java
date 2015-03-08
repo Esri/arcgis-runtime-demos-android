@@ -55,7 +55,7 @@ public class MainActivity extends Activity{
             @Override
             public void onImageClick(int position, String itemId, String title) {
                 Context context = getApplicationContext();
-                sendPortalId(context, itemId, title);
+                sendBasemapItemInfo(context, itemId, title);
 
             }
         });
@@ -90,7 +90,7 @@ public class MainActivity extends Activity{
      * @param portalId portal id representing the basemap to open
      * @param title basemap title
      */
-    public void sendPortalId(Context context, String portalId, String title){
+    public void sendBasemapItemInfo(Context context, String portalId, String title){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
