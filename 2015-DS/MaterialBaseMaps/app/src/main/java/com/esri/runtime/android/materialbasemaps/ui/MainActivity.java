@@ -38,8 +38,9 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // inject our progress bar and recycler view
         ButterKnife.inject(this);
-
+        // array of basemap items to have available to load as basemaps
         mBasemapList = new ArrayList<BasemapItem>();
 
         mRecyclerView.setHasFixedSize(true);
@@ -49,6 +50,7 @@ public class MainActivity extends Activity{
         // create an instance of adapter
         mBasemapAdapter = new BasemapAdapter( mBasemapList , R.layout.row_basemap, this);
 
+        // click listener to send portal id to MapActivity
         mBasemapAdapter.setOnBaseMapClickListener(new BasemapClickListener() {
 
             @Override
@@ -60,11 +62,16 @@ public class MainActivity extends Activity{
         });
 
         mRecyclerView.setAdapter(mBasemapAdapter);
+        // turn on progress bar while searching basemaps
         mProgressBar.setVisibility(View.VISIBLE);
+        // search and collect basemap portal ids on background thread
         fetchBasemaps();
 
     }
 
+    /**
+     * Retrieve basemaps portal item id to sent to MapActivity
+     */
     public void fetchBasemaps(){
         TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
             @Override
@@ -77,6 +84,12 @@ public class MainActivity extends Activity{
         }));
     }
 
+    /**
+     * Intent to sent to MapActivity
+     *
+     * @param context application context
+     * @param portalId portal id representing the basemap to open
+     */
     public void sendPortalId(Context context, String portalId){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);

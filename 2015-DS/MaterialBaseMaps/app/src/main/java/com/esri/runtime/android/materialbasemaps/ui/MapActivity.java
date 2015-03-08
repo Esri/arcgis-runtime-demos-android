@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.esri.android.map.MapView;
 import com.esri.android.map.event.OnStatusChangedListener;
@@ -35,17 +36,17 @@ public class MapActivity extends Activity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_activity);
-
+        // layout to add MapView to
         relativeMapLayout = (RelativeLayout) findViewById(R.id.relative);
-
+        // receive portal id of the basemap to add to the map
         Intent intent = getIntent();
         String itemId = intent.getExtras().getString("portalId");
-
+        // adds back button to action bar
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        // load the basemap on a background thread
         loadWebMapIntoMapView(itemId, portalUrl);
-
+        // floating action bar settings
         ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
@@ -56,6 +57,11 @@ public class MapActivity extends Activity{
         findViewById(R.id.fab).setOutlineProvider(viewOutlineProvider);
 
 
+    }
+
+    public void onClick(View view){
+        //TODO: implement onClick button, working as toast arrives when currently tapped
+        Toast.makeText(getApplicationContext(), "FAB Tapped!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -90,15 +96,31 @@ public class MapActivity extends Activity{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // udpate the MapView with the basemap
                             mMapView = new MapView(getApplicationContext(), webmap, null, null);
 
-                            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                            // Layout Parameters for MapView
+                            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT);
 
                             mMapView.setLayoutParams(lp);
+                            // add MapView to layout
                             relativeMapLayout.addView(mMapView);
-
+                            // enable wrap around date line
                             mMapView.enableWrapAround(true);
+                            // attribute esri
                             mMapView.setEsriLogoVisible(true);
+
+                            mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
+                                @Override
+                                public void onStatusChanged(Object source, STATUS status) {
+                                    if(mMapView == source && status == STATUS.INITIALIZED){
+                                        // zoom in into Palm Springs
+                                        mMapView.centerAndZoom(33.829547, -116.515882, 14);
+                                    }
+                                }
+                            });
 
                         }
                     });
@@ -112,7 +134,11 @@ public class MapActivity extends Activity{
 
     @Override
     protected void onResume() {
-
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }
