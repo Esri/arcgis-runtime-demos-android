@@ -53,9 +53,9 @@ public class MainActivity extends Activity{
         mBasemapAdapter.setOnBaseMapClickListener(new BasemapClickListener() {
 
             @Override
-            public void onImageClick(int position, String itemId) {
+            public void onImageClick(int position, String itemId, String title) {
                 Context context = getApplicationContext();
-                sendPortalId(context, itemId);
+                sendPortalId(context, itemId, title);
 
             }
         });
@@ -88,10 +88,12 @@ public class MainActivity extends Activity{
      *
      * @param context application context
      * @param portalId portal id representing the basemap to open
+     * @param title basemap title
      */
-    public void sendPortalId(Context context, String portalId){
+    public void sendPortalId(Context context, String portalId, String title){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
+        intent.putExtra("title", title);
         startActivity(intent);
     }
 

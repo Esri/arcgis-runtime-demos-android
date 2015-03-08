@@ -61,7 +61,7 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
             @Override
             public void onClick(View v) {
                 if(item != null){
-                    clickListener.onImageClick(items.indexOf(item), item.getItem().getItemId());
+                    clickListener.onImageClick(items.indexOf(item), item.getItem().getItemId(), item.getItem().getTitle());
                 }
             }
         });
