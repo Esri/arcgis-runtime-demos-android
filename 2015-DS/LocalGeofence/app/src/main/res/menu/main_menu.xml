@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+      android:id="@+id/start_service_menu_item"
+      android:icon="@android:drawable/ic_media_play"
+      android:showAsAction="ifRoom"
+      android:title="@string/start_service_caption"/>
+  <item
+      android:id="@+id/stop_service_menu_item"
+      android:icon="@android:drawable/ic_media_pause"
+      android:showAsAction="ifRoom"
+      android:title="@string/stop_service_caption"/>
+  <item
+      android:id="@+id/choose_location_map_menu_item"
+      android:icon="@android:drawable/ic_menu_add"
+      android:title="@string/choose_fence_map_caption"/>
+  <item
+      android:id="@+id/show_location_menu_item"
+      android:icon="@drawable/ic_action_location_searching"
+      android:title="@string/show_location_caption"/>
+</menu>
