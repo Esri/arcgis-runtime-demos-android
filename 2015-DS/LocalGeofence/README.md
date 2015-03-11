@@ -1,10 +1,10 @@
-Material Basemaps
+Local Geofence
 =======================
-This app investigates some Material Design (http://www.google.com/design/spec/material-design/introduction.html) principles with Mapping applications built with the ArcGIS Android SDK.
+This app uses [Google Fused Location Provider](https://developer.android.com/google/play-services/location.html), part of Google Play Services, to send notifications based on locally held geofences.
 
-MainActivity                           | Maps Activity
-:-------------------------------------:|:-------------------------------------:
-![MainActivity](BasemapsActivity.png)  | ![MapActivity](MapActivity.png)
+![Geofence Notifications](Screenshot_GeofenceAlerts.png)
+
+
 
 ## Licensing
 Copyright 2015 Esri
