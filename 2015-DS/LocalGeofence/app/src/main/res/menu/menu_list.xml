@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.esri.arcgis.android.samples.localgeofence.GeofenceListActivity">
+
+  <item
+      android:id="@+id/cancel_menu_item"
+      android:icon="@android:drawable/ic_menu_close_clear_cancel"
+      android:showAsAction="always"
+      android:title="@string/cancel_menu_item_caption"/>
+</menu>
