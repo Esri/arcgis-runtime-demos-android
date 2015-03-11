@@ -165,12 +165,6 @@ public class MapActivity extends Activity{
                                         // zoom in into Palm Springs
                                         mMapView.centerAndZoom(33.829547, -116.515882, 14);
 
-//                                        if (mMapViewState == null) {
-//                                            // Starting location tracking will cause zoom to My Location
-//                                            startLocationTracking();
-//                                        } else {
-//                                            mMapView.restoreState(mMapViewState);
-//                                        }
                                     }
                                 }
                             });
