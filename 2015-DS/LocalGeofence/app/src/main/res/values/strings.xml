@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_name">Local Geofence</string>
+  <string name="title_activity_list">Choose a county</string>
+
+  <!-- MainActivity strings -->
+  <string name="google_api_connection_failed">Failed to connect to Google API</string>
+
+  <string name="intro_caption">Warn me when I\'m in...</string>
+  <string name="choose_fence_caption">Choose a fence area...</string>
+  <string name="fence_feature_default_name">{not set}</string>
+
+  <string name="fence_subtitle">Set a reminder message:</string>
+  <string name="fence_subtitle_default">New geofence name</string>
+
+  <string name="start_service_caption">Start service</string>
+  <string name="stop_service_caption">Stop service</string>
+  <string name="show_location_caption">Show current location</string>
+  <string name="choose_fence_map_caption">Choose fence from map</string>
+
+  <!-- GeofenceMapActivity strings -->
+  <string name="cancel_menu_item_caption">Cancel</string>
+  <string name="tpk_path">/ArcGIS/California/LosAngelesRiverside.tpk</string>
+  <string name="basemap_url">http://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer</string>
+  <string name="noBasemapMessage">No basemap available</string>
+
+
+  <!-- TODO REMOVE STRINGS -->
+  <string name="credentials_username">AndroidDemo</string>
+  <string name="credentials_password">1androiddemo</string>
+
+  <!-- Other strings -->
+
+
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+</resources>
