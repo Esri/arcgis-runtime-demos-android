@@ -44,7 +44,6 @@ public class MapActivity extends Activity{
     // GPS location tracking
     private boolean mIsLocationTracking;
     private Point mLocation = null;
-    private String mMapViewState;
 
     // The circle area specified by search_radius and input lat/lon serves
     // searching purpose.
