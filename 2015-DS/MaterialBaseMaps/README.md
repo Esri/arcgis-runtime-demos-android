@@ -6,6 +6,8 @@ MainActivity                           | Maps Activity
 :-------------------------------------:|:-------------------------------------:
 ![MainActivity](BasemapsActivity.png)  | ![MapActivity](MapActivity.png)
 
+[Video demo](https://www.youtube.com/watch?v=_7QgwnSOAl4)
+
 ## Licensing
 Copyright 2015 Esri
 
