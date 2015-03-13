@@ -86,7 +86,7 @@ public class MainActivity extends Activity{
     }
 
     /**
-     * Intent to sent to MapActivity
+     * Intent to send to MapActivity
      *
      * @param context application context
      * @param portalId portal id representing the basemap to open
