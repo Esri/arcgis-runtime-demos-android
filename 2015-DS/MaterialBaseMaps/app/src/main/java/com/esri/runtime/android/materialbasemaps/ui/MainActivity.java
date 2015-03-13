@@ -1,6 +1,7 @@
 package com.esri.runtime.android.materialbasemaps.ui;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity{
 
     @InjectView(R.id.list) RecyclerView mRecyclerView;
     @InjectView(R.id.progressBar) ProgressBar mProgressBar;
+    @InjectView(R.id.title_transform) View mTitleTransform;
 
     private BasemapAdapter mBasemapAdapter;
     private ArrayList<BasemapItem> mBasemapList;
@@ -94,6 +96,8 @@ public class MainActivity extends Activity{
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
+        // create activity animation
+        ActivityOptions options = new ActivityOptions().makeSceneTransitionAnimation(this, mTitleTransform, "title");
         startActivity(intent);
     }
 
