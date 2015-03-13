@@ -58,7 +58,6 @@ public class MainActivity extends Activity{
             public void onImageClick(int position, String itemId, String title) {
                 Context context = getApplicationContext();
                 sendBasemapItemInfo(context, itemId, title);
-
             }
         });
 
@@ -97,7 +96,7 @@ public class MainActivity extends Activity{
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
         // create activity animation
-        ActivityOptions options = new ActivityOptions().makeSceneTransitionAnimation(this, mTitleTransform, "title");
+        ActivityOptions options; = new ActivityOptions().makeSceneTransitionAnimation(this, mTitleTransform, "title");
         startActivity(intent);
     }
 
