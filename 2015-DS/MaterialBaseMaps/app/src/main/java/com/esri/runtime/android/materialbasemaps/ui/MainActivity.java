@@ -42,7 +42,6 @@ public class MainActivity extends Activity{
         ButterKnife.inject(this);
         // array of basemap items to have available to load as basemaps
         mBasemapList = new ArrayList<BasemapItem>();
-//        mBasemapList = (ArrayList<BasemapItem>) getLastNonConfigurationInstance();
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -114,9 +113,4 @@ public class MainActivity extends Activity{
 
     }
 
-    @Override
-    public Object onRetainNonConfigurationInstance() {
-        return mBasemapList;
-
-    }
 }
