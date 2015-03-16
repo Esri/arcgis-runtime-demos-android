@@ -8,6 +8,7 @@ import android.graphics.Outline;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +29,10 @@ import com.esri.core.geometry.Unit;
 import com.esri.core.portal.Portal;
 import com.esri.core.portal.WebMap;
 import com.esri.runtime.android.materialbasemaps.R;
+import com.esri.runtime.android.materialbasemaps.model.BasemapItem;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 /**
@@ -40,6 +43,7 @@ public class MapActivity extends Activity{
     final private String portalUrl = "http://www.arcgis.com";
 
     MapView mMapView;
+    ArrayList<BasemapItem> mBasemapItem;
 
     // GPS location tracking
     private boolean mIsLocationTracking;
@@ -67,6 +71,7 @@ public class MapActivity extends Activity{
         Intent intent = getIntent();
         String itemId = intent.getExtras().getString("portalId");
         String title = intent.getExtras().getString("title");
+
         // adds back button to action bar
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -113,8 +118,7 @@ public class MapActivity extends Activity{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivityForResult(intent, 0);
+        NavUtils.navigateUpFromSameTask(this);
 
         return super.onOptionsItemSelected(item);
     }
