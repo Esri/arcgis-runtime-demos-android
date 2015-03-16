@@ -29,7 +29,6 @@ public class MainActivity extends Activity{
 
     @InjectView(R.id.list) RecyclerView mRecyclerView;
     @InjectView(R.id.progressBar) ProgressBar mProgressBar;
-    @InjectView(R.id.title_transform) View mTitleTransform;
 
     private BasemapAdapter mBasemapAdapter;
     private ArrayList<BasemapItem> mBasemapList;
@@ -96,8 +95,8 @@ public class MainActivity extends Activity{
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
         // create activity animation
-        ActivityOptions options; = new ActivityOptions().makeSceneTransitionAnimation(this, mTitleTransform, "title");
-        startActivity(intent);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, mRecyclerView, "title_transition");
+        startActivity(intent, options.toBundle());
     }
 
     @Override
