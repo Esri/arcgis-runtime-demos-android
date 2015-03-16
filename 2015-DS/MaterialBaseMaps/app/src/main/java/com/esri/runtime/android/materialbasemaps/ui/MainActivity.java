@@ -1,6 +1,7 @@
 package com.esri.runtime.android.materialbasemaps.ui;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,7 +57,6 @@ public class MainActivity extends Activity{
             public void onImageClick(int position, String itemId, String title) {
                 Context context = getApplicationContext();
                 sendBasemapItemInfo(context, itemId, title);
-
             }
         });
 
@@ -84,7 +84,7 @@ public class MainActivity extends Activity{
     }
 
     /**
-     * Intent to sent to MapActivity
+     * Intent to send to MapActivity
      *
      * @param context application context
      * @param portalId portal id representing the basemap to open
@@ -94,7 +94,9 @@ public class MainActivity extends Activity{
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
-        startActivity(intent);
+        // create activity animation
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, mRecyclerView, "title_transition");
+        startActivity(intent, options.toBundle());
     }
 
     @Override

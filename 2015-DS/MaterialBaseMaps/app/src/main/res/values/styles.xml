@@ -4,8 +4,11 @@
     <style name="AppTheme" parent="android:Theme.Material.Light">
         <!-- activity animations -->
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowSharedElementExitTransition">@transition/title_transition</item>
+        <!--
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowActionBarOverlay">true</item>
+        -->
 
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
