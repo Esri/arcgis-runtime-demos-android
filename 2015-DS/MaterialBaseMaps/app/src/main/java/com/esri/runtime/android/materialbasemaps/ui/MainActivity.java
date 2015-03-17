@@ -63,7 +63,9 @@ public class MainActivity extends Activity{
 
         mRecyclerView.setAdapter(mBasemapAdapter);
 
+        // If basemap item is persisted do not got out to service to fetch them again
         if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
+            // populate basemapItems with persited BasemapItems
             ArrayList<BasemapItem> basemapItems = PersistBasemapItem.getInstance().storage.get("basemap-items");
             mBasemapList.clear();
             mBasemapList.addAll(basemapItems);
