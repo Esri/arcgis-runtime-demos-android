@@ -64,7 +64,9 @@ public class MainActivity extends Activity{
         mRecyclerView.setAdapter(mBasemapAdapter);
 
         if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
-            mBasemapList = PersistBasemapItem.getInstance().storage.get("basemap-items");
+            ArrayList<BasemapItem> basemapItems = PersistBasemapItem.getInstance().storage.get("basemap-items");
+            mBasemapList.clear();
+            mBasemapList.addAll(basemapItems);
             mBasemapAdapter.notifyDataSetChanged();
         }else {
             // turn on progress bar while searching basemaps
@@ -85,8 +87,8 @@ public class MainActivity extends Activity{
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mBasemapList.clear();
                 mBasemapList.addAll(basemapItems);
-                PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
+                PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
             }
         }));
 
