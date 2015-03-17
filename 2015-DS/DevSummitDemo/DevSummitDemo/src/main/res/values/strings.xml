@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, DevSummitDemoActivity!</string>
+    <string name="app_name">Hawaii Five-O</string>
+    <string name="app_name_alternate">Five-O</string>
+
+    <!-- raster data paths -->
+    <string name="raster_dir">ArcGIS/data/rasters/Hawaii</string>
+    <!-- raster file name of basemap layer -->
+    <string name="raster_basemap_layer">Landsat8Hawaii_naturecolor.tif</string>
+    <!-- raster file name of elevation data -->
+    <string name="raster_task">DTED/hawaii_dted.sqlite</string>
+
+    <!-- menu actions -->
+    <string name="menu_renderer">Renderer</string>
+    <string name="menu_renderer_blend">Blend renderer</string>
+    <string name="menu_renderer_RGB">RGB renderer</string>
+    <string name="menu_renderer_default">Default renderer</string>
+    <string name="menu_analysis">Spatial analysis</string>
+    <string name="menu_analysis_los">Line of Sight</string>
+    <string name="menu_analysis_viewshed">Viewshed</string>
+    <string name="menu_removeall">RemoveAll</string>
+
+    <string name="license_client_id">FH6mKSp7DMRfi9KH</string>
+    <string name="license_standard_string">runtimestandard,101,rud514140042,none,3M1P0H4EN9HHLAMEY025</string>
+</resources>
