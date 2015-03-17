@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_removeall"
+        android:icon="@drawable/ic_action_cancel_white"
+        android:showAsAction="always"
+        android:title="@string/menu_removeall">
+    </item>
+    <item
+        android:id="@+id/menu_renderer"
+        android:icon="@drawable/ic_refresh_white600_48dp"
+        android:showAsAction="always"
+        android:title="@string/menu_renderer">
+        <menu>
+            <item
+                android:id="@+id/menu_renderer_blend"
+                android:title="@string/menu_renderer_blend"/>
+            <item
+                android:id="@+id/menu_renderer_RGB"
+                android:title="@string/menu_renderer_RGB"/>
+            <item
+                android:id="@+id/menu_renderer_default"
+                android:title="@string/menu_renderer_default"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_analysis"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_elevation_rise_white600_48dp"
+        android:title="@string/menu_analysis">
+        <menu>
+        <group android:checkableBehavior="single" >
+            <item
+                android:id="@+id/menu_analysis_los"
+                android:title="@string/menu_analysis_los"/>
+            <item
+                android:id="@+id/menu_analysis_viewshed"
+                android:title="@string/menu_analysis_viewshed"/>
+        </group>
+        </menu>
+    </item>
+</menu>
