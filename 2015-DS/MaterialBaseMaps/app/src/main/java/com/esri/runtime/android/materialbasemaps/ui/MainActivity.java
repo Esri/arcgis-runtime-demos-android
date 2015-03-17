@@ -15,6 +15,7 @@ import com.esri.runtime.android.materialbasemaps.R;
 import com.esri.runtime.android.materialbasemaps.model.BasemapAdapter;
 import com.esri.runtime.android.materialbasemaps.model.BasemapClickListener;
 import com.esri.runtime.android.materialbasemaps.model.BasemapItem;
+import com.esri.runtime.android.materialbasemaps.model.PersistBasemapItem;
 import com.esri.runtime.android.materialbasemaps.presenter.FetchBasemapsItemId;
 import com.esri.runtime.android.materialbasemaps.presenter.OnTaskCompleted;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
@@ -61,10 +62,16 @@ public class MainActivity extends Activity{
         });
 
         mRecyclerView.setAdapter(mBasemapAdapter);
-        // turn on progress bar while searching basemaps
-        mProgressBar.setVisibility(View.VISIBLE);
-        // search and collect basemap portal ids on background thread
-        fetchBasemaps();
+
+        if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
+            mBasemapList = PersistBasemapItem.getInstance().storage.get("basemap-items");
+            mBasemapAdapter.notifyDataSetChanged();
+        }else {
+            // turn on progress bar while searching basemaps
+            mProgressBar.setVisibility(View.VISIBLE);
+            // search and collect basemap portal ids on background thread
+            fetchBasemaps();
+        }
 
     }
 
@@ -78,9 +85,11 @@ public class MainActivity extends Activity{
                 mProgressBar.setVisibility(View.INVISIBLE);
                 mBasemapList.clear();
                 mBasemapList.addAll(basemapItems);
+                PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
             }
         }));
+
     }
 
     /**
