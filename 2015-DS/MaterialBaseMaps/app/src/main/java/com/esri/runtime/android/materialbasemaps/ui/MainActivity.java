@@ -15,6 +15,7 @@ import com.esri.runtime.android.materialbasemaps.R;
 import com.esri.runtime.android.materialbasemaps.model.BasemapAdapter;
 import com.esri.runtime.android.materialbasemaps.model.BasemapClickListener;
 import com.esri.runtime.android.materialbasemaps.model.BasemapItem;
+import com.esri.runtime.android.materialbasemaps.model.PersistBasemapItem;
 import com.esri.runtime.android.materialbasemaps.presenter.FetchBasemapsItemId;
 import com.esri.runtime.android.materialbasemaps.presenter.OnTaskCompleted;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
@@ -61,10 +62,20 @@ public class MainActivity extends Activity{
         });
 
         mRecyclerView.setAdapter(mBasemapAdapter);
-        // turn on progress bar while searching basemaps
-        mProgressBar.setVisibility(View.VISIBLE);
-        // search and collect basemap portal ids on background thread
-        fetchBasemaps();
+
+        // If basemap item is persisted do not got out to service to fetch them again
+        if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
+            // populate basemapItems with persited BasemapItems
+            ArrayList<BasemapItem> basemapItems = PersistBasemapItem.getInstance().storage.get("basemap-items");
+            mBasemapList.clear();
+            mBasemapList.addAll(basemapItems);
+            mBasemapAdapter.notifyDataSetChanged();
+        }else {
+            // turn on progress bar while searching basemaps
+            mProgressBar.setVisibility(View.VISIBLE);
+            // search and collect basemap portal ids on background thread
+            fetchBasemaps();
+        }
 
     }
 
@@ -79,8 +90,10 @@ public class MainActivity extends Activity{
                 mBasemapList.clear();
                 mBasemapList.addAll(basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
+                PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
             }
         }));
+
     }
 
     /**
@@ -112,4 +125,5 @@ public class MainActivity extends Activity{
         super.onPostResume();
 
     }
+
 }

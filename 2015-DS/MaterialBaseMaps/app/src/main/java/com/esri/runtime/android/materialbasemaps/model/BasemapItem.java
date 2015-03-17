@@ -1,6 +1,7 @@
 package com.esri.runtime.android.materialbasemaps.model;
 
 
+import android.app.Application;
 import android.graphics.Bitmap;
 
 import com.esri.core.portal.PortalItem;
