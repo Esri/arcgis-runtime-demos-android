@@ -1,43 +1,43 @@
 # Dev Summit 2015 ArcGIS Runtime for Android SDK Offline Capability Demo - Hawaii Five-O
 The demo app showcase the offline functionality including geodatabase, KML, shapefile, raster and spatial analysis.
 
-- Tested on 5.0 and 5.0.2, Recommended running on 5.0, as the 5.0.2 update has a bug and does not pick up the right color for the statusbar from the Material theme 
-- Should be connected to internal network for the kml to work 
+- Tested on 5.0 and 5.0.2, Recommended running on 5.0, as the 5.0.2 update has a bug and does not pick up the right color for the statusbar from the Material theme
+- Should be connected to internal network for the kml to work
 
 
 ## Features
-* Geodatabase 
+* Geodatabase
 * Direct read of KML files
 * Direct read of Shapefile
-* Direct read of raster files 
+* Direct read of raster files
 * Change raster renderer
 * Line of Sight analysis
 * Viewshed analysis
 
 ## Demo Data
 - EZ copy demo data-  copy the **data** folder from /apps-data/Data/sdk/android/Hawaii_Five-O/ to your device at the following location
-/your device external storage/ArcGIS/        
-This will give you all the data you need for the demo. 
+/your device external storage/ArcGIS/
+This will give you all the data you need for the demo.
 
-# For Raster rendering and Analysis      
+# For Raster rendering and Analysis
 - Copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/rasters/Hawaii to your device at the following location.
-/your device external storage/ArcGIS/data/rasters/Hawaii       
-      
-# Kml files, Shape files and Geodatabases             
- - **For Kml**            
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/kml/      
-**HawaiiRadar.kml** - shows ground overlays over a network link node refreshing every 6 secs. The data is a 2 hour snapshot of radar images of Hawaii weather, showing prescipitation, its motion and other data to estimate its type (rain, snow, hail etc.)         
-            
-- **For Shapefiles**           
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/shapefiles/      
-**hi_spd30m.shp** - a part of Wind Energy Resource Data collected using the MesoMap system.  Wind speed in the state of Hawaii for heights of 30 meters above ground. 
-http://files.hawaii.gov/dbedt/op/gis/data/wind_data.txt       
+/your device external storage/ArcGIS/data/rasters/Hawaii
 
-- **For Geodatabase**       
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/geodatabase/        
-**blueprint_site_boundary_whawaii_4326.geodatabase** - NOAA Habitat Blueprint - The shapefile for the Blueprint site on the Big Island of Hawaii, consisting of 1 polygon on the Northwest side of the island.     
-http://files.hawaii.gov/dbedt/op/gis/data/Blueprint_Site_Boundary_WHawaii.htm     
-     
+# Kml files, Shape files and Geodatabases
+ - **For Kml**
+copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/kml/
+**HawaiiRadar.kml** - shows ground overlays over a network link node refreshing every 6 secs. The data is a 2 hour snapshot of radar images of Hawaii weather, showing prescipitation, its motion and other data to estimate its type (rain, snow, hail etc.)
+
+- **For Shapefiles**
+copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/shapefiles/
+**hi_spd30m.shp** - a part of Wind Energy Resource Data collected using the MesoMap system.  Wind speed in the state of Hawaii for heights of 30 meters above ground.
+http://files.hawaii.gov/dbedt/op/gis/data/wind_data.txt
+
+- **For Geodatabase**
+copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/geodatabase/
+**blueprint_site_boundary_whawaii_4326.geodatabase** - NOAA Habitat Blueprint - The shapefile for the Blueprint site on the Big Island of Hawaii, consisting of 1 polygon on the Northwest side of the island.
+http://files.hawaii.gov/dbedt/op/gis/data/Blueprint_Site_Boundary_WHawaii.htm
+
 ### Add Analysis Beta libs
 This demo uses **Beta** native libs that are only available in the [SDK download](https://developers.arcgis.com/android).  Download the SDK and follow the instructions below to work with this demo.
 
@@ -89,5 +89,18 @@ This demo app supports both Line of Sight and Viewshed analysis on an elevation 
   * Alternatively, you can drag-move on the map to change the observer's position
 
 ### Kml, Geodatabases, Shapefiles
-- The user can add data from these sources to the MapView by using The add button. The add button is on the left bottom corner of the app's Mapview. It can be used to select and add data from kmlfiles, geodatabases and from shapefiles located on your device's Sdcard.        
+- The user can add data from these sources to the MapView by using The add button. The add button is on the left bottom corner of the app's Mapview. It can be used to select and add data from kmlfiles, geodatabases and from shapefiles located on your device's Sdcard.
 - Open files sent as attachements in email. The device will prompt the user to open kml files and geodatabases sent as attachments. When selected the attachement is saved on to the device's internal storage and the data is added to the MapView.
+
+## Licensing
+Copyright 2015 Esri
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+A copy of the license is available in the repository's [license.txt](https://github.com/Esri/arcgis-runtime-demos-android/blob/master/license.txt) file.
+
+For information about licensing your deployed app, see [License your app](https://developers.arcgis.com/android/guide/license-your-app.htm).
