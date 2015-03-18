@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TrafficApp</string>
+    <string name="location">Redlands, CA</string>
+    <string name="overview">Looking good for a wednesday...</string>
+    <string name="action_settings">Settings</string>
+    <string name="incidents">Incidents</string>
+    <string name="action_search">Search for a new location</string>
+    <string name="webmap_url">http://geobrew.maps.arcgis.com/home/item.html?id=d3c8d8a876ac4e8bbf8510b9572ccc7f</string>
+
+</resources>
