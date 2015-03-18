@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/incidents_layout"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_margin="@dimen/main_layout_margin"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <DatePicker
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/date_picker"
+            android:datePickerMode="spinner"/>
+    </FrameLayout>
+
+
+</LinearLayout>

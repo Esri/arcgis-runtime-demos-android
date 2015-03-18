@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context=".MainActivity">
+
+
+    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/traffic_toolbar"
+        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
+        app:titleTextAppearance="@style/MyTitleTextStyle"
+        android:elevation="6dp">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/redlands"
+            android:scaleType="centerCrop" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="160dp"
+        android:text="@string/location"
+        android:textSize="70dp"
+        android:textStyle="normal"
+        android:textColor="@color/primary_text_default_material_dark"
+        android:alpha="0.87" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="250dp"
+        android:text="@string/overview"
+        android:textSize="35dp"
+        android:textStyle="normal"
+        android:textColor="@color/primary_text_default_material_dark"
+        android:alpha="0.87" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="710dp"
+        android:layout_marginStart="707dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="100dp"
+        android:background="@drawable/layout_bg"
+        android:elevation="6dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <com.esri.android.map.MapView
+                android:id="@+id/map"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:background="@color/primary_material_light"
+                mapoptions.MapType="Streets"
+                mapoptions.center="34.056215, -117.195668"
+                mapoptions.ZoomLevel="16">
+
+            </com.esri.android.map.MapView>
+
+            <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/incident_toolbar"
+                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:background="@color/myColorAccent"
+                app:titleTextAppearance="@style/MyTitleTextStyle"
+                app:title="@string/incidents" />
+
+            <ListView
+                android:id="@+id/incidents_listview"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="350dp"
+        android:elevation="3dp"
+        android:background="@drawable/layout_bg">
+
+        <!--<DatePicker-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:elevation="3dp"></DatePicker>-->
+
+
+    </FrameLayout>
+
+
+</RelativeLayout>
