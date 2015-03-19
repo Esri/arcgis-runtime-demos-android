@@ -24,6 +24,9 @@ package com.esri.runtime.android.materialbasemaps.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * singleton to persist BasemapItem data
+ */
 public class PersistBasemapItem {
 
     private static PersistBasemapItem ourInstance = new PersistBasemapItem();
