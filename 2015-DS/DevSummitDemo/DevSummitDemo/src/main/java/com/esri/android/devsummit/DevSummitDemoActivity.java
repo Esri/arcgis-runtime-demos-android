@@ -327,26 +327,6 @@ public class DevSummitDemoActivity extends Activity implements FloatingActionBut
   }
 
   /**
-   * Method to write to External storage via dialog
-   *
-   * @param mimeType
-   * @param fileName
-   */
-//  private void createFileOnStorage(String mimeType, String fileName) {
-//    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-//
-//    // Filter to only show results that can be "opened", such as
-//    // a file (as opposed to a list of contacts or timezones).
-//    intent.addCategory(Intent.CATEGORY_OPENABLE);
-//
-//    // Create a file with the requested MIME type.
-//    intent.setType(mimeType);
-//    intent.putExtra(Intent.EXTRA_TITLE, fileName);
-//    startActivityForResult(intent, WRITE_REQUEST_CODE);
-//  }
-
-
-  /**
    * Launch the File browser activity
    */
   private void openFileBrowser() {
