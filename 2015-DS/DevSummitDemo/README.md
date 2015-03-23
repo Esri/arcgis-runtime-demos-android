@@ -25,17 +25,17 @@ This will give you all the data you need for the demo.
 
 # Kml files, Shape files and Geodatabases
  - **For Kml**
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/kml/
+download demo data from http://www.arcgis.com/home/item.html?id=1550ce10e06047fc9efd3a9ef052685a
 **HawaiiRadar.kml** - shows ground overlays over a network link node refreshing every 6 secs. The data is a 2 hour snapshot of radar images of Hawaii weather, showing prescipitation, its motion and other data to estimate its type (rain, snow, hail etc.)
 
 - **For Shapefiles**
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/shapefiles/
+download demo data from http://www.arcgis.com/home/item.html?id=a438054921e4493ea5cc89b44e6a2037
 **hi_spd30m.shp** - a part of Wind Energy Resource Data collected using the MesoMap system.  Wind speed in the state of Hawaii for heights of 30 meters above ground.
 http://files.hawaii.gov/dbedt/op/gis/data/wind_data.txt
 
 - **For Geodatabase**
-copy demo data from /apps-data/Data/sdk/android/Hawaii_Five-O/data/geodatabase/
-**blueprint_site_boundary_whawaii_4326.geodatabase** - NOAA Habitat Blueprint - The shapefile for the Blueprint site on the Big Island of Hawaii, consisting of 1 polygon on the Northwest side of the island.
+download demo data from http://www.arcgis.com/home/item.html?id=3deb49b8f8754e0899f66053cd059bfc
+**blueprint_site_boundary_whawaii_4326.geodatabase** - NOAA Habitat Blueprint - The geodatabase for the Blueprint site on the Big Island of Hawaii, consisting of 1 polygon on the Northwest side of the island.
 http://files.hawaii.gov/dbedt/op/gis/data/Blueprint_Site_Boundary_WHawaii.htm
 
 ### Add Analysis Beta libs
