@@ -216,7 +216,7 @@ public class FileBrowserActivity extends Activity {
     ListView lView = (ListView) this.findViewById(R.id.fileListView);
     lView.setBackgroundColor(Color.LTGRAY);
     LinearLayout.LayoutParams lParam = new LinearLayout.LayoutParams(
-        LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     lParam.setMargins(15, 5, 15, 5);
     lView.setAdapter(this.adapter);
     lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -429,8 +429,8 @@ public class FileBrowserActivity extends Activity {
 
   public static long getFreeSpace(String path) {
     StatFs stat = new StatFs(path);
-    long availSize = (long) stat.getAvailableBlocks()
-        * (long) stat.getBlockSize();
+    long availSize = (long) stat.getAvailableBlocksLong()
+        * (long) stat.getBlockSizeLong();
     return availSize;
   }// END public static long getFreeSpace(String path) {
 
