@@ -429,8 +429,7 @@ public class FileBrowserActivity extends Activity {
 
   public static long getFreeSpace(String path) {
     StatFs stat = new StatFs(path);
-    long availSize = (long) stat.getAvailableBlocksLong()
-        * (long) stat.getBlockSizeLong();
+    long availSize = stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
     return availSize;
   }// END public static long getFreeSpace(String path) {
 
