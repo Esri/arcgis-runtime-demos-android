@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.esri.test.wearsample"
+        minSdkVersion 21
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    sourceSets {
+//        main {
+//            java.srcDirs = ['src/main/java', 'common_src', 'common_geometry', 'android_src']
+//            resources.srcDirs = ['src/main/res', 'common_src', 'common_geometry', 'android_src']
+//            res.srcDirs = ['src/main/res']
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
+}
+
+dependencies {
+    compile 'com.google.android.support:wearable:1.0.0'
+    compile 'com.google.android.gms:play-services-wearable:6.1.11'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.esri.arcgis.android:arcgis-android:10.2.5'
+}

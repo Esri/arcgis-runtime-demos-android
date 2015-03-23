@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WearSample</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+
+    <string name="license_client_id">FH6mKSp7DMRfi9KH</string>
+    <string name="license_standard_string">runtimestandard,101,rud514140042,none,3M1P0H4EN9HHLAMEY025</string>
+
+</resources>
