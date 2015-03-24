@@ -22,10 +22,7 @@ package com.esri.android.devsummit;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.SeekBar;
 
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.Layer;
@@ -45,8 +42,8 @@ import com.esri.core.renderer.Colormap;
 import com.esri.core.renderer.ColormapRenderer;
 import com.esri.core.renderer.RGBRenderer;
 import com.esri.core.renderer.StretchParameters;
-import com.esri.core.renderer.UniqueValueRenderer;
 import com.esri.core.renderer.UniqueValue;
+import com.esri.core.renderer.UniqueValueRenderer;
 import com.esri.core.symbol.SimpleLineSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 
@@ -54,8 +51,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by xuem6538 on 2/26/15.
+/*
+ * Helper class to handler raster and analysis operations including:
+ * <ul>
+ *   <li>load a raster layer as basemap layer</li>
+ *   <li>apply BlendRenderer or RGBRenderer</li>
+ *   <li>calculate viewshed</li>
+ *   <li>perform line of sight</li>
+ *   <li>clean up</li>
+ * </ul>
  */
 public class RasterAnalysisHelper {
   private MapView mMapView;
@@ -76,16 +80,17 @@ public class RasterAnalysisHelper {
   /*
    * Line of Sight Analysis
    */
-  public void performLOS(MenuItem item) {
+  public void performLOS() {
     if ((mMapView == null) || (!mMapView.isLoaded())
         || (mPathTask == null) || (mPathTask.isEmpty())) {
       return;
     }
 
-    // clear any analysis layers showing
+    // Clear any analysis layers showing
     turnOffFunctionLayers();
 
     try {
+      // Create LineOfSight function
       mLineOfSight = new LineOfSight(mPathTask);
     } catch (FileNotFoundException | RuntimeException e) {
       e.printStackTrace();
@@ -93,10 +98,12 @@ public class RasterAnalysisHelper {
     }
 
     if (mLineOfSight != null) {
+      // Acquire output layer from LineOfSight function and add it to the map view
       mLosLayer = mLineOfSight.getOutputLayer();
       mMapView.addLayer(mLosLayer);
       // set observer features
       mLineOfSight.setObserver(mMapView.getCenter());
+      // Change renderer for the output layer instead using the default renderer
       setRenderer4LOS(mLineOfSight);
 
       // Set gesture used to change the position of the observer and target.
@@ -134,18 +141,22 @@ public class RasterAnalysisHelper {
 
     try {
       mMapView.removeAll();
-      // add raster layer
+      // Create a RasterSource from a local raster file
       FileRasterSource rasterSource = new FileRasterSource(mPathLayer);
+      // Create a raster layer from the RasterSource
       mRasterLayer = new RasterLayer(rasterSource);
       // allow to zoom in after the largest LOD for the Landsat 8 image
       mRasterLayer.setMaxScale(200000);
+      // Add the raster layer to the map view
       mMapView.addLayer(mRasterLayer);
+      // Set RGBRenderer
       applyRGBRenderer(true);
 
+      // Set the extent
       Envelope initialExtent = new Envelope(-157.4368965374797, 20.516069728186316, -155.81463794462434, 21.298471528698848);
       mMapView.setExtent(initialExtent);
 
-      // add graphics layer
+      // Add a graphics layer
       mGraphicsLayer = new GraphicsLayer();
       mMapView.addLayer(mGraphicsLayer);
 
@@ -155,18 +166,22 @@ public class RasterAnalysisHelper {
 
   }
 
+  /*
+   * Apply BlendRenderer to the raster layer
+   */
   public void applyBlendRenderer() {
     if ((mMapView == null) || (!mMapView.isLoaded())
         || (mRasterLayer == null) || (!mRasterLayer.isInitialized())) {
       return;
     }
-
+    // Clear any analysis layers showing
     clearFunctionLayers();
 
     BlendRenderer renderer = new BlendRenderer();
     try {
+      // Set the elevation data used for blending
       renderer.setElevationSource(new FileRasterSource(mPathTask));
-//      renderer.setGamma(1.5);
+      // Change parameters
       renderer.setAltitude(80);
       mRasterLayer.setRenderer(renderer);
     } catch (FileNotFoundException | RuntimeException e) {
@@ -174,23 +189,30 @@ public class RasterAnalysisHelper {
     }
   }
 
+  /*
+   * Apply RGBRenderer to the raster layer
+   */
   public void applyRGBRenderer(boolean isDefault) {
     if ((mRasterLayer == null) || (!mRasterLayer.isInitialized())) {
       return;
     }
-
+    // Clear any analysis layers showing
     clearFunctionLayers();
 
     RGBRenderer renderer = new RGBRenderer();
+    // Set band combination
     if (isDefault) {
       renderer.setBandIds(new int[]{0, 1, 2});
     } else {
       renderer.setBandIds(new int[]{0, 2, 1});
     }
+    // Set stretch parameters
     StretchParameters.MinMaxStretchParameters stretchParameters = new StretchParameters.MinMaxStretchParameters();
     stretchParameters.setGamma(-1);
     renderer.setStretchParameters(stretchParameters);
     mRasterLayer.setRenderer(renderer);
+
+    // Set visual properties for the raster layer
     mRasterLayer.setBrightness(75.0f);
     mRasterLayer.setContrast(75.0f);
     mRasterLayer.setGamma(10.0f);
@@ -199,7 +221,7 @@ public class RasterAnalysisHelper {
   /*
    * Viewshed Analysis
    */
-  public void calculateViewshed(MenuItem item) {
+  public void calculateViewshed() {
     if ((mMapView == null) || (!mMapView.isLoaded())
         || (mPathTask == null) || (mPathTask.isEmpty())) {
       return;
@@ -211,6 +233,7 @@ public class RasterAnalysisHelper {
     // create a viewshed function
     try {
       mViewshed = new Viewshed(mPathTask);
+      // Change the observer z offset
       mViewshed.setObserverZOffset(50);
     } catch (FileNotFoundException | RuntimeException e) {
       e.printStackTrace();
@@ -218,9 +241,12 @@ public class RasterAnalysisHelper {
     }
 
     if (mViewshed != null) {
+      // Obtain the outout RasterSource from viewshed function
       FunctionRasterSource functionRS = mViewshed.getOutputFunctionRasterSource();
+      // Create a raster layer from the RasterSource and add it to the map view
       mViewShedLayer = new RasterLayer(functionRS);
       mMapView.addLayer(mViewShedLayer);
+      // Change the renderer
       setRenderer4Viewshed(mViewShedLayer);
 
       // Set gesture used to change the position of the observer
@@ -230,6 +256,7 @@ public class RasterAnalysisHelper {
 
   }
 
+  // Set renderer for the output layer of LineOfSight
   private void setRenderer4LOS(LineOfSight los) {
     UniqueValue visible = new UniqueValue();
     visible.setValue(new Integer[]{1});
@@ -251,6 +278,7 @@ public class RasterAnalysisHelper {
     los.setSightRenderers(null, lineRenderer);
   }
 
+  // Set renderer for the raster layer resulted from viewshed
   private void setRenderer4Viewshed(RasterLayer rasterLayer) {
     List<Colormap.UniqueValue> values = new ArrayList<Colormap.UniqueValue>();
     values.add(new Colormap.UniqueValue(1, Color.GREEN, "visible"));
@@ -261,36 +289,6 @@ public class RasterAnalysisHelper {
     renderer.setColormap(colormap);
 
     rasterLayer.setRenderer(renderer);
-  }
-
-  private void addSlider(final BlendRenderer renderer, final RasterLayer rasterLayer){
-    int max = 200;
-    SeekBar slider = new SeekBar(mMapView.getContext());
-    slider.setMax(max);
-    slider.setProgress(50);
-    slider.setBackgroundColor(Color.BLUE);
-    slider.setLayoutParams(new LayoutParams(300, LayoutParams.WRAP_CONTENT));
-    slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-      @Override
-      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        double gamma = progress / 100.0;
-        renderer.setGamma(gamma);
-        rasterLayer.setRenderer(renderer);
-      }
-
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
-
-      }
-
-      @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {
-
-      }
-    });
-
-    mMapView.addView(slider);
   }
 
   /*
@@ -312,6 +310,7 @@ public class RasterAnalysisHelper {
 
   }
 
+  // Reset MapOnTouchListener to the default one
   private void resetTouchListener() {
     mMapView.setOnTouchListener(new MapOnTouchListener(mMapView
         .getContext(), mMapView));
