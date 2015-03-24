@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.esri.arcgisruntime.wearcontrol"
+        minSdkVersion 18
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/res']
+            res.srcDirs = ['src/main/res']
+        }
+    }
+}
+
+dependencies {
+    repositories {
+        maven {
+            // this must point to the myorepository distributed with the Myo SDK
+            url '/path/to/your/myo-android-sdk-0.10.0/myorepository'
+        }
+        maven {
+            // this must point to the myorepository distributed with the Myo SDK
+            url 'http://dl.bintray.com/esri/arcgis'
+        }
+    }
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    wearApp project(':wear')
+    compile 'com.esri.arcgis.android:arcgis-android:10.2.5'
+    compile 'com.thalmic:myosdk:0.10.0@aar'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.google.android.gms:play-services:6.5.87'
+}
