@@ -1,7 +1,7 @@
 # Dev Summit 2015 ArcGIS Runtime for Android SDK Offline Capability Demo - Hawaii Five-O
 The demo app showcase the offline functionality including geodatabase, KML, shapefile, raster and spatial analysis.
 
-- Tested on 5.0 and 5.0.2, Recommended running on 5.0, as the 5.0.2 update has a bug and does not pick up the right color for the statusbar from the Material theme
+- Tested on 5.0 and 5.0.2, Recommended running on 5.0, as the 5.0.2 update has a bug and does not pick up the right color for the StatusBar from the Material theme
 - Should be connected to internal network for the kml to work
 
 
@@ -18,9 +18,9 @@ The demo app showcase the offline functionality including geodatabase, KML, shap
 This demo uses **Beta** native libs that are only available in the [SDK download](https://developers.arcgis.com/android) to support Line of Sight and Viewshed analysis. Download the SDK and follow the instructions below to work with this demo.
 
 1. Create a **/src/main/jniLibs** directory in the demo project
-2. From the root of your SDK download directory, copy the **/libs/[platform]/librs.main.so** and **/libs/[platform]/librender_script_analysis.soo** into the **jniLibs** folder created in step 1.
+2. From the root of your SDK download directory, copy the **/libs/[platform]/librs.main.so** and **/libs/[platform]/librender_script_analysis.so** into the **jniLibs** folder created in step 1.
 
-Where **[platform]** represents the platform architecture your device is running, e.g.  **/libs/armeabi-v7a/librs.main.so** and **/libs/armeabi-v7a/librender_script_analysis.soo** for ARM.
+Where **[platform]** represents the platform architecture your device is running, e.g.  **/libs/armeabi-v7a/librs.main.so** and **/libs/armeabi-v7a/librender_script_analysis.so** for ARM.
 
 ## Demo Data
 This demo reads geodatabase, KML, shapefile and raster files stored on your device. The data used in the demo have been published on ArcGIS Online. You can download and copy these files to your device at the following location:
@@ -43,12 +43,12 @@ download demo data from http://www.arcgis.com/home/item.html?id=3deb49b8f8754e08
 http://files.hawaii.gov/dbedt/op/gis/data/Blueprint_Site_Boundary_WHawaii.htm
 
 ### Raster rendering and Analysis
-Two raster data are used in this demo. The Landsat 8 image is multi-bands composite image and used as the basemap in this demo. The DTED mosaic dataset provides elevation data used in the Line of Sight and Viewshed analysis. Downlaod these data and copy to your devices at:
+Two raster data are used in this demo. The Landsat 8 image is multi-bands composite image and used as the basemap of this demo. The DTED mosaic dataset provides elevation data used to perform the Line of Sight and Viewshed analysis. Download these data and copy to your devices at:
 
 /your device external storage/ArcGIS/data/rasters/Hawaii
 
 - ** Landsat 8 image **
-downloade demo data from http://www.arcgis.com/home/item.html?id=7320a2d570d64055abc79ba21dec4287. It is true-color composite image of Hawaii created from Landsat 8 images of 2013 - 2014.
+download demo data from http://www.arcgis.com/home/item.html?id=7320a2d570d64055abc79ba21dec4287. It is true-color composite image of Hawaii created from Landsat 8 images of 2013 - 2014.
 
 - ** DTED mosaic dataset **
 
@@ -95,9 +95,9 @@ This demo app supports both Line of Sight and Viewshed analysis on an elevation 
 * Single tap on the map to change the observer's position and execute the **Viewshed** function
   * Alternatively, you can drag-move on the map to change the observer's position
 
-### Kml, Geodatabases, Shapefiles
-- The user can add data from these sources to the MapView by using The add button. The add button is on the left bottom corner of the app's Mapview. It can be used to select and add data from kmlfiles, geodatabases and from shapefiles located on your device's Sdcard.
-- Open files sent as attachements in email. The device will prompt the user to open kml files and geodatabases sent as attachments. When selected the attachement is saved on to the device's internal storage and the data is added to the MapView.
+### KML, geodatabases, shapefiles
+- The user can add data from these sources to the MapView by using The add button. The add button is on the left bottom corner of the app's MapView. It can be used to select and add data from KML files, geodatabases and from shapefiles located on your device's Sdcard.
+- Open files sent as attachment in an email. The device will prompt the user to open KML files and geodatabases sent as attachments. When selected the attachment is saved on to the device's internal storage and the data is added to the MapView.
 
 ## Licensing
 Copyright 2015 Esri
