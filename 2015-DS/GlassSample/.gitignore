@@ -1,0 +1,14 @@
+.gradle
+/local.properties
+.DS_Store
+/build
+.idea/
+*.iml
+gradle.properties
+/app/libs
+/app/*.iml
+/app/src/main/jniLibs
+/app/common_src
+/app/common_geometry
+/app/android_src
+/app/src/androidTest
