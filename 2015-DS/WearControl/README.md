@@ -2,6 +2,9 @@ Wear Control App
 =======================
 This app showcases the ability to control your device with two different wearables: an [Android Wear](http://www.android.com/wear/) device, and the [Thalmic Myo](https://www.thalmic.com/en/myo/). Although it was meant to show how one could control a Google Glass given the Glass's limited input features, not everyone has $1500 laying around, so this app is targeted at phones and tablets.
 
+## Requirements
+This sample will not compile without adding Thalmic's library for the Myo. Instructions for how to do this can be found on their [Android Getting Started](https://developer.thalmic.com/docs/api_reference/android/getting-started.html) page.
+
 ## Instructions
 Considering it's still a bit of a beta device, many of you are also unlikely to own or have access to a Myo. You may either comment out the related code, or simply download the SDK to allow the code to compile. In either case, you must modify the "mobile" module's build.gradle, to either remove the myo repository or point it to the local directory on your machine. In the event that you do have access to a Myo, the gestures are mapped as follows:
 
