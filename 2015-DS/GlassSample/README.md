@@ -2,6 +2,9 @@ Google Glass App
 =======================
 This app showcases how to display and interact with a map on the [Google Glass](https://developers.google.com/glass/). This sample includes head-tracking control using the Glass's built in sensors, as well as control using the [Thalmic Myo](https://www.thalmic.com/en/myo/). 
 
+## Requirements
+This sample will not compile without adding Thalmic's library for the Myo. Instructions for how to do this can be found on their [Android Getting Started](https://developer.thalmic.com/docs/api_reference/android/getting-started.html) page.
+
 ## Instructions
 To launch the map, you can say "Ok Google... Show me a map." Then, when it says "click to show map", tap the touch pad to enter the map immersion.
 
