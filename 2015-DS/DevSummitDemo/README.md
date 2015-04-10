@@ -51,7 +51,7 @@ Two raster data are used in this demo. The Landsat 8 image is multi-bands compos
 download demo data from http://www.arcgis.com/home/item.html?id=7320a2d570d64055abc79ba21dec4287. It is true-color composite image of Hawaii created from Landsat 8 images of 2013 - 2014.
 
 - ** DTED mosaic dataset **
-
+download demo data from http://www.arcgis.com/home/item.html?id=3f5f2a5fa28d44389909ad9fc5ec2310. It is DEM image stored in a mosaic dataset.
 
 #### Add Raster Files
 You will need to provision some raster files to your android device prior to working with this demo.  You can put your raster file anywhere on your device that the app has access to. By default the app will look for your raster file starting from the primary external storage directory returned by ```Environment.getExternalStorageDirectory()``` with **ArcGIS/data/rasters/Hawaii/** subdirectory. You can change the data path by editing the **string.xml** resource file.  Open **strings.xml** and edit the following string resource variables:
@@ -62,7 +62,7 @@ You will need to provision some raster files to your android device prior to wor
     <!-- raster file name of basemap layer -->
     <string name="raster_basemap_layer">Landsat8Hawaii_naturecolor.tif</string>
     <!-- raster file name of elevation data -->
-    <string name="raster_task">DTED/hawaii_dted.sqlite</string>
+    <string name="raster_task">Hawaii_dem/hawaii_dem.sqlite</string>
 ```
 
 #### Push file to device
