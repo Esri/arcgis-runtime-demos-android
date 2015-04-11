@@ -9,7 +9,7 @@
     <!-- raster file name of basemap layer -->
     <string name="raster_basemap_layer">Landsat8Hawaii_naturecolor.tif</string>
     <!-- raster file name of elevation data -->
-    <string name="raster_task">DTED/hawaii_dted.sqlite</string>
+    <string name="raster_task">Hawaii_dem/hawaii_dem.sqlite</string>
 
     <!-- menu actions -->
     <string name="menu_renderer">Renderer</string>
