@@ -12,6 +12,9 @@ build/
 /*.sublime-project
 *.sublime-workspace
 
+# Profiling
+captures/
+
 # OS generated files #
 ######################
 .DS_Store
