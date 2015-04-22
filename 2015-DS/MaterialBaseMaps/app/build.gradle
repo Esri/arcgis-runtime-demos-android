@@ -39,4 +39,12 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     // RxJava dependency
     compile 'io.reactivex:rxandroid:0.24.0'
+    // test libs
+    androidTestCompile 'com.android.support.test:runner:0.2'
+    // Set this dependency to use JUnit 4 rules
+    androidTestCompile 'com.android.support.test:rules:0.2'
+    // Set this dependency to build and run Espresso tests
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
+    // Set this dependency to build and run UI Automator tests
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
 }
