@@ -1,10 +1,16 @@
 package com.esri.runtime.android.materialbasemaps;
 
+import android.support.annotation.IdRes;
+import android.support.test.espresso.DataInteraction;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.View;
 
 import com.esri.runtime.android.materialbasemaps.ui.MainActivity;
 
@@ -13,8 +19,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.regex.Matcher;
+
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
 
 
 
@@ -56,13 +71,28 @@ public class MainActivityTest{
         onView(withText(LAST_ITEM_ID)).check(ViewAssertions.doesNotExist());
     }
 
-//    /**
-//     * Check that the item is created. onData() takes care of scrolling.
-//     */
-//    @Test
-//    public void list_Scrolls() {
-//        onRow(LAST_ITEM_ID).check(matches(isCompletelyDisplayed()));
-//    }
+    /**
+     * Check that the item is created. onData() takes care of scrolling.
+     */
+    @Test
+    public void list_Scrolls() {
+        ViewMatchers.onRecyclerItemView(R.id.basemapName, withText("USGS National Map"),  withId(R.id.list))
+                .matches(check(withText("Test Content")));
+    }
+
+    public class ViewMatchers {
+        @SuppressWarnings("unchecked")
+        public static Matcher<View> withRecyclerView(@IdRes int viewId) {
+            return allOf(isAssignableFrom(RecyclerView.class), withId(viewId));
+        }
+
+        @SuppressWarnings("unchecked")
+        public static ViewInteraction onRecyclerItemView(@IdRes int identifyingView, Matcher<View> identifyingMatcher, Matcher<View> childMatcher) {
+            Matcher<View> itemView = allOf(withParent(withRecyclerView(R.id.list_item)),
+                    withChild(allOf(withId(identifyingView), identifyingMatcher)));
+            return Espresso.onView(allOf(isDescendantOfA(itemView), childMatcher));
+        }
+    }
 
 
 }
