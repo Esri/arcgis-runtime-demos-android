@@ -31,8 +31,6 @@ import java.util.ArrayList;
 
 public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
-    // Context to construct view
-    private Context mContext;
     // Copy of all BasemapItems
     private ArrayList<BasemapItem> items;
     // custom interface to handle item clicks
@@ -41,7 +39,7 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
     private int rowLayout;
 
     public BasemapAdapter(ArrayList<BasemapItem> portalItems, int rowLayout, Context context){
-        this.mContext = context;
+        Context mContext = context;
         this.items = portalItems;
         this.rowLayout = rowLayout;
     }
