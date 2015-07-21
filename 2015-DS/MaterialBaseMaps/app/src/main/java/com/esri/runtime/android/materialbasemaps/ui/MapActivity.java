@@ -185,7 +185,7 @@ public class MapActivity extends Activity{
                                 public void onStatusChanged(Object source, STATUS status) {
                                     if(mMapView == source && status == STATUS.INITIALIZED){
                                         // zoom in into Palm Springs
-                                        mMapView.centerAndZoom(33.829547, -116.515882, 14);
+                                        mMapView.centerAndZoom(32.731605, -117.107523, 14);
 
                                     }
                                 }
