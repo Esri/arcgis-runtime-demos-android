@@ -36,6 +36,7 @@
         android:background="@drawable/fab_ripple"
         android:elevation="@dimen/button_elevation"
         android:onClick="onClick"
-        android:src="@mipmap/ic_action_location_off"/>
+        android:src="@mipmap/ic_action_location_off"
+        android:contentDescription="Turn GPS on/off"/>
 
 </RelativeLayout>
