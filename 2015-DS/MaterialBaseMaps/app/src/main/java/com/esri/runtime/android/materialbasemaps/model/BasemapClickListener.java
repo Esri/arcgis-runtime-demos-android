@@ -32,5 +32,5 @@ public interface BasemapClickListener {
      * @param itemID String portal item id representing basemap
      * @param title String representation of the basemap title
      */
-    public void onImageClick(int position, String itemID, String title);
+    void onImageClick(int position, String itemID, String title);
 }
