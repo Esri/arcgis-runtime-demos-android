@@ -56,8 +56,7 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
         // create a new view
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
 
-        BasemapViewHolder vh = new BasemapViewHolder(view);
-        return vh;
+        return new BasemapViewHolder(view);
 
     }
 
