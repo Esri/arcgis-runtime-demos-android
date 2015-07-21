@@ -60,8 +60,6 @@ import java.util.concurrent.Callable;
  */
 public class MapActivity extends Activity{
 
-    final private String portalUrl = "http://www.arcgis.com";
-
     MapView mMapView;
     ArrayList<BasemapItem> mBasemapItem;
 
@@ -97,6 +95,7 @@ public class MapActivity extends Activity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
         // load the basemap on a background thread
+        String portalUrl = "http://www.arcgis.com";
         loadWebMapIntoMapView(itemId, portalUrl);
 
         fab = (ImageButton) findViewById(R.id.fab);
@@ -186,7 +185,7 @@ public class MapActivity extends Activity{
                                 public void onStatusChanged(Object source, STATUS status) {
                                     if(mMapView == source && status == STATUS.INITIALIZED){
                                         // zoom in into Palm Springs
-                                        mMapView.centerAndZoom(33.829547, -116.515882, 14);
+                                        mMapView.centerAndZoom(32.731605, -117.107523, 14);
 
                                     }
                                 }

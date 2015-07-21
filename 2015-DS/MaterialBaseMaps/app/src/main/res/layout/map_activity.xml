@@ -26,16 +26,17 @@
     <!-- fab button -->
     <ImageButton
         android:id="@+id/fab"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="@dimen/fab_margin_right"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin_right"
         android:layout_marginBottom="@dimen/fab_margin_bottom"
         android:background="@drawable/fab_ripple"
         android:elevation="@dimen/button_elevation"
         android:onClick="onClick"
-        android:src="@mipmap/ic_action_location_off"/>
+        android:src="@mipmap/ic_action_location_off"
+        android:contentDescription="Turn GPS on/off"/>
 
 </RelativeLayout>

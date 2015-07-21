@@ -31,8 +31,6 @@ import java.util.ArrayList;
 
 public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
-    // Context to construct view
-    private Context mContext;
     // Copy of all BasemapItems
     private ArrayList<BasemapItem> items;
     // custom interface to handle item clicks
@@ -40,10 +38,10 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
     private int rowLayout;
 
-    public BasemapAdapter(ArrayList<BasemapItem> portalItems, int rowLayout, Context context){
-        this.mContext = context;
+    public BasemapAdapter(ArrayList<BasemapItem> portalItems, Context context){
+        Context mContext = context;
         this.items = portalItems;
-        this.rowLayout = rowLayout;
+        this.rowLayout = com.esri.runtime.android.materialbasemaps.R.layout.row_basemap;
     }
 
     /**
@@ -58,8 +56,7 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
         // create a new view
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
 
-        BasemapViewHolder vh = new BasemapViewHolder(view);
-        return vh;
+        return new BasemapViewHolder(view);
 
     }
 
