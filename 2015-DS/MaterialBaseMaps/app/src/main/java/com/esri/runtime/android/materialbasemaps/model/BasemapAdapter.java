@@ -38,10 +38,10 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
     private int rowLayout;
 
-    public BasemapAdapter(ArrayList<BasemapItem> portalItems, int rowLayout, Context context){
+    public BasemapAdapter(ArrayList<BasemapItem> portalItems, Context context){
         Context mContext = context;
         this.items = portalItems;
-        this.rowLayout = rowLayout;
+        this.rowLayout = com.esri.runtime.android.materialbasemaps.R.layout.row_basemap;
     }
 
     /**
