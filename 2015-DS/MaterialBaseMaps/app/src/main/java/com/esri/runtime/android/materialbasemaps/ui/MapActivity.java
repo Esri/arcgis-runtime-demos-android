@@ -60,8 +60,6 @@ import java.util.concurrent.Callable;
  */
 public class MapActivity extends Activity{
 
-    final private String portalUrl = "http://www.arcgis.com";
-
     MapView mMapView;
     ArrayList<BasemapItem> mBasemapItem;
 
@@ -97,6 +95,7 @@ public class MapActivity extends Activity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
         // load the basemap on a background thread
+        String portalUrl = "http://www.arcgis.com";
         loadWebMapIntoMapView(itemId, portalUrl);
 
         fab = (ImageButton) findViewById(R.id.fab);
