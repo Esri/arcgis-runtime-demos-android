@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ArcGIS Basemaps</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="imageview_content_desc">Basemap Thumbnail</string>
 </resources>
