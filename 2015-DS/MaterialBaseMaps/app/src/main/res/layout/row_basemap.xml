@@ -20,7 +20,7 @@
             android:tint="@color/photo_tint"
             android:layout_centerInParent="true"
             android:clickable="true"
-            android:contentDescription="Basemap Thumbnail"
+            android:contentDescription="@string/imageview_content_desc"
             />
 
         <TextView
