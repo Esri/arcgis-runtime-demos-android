@@ -2,4 +2,5 @@
     <string name="app_name">ArcGIS Basemaps</string>
 
     <string name="imageview_content_desc">Basemap Thumbnail</string>
+    <string name="imagebutton_content_desc">Turn GPS on/off</string>
 </resources>
