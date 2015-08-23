@@ -62,14 +62,14 @@ public class MainActivity extends Activity{
         // inject our progress bar and recycler view
         ButterKnife.inject(this);
         // array of basemap items to have available to load as basemaps
-        mBasemapList = new ArrayList<BasemapItem>();
+        mBasemapList = new ArrayList<>();
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // create an instance of adapter
-        mBasemapAdapter = new BasemapAdapter( mBasemapList , this);
+        mBasemapAdapter = new BasemapAdapter( mBasemapList);
 
         // click listener to send portal id to MapActivity
         mBasemapAdapter.setOnBaseMapClickListener(new BasemapClickListener() {
@@ -102,7 +102,7 @@ public class MainActivity extends Activity{
     /**
      * Retrieve basemaps portal item id to sent to MapActivity
      */
-    public void fetchBasemaps(){
+    private void fetchBasemaps(){
         TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
             @Override
             public void processResults(ArrayList<BasemapItem> basemapItems) {
@@ -123,7 +123,7 @@ public class MainActivity extends Activity{
      * @param portalId portal id representing the basemap to open
      * @param title basemap title
      */
-    public void sendBasemapItemInfo(Context context, String portalId, String title){
+    private void sendBasemapItemInfo(Context context, String portalId, String title){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);

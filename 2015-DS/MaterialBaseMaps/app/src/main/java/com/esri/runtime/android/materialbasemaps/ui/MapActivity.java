@@ -28,6 +28,7 @@ import android.graphics.Outline;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ import java.util.concurrent.Callable;
  */
 public class MapActivity extends Activity{
 
-    MapView mMapView;
+    private MapView mMapView;
     ArrayList<BasemapItem> mBasemapItem;
 
     // GPS location tracking
@@ -75,8 +76,8 @@ public class MapActivity extends Activity{
 
     private static final String KEY_IS_LOCATION_TRACKING = "IsLocationTracking";
 
-    RelativeLayout relativeMapLayout;
-    ImageButton fab;
+    private RelativeLayout relativeMapLayout;
+    private ImageButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +205,7 @@ public class MapActivity extends Activity{
     /**
      * Starts tracking GPS location.
      */
-    void startLocationTracking() {
+    private void startLocationTracking() {
         LocationDisplayManager locDispMgr = mMapView.getLocationDisplayManager();
         locDispMgr.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
         locDispMgr.setAllowNetworkLocation(true);
@@ -221,8 +222,8 @@ public class MapActivity extends Activity{
                 if (!locationChanged) {
                     locationChanged = true;
                     Unit mapUnit = mMapView.getSpatialReference().getUnit();
-                    double zoomWidth = Unit.convertUnits(SEARCH_RADIUS, Unit.create(LinearUnit.Code.MILE_US), mapUnit);
-                    Envelope zoomExtent = new Envelope(mLocation, zoomWidth, zoomWidth);
+                    double zoomRadius = Unit.convertUnits(SEARCH_RADIUS, Unit.create(LinearUnit.Code.MILE_US), mapUnit);
+                    Envelope zoomExtent = new Envelope(mLocation, zoomRadius, zoomRadius);
                     mMapView.setExtent(zoomExtent);
                 }
             }
@@ -244,7 +245,7 @@ public class MapActivity extends Activity{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(KEY_IS_LOCATION_TRACKING, mIsLocationTracking);

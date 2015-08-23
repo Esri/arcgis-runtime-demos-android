@@ -46,12 +46,12 @@ import java.util.concurrent.Callable;
 public class FetchBasemapsItemId implements Callable<Void>{
 
     // callback interface
-    public OnTaskCompleted delegate = null;
+    private OnTaskCompleted delegate = null;
     // create a portal object with null credentials
-    Portal portal;
+    private Portal portal;
     private ArrayList<BasemapItem> mBasemapList;
 
-    Activity activity;
+    private final Activity activity;
 
     /**
      * Constructor to assign callback
@@ -66,7 +66,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
 
     @Override
     public Void call() throws Exception {
-        final ArrayList<BasemapItem> mBasemapList = new ArrayList<BasemapItem>(12);
+        final ArrayList<BasemapItem> mBasemapList = new ArrayList<>(12);
 
         try {
             // create a new instance of portal
@@ -84,7 +84,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
             // get the basemap results
             List<PortalGroup> groupResults = results.getResults();
 
-            List<PortalItem> queryResults = null;
+            List<PortalItem> queryResults;
             if (groupResults != null && groupResults.size() > 0) {
                 PortalQueryParams queryParams = new PortalQueryParams();
                 queryParams.setCanSearchPublic(true);

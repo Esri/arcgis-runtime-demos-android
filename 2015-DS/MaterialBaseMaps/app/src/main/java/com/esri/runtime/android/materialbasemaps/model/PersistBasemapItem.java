@@ -29,7 +29,7 @@ import java.util.HashMap;
  */
 public class PersistBasemapItem {
 
-    private static PersistBasemapItem ourInstance = new PersistBasemapItem();
+    private static final PersistBasemapItem ourInstance = new PersistBasemapItem();
 
     public static PersistBasemapItem getInstance(){
         return ourInstance;
@@ -37,6 +37,6 @@ public class PersistBasemapItem {
 
     private PersistBasemapItem(){}
 
-    public HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<String, ArrayList<BasemapItem>>();
+    public final HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<>();
 
 }
