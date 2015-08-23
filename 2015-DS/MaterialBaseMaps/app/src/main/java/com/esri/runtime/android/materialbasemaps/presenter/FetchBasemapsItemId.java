@@ -84,7 +84,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
             // get the basemap results
             List<PortalGroup> groupResults = results.getResults();
 
-            List<PortalItem> queryResults = null;
+            List<PortalItem> queryResults;
             if (groupResults != null && groupResults.size() > 0) {
                 PortalQueryParams queryParams = new PortalQueryParams();
                 queryParams.setCanSearchPublic(true);
