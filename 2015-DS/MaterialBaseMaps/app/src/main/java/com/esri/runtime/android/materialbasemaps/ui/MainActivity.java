@@ -69,7 +69,7 @@ public class MainActivity extends Activity{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // create an instance of adapter
-        mBasemapAdapter = new BasemapAdapter( mBasemapList , this);
+        mBasemapAdapter = new BasemapAdapter( mBasemapList);
 
         // click listener to send portal id to MapActivity
         mBasemapAdapter.setOnBaseMapClickListener(new BasemapClickListener() {
