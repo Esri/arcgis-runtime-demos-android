@@ -62,7 +62,7 @@ public class MainActivity extends Activity{
         // inject our progress bar and recycler view
         ButterKnife.inject(this);
         // array of basemap items to have available to load as basemaps
-        mBasemapList = new ArrayList<BasemapItem>();
+        mBasemapList = new ArrayList<>();
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

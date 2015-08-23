@@ -37,6 +37,6 @@ public class PersistBasemapItem {
 
     private PersistBasemapItem(){}
 
-    public final HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<String, ArrayList<BasemapItem>>();
+    public final HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<>();
 
 }
