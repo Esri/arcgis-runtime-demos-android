@@ -60,7 +60,7 @@ import java.util.concurrent.Callable;
  */
 public class MapActivity extends Activity{
 
-    MapView mMapView;
+    private MapView mMapView;
     ArrayList<BasemapItem> mBasemapItem;
 
     // GPS location tracking
@@ -75,8 +75,8 @@ public class MapActivity extends Activity{
 
     private static final String KEY_IS_LOCATION_TRACKING = "IsLocationTracking";
 
-    RelativeLayout relativeMapLayout;
-    ImageButton fab;
+    private RelativeLayout relativeMapLayout;
+    private ImageButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +204,7 @@ public class MapActivity extends Activity{
     /**
      * Starts tracking GPS location.
      */
-    void startLocationTracking() {
+    private void startLocationTracking() {
         LocationDisplayManager locDispMgr = mMapView.getLocationDisplayManager();
         locDispMgr.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
         locDispMgr.setAllowNetworkLocation(true);

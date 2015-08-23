@@ -102,7 +102,7 @@ public class MainActivity extends Activity{
     /**
      * Retrieve basemaps portal item id to sent to MapActivity
      */
-    public void fetchBasemaps(){
+    private void fetchBasemaps(){
         TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
             @Override
             public void processResults(ArrayList<BasemapItem> basemapItems) {
@@ -123,7 +123,7 @@ public class MainActivity extends Activity{
      * @param portalId portal id representing the basemap to open
      * @param title basemap title
      */
-    public void sendBasemapItemInfo(Context context, String portalId, String title){
+    private void sendBasemapItemInfo(Context context, String portalId, String title){
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
