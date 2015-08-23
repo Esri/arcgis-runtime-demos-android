@@ -66,7 +66,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
 
     @Override
     public Void call() throws Exception {
-        final ArrayList<BasemapItem> mBasemapList = new ArrayList<BasemapItem>(12);
+        final ArrayList<BasemapItem> mBasemapList = new ArrayList<>(12);
 
         try {
             // create a new instance of portal
