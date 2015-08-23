@@ -46,12 +46,12 @@ import java.util.concurrent.Callable;
 public class FetchBasemapsItemId implements Callable<Void>{
 
     // callback interface
-    public OnTaskCompleted delegate = null;
+    private OnTaskCompleted delegate = null;
     // create a portal object with null credentials
-    Portal portal;
+    private Portal portal;
     private ArrayList<BasemapItem> mBasemapList;
 
-    Activity activity;
+    private Activity activity;
 
     /**
      * Constructor to assign callback
