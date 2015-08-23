@@ -21,7 +21,6 @@
 package com.esri.runtime.android.materialbasemaps.model;
 
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +31,13 @@ import java.util.ArrayList;
 public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
     // Copy of all BasemapItems
-    private ArrayList<BasemapItem> items;
+    private final ArrayList<BasemapItem> items;
     // custom interface to handle item clicks
     private BasemapClickListener clickListener;
 
-    private int rowLayout;
+    private final int rowLayout;
 
-    public BasemapAdapter(ArrayList<BasemapItem> portalItems, Context context){
-        Context mContext = context;
+    public BasemapAdapter(ArrayList<BasemapItem> portalItems){
         this.items = portalItems;
         this.rowLayout = com.esri.runtime.android.materialbasemaps.R.layout.row_basemap;
     }
