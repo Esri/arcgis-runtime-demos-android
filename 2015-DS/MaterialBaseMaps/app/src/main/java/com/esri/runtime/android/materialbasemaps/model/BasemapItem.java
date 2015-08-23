@@ -27,8 +27,8 @@ import com.esri.core.portal.PortalItem;
 
 public class BasemapItem {
 
-    private PortalItem item;
-    private Bitmap image;
+    private final PortalItem item;
+    private final Bitmap image;
 
     public BasemapItem(PortalItem item, Bitmap image){
         this.item = item;
