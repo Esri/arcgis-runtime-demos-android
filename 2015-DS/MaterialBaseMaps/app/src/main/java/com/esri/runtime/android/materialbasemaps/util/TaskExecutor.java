@@ -32,7 +32,7 @@ public class TaskExecutor {
 
     private static TaskExecutor sInstance;
 
-    private ExecutorService mPool = Executors.newFixedThreadPool(POOL_SIZE);
+    private final ExecutorService mPool = Executors.newFixedThreadPool(POOL_SIZE);
 
     private TaskExecutor() {
     }

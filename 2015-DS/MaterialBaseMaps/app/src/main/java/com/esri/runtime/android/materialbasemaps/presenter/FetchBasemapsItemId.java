@@ -51,7 +51,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
     private Portal portal;
     private ArrayList<BasemapItem> mBasemapList;
 
-    private Activity activity;
+    private final Activity activity;
 
     /**
      * Constructor to assign callback
