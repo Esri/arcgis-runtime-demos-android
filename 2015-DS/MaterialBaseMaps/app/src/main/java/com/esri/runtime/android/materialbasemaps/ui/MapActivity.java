@@ -50,10 +50,8 @@ import com.esri.core.geometry.Unit;
 import com.esri.core.portal.Portal;
 import com.esri.core.portal.WebMap;
 import com.esri.runtime.android.materialbasemaps.R;
-import com.esri.runtime.android.materialbasemaps.model.BasemapItem;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
-import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 /**
@@ -62,7 +60,7 @@ import java.util.concurrent.Callable;
 public class MapActivity extends Activity{
 
     private MapView mMapView;
-    ArrayList<BasemapItem> mBasemapItem;
+//    ArrayList<BasemapItem> mBasemapItem;
 
     // GPS location tracking
     private boolean mIsLocationTracking;
