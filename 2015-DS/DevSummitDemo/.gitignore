@@ -1,5 +1,7 @@
 # ArcGIS Android SDK
 
+Data/
+
 # Local configuration file (sdk path, etc)
 local.properties
 .gradle/
