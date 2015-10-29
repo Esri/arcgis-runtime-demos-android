@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+  <item android:id="@+id/autopan_location"
+        android:title="@string/action_location"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_location_searching"
+        app:showAsAction="always"/>
+  <item android:id="@+id/autopan_compass"
+        android:title="@string/action_compass"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_action_location_searching"
+        app:showAsAction="always"/>
+  <item android:id="@+id/autopan_navigation"
+        android:title="@string/action_navigation"
+        android:orderInCategory="300"
+        android:icon="@drawable/ic_action_location_searching"
+        app:showAsAction="always"/>
+  <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+</menu>
