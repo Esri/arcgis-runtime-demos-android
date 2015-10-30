@@ -11,7 +11,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.esri.android.map.LocationDisplayManager;
+import com.esri.android.map.MapView;
+
+
 //TODO - change theme accent color
+
+//TODO - make action bar buttons checkable based on selected navigation state
+// (make buttons turn of when user interacts with map??)
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO - replace with starting LocationDisplayManager
+        //TODO - change FAB accent color between on and off states
         if (mLocationDisplayManager != null) {
           if (mLocationDisplayManager.isStarted()) {
             mLocationDisplayManager.stop();
@@ -87,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO - could replace with pop-up FAB
     if (id == R.id.autopan_location) {
-      mLocationDisplayManager.setAutopanMode(LocationDisplayManager.AutoPanMode.LOCATION);
+      mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
       return true;
     }
     else if (id == R.id.autopan_compass) {
-      mLocationDisplayManager.setAutopanMode(LocationDisplayManager.AutoPanMode.COMPASS);
+      mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.COMPASS);
       return true;
     }
     else if (id == R.id.autopan_navigation) {
-      mLocationDisplayManager.setAutopanMode(LocationDisplayManager.AutoPanMode.NAVIGATION);
+      mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.NAVIGATION);
       return true;
     }
 

@@ -6,11 +6,17 @@ android {
 
   defaultConfig {
     applicationId "com.esri.runtime.android.devicelocation"
-    minSdkVersion 15
+    minSdkVersion 16
     targetSdkVersion 23
     versionCode 1
     versionName "1.0"
   }
+  packagingOptions{
+    exclude 'META-INF/LGPL2.1'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/NOTICE'
+  }
+
   buildTypes {
     release {
       minifyEnabled false
