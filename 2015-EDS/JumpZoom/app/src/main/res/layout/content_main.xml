@@ -13,8 +13,9 @@
     tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
 
-  <TextView
-      android:text="Hello World!"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+    <com.esri.arcgisruntime.mapping.view.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.esri.arcgisruntime.mapping.view.MapView>
 </RelativeLayout>

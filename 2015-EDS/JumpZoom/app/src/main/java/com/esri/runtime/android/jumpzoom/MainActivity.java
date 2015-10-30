@@ -3,6 +3,7 @@ package com.esri.runtime.android.jumpzoom;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +14,61 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.esri.arcgisruntime.concurrent.ListenableFuture;
+import com.esri.arcgisruntime.geometry.Envelope;
+import com.esri.arcgisruntime.geometry.Geometry;
+import com.esri.arcgisruntime.geometry.GeometryEngine;
+import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.Polygon;
+import com.esri.arcgisruntime.geometry.SpatialReferences;
+import com.esri.arcgisruntime.mapping.Basemap;
+import com.esri.arcgisruntime.mapping.BasemapType;
+import com.esri.arcgisruntime.mapping.Map;
+import com.esri.arcgisruntime.mapping.Viewpoint;
+import com.esri.arcgisruntime.mapping.view.GeoView;
+import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.mapping.view.NavigationCompletedEvent;
+import com.esri.arcgisruntime.mapping.view.NavigationCompletedListener;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedEvent;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedListener;
+import com.esri.arcgisruntime.mapping.view.VisibleAreaChangedEvent;
+import com.esri.arcgisruntime.mapping.view.VisibleAreaChangedListener;
+
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+  private static final String TAG = MainActivity.class.getSimpleName();
+  private double mZoomScale = 5000;
+  private MapView mMapView;
+  //private Viewpoint mWorldViewpoint;
+  private Viewpoint mWorldViewpoint = new Viewpoint(new Point(0, 0, SpatialReferences.getWebMercator()), 200000000);
+      //new Envelope(-19000000, 10000000, 19000000, 10000000, SpatialReferences.getWebMercator()));
+
+  private Viewpoint mViewpoint1 = new Viewpoint(new Point(1493528.253391, 6894813.853409, SpatialReferences.getWebMercator()), mZoomScale);
+  //private Viewpoint mViewpoint2 = new Viewpoint(new Point(1485240.980716, 6875701.021195, SpatialReferences.getWebMercator()), mZoomScale);
+  private Viewpoint mViewpoint2 = new Viewpoint(new Point(1489222.588445, 6893995.144173, SpatialReferences.getWebMercator()), mZoomScale);
+  private Viewpoint mViewpoint3 = new Viewpoint(new Point(1196644.068456, 6033554.266798, SpatialReferences.getWebMercator()), mZoomScale);
+  private Viewpoint mViewpoint4 = new Viewpoint(new Point(774593.577598, 6610915.197602, SpatialReferences.getWebMercator()), mZoomScale);
+
+  private LogCenterAndScale navCompletedListener;
+
+  private class LogCenterAndScale implements NavigationCompletedListener
+  {
+    @Override
+    public void navigationCompleted(NavigationCompletedEvent navigationCompletedEvent) {
+      if (navigationCompletedEvent != null) {
+        GeoView source = navigationCompletedEvent.getSource();
+        if (source instanceof MapView) {
+          MapView mapView = (MapView) source;
+          Point pt = mapView.getVisibleArea().getExtent().getCenter();
+          Log.i(TAG, String.format("CenterPoint: X:%.6f, Y:%.6f", pt.getX(), pt.getY()));
+          Log.i(TAG, "Current scale: " + mapView.getMapScale());
+        }
+      }
+
+    }
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +76,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     setContentView(R.layout.activity_main);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    mMapView = (MapView) findViewById(R.id.mapView);
+    Map map = new Map(BasemapType.IMAGERY_WITH_LABELS, 0, 0, 1);
+    mMapView.setMap(map);
+
+    //Viewpoint mapInitialViewpoint = mMapView.getMap().getInitialViewpoint();
+
+//    mMapView.addVisibleAreaChangedListener(new VisibleAreaChangedListener() {
+//      @Override
+//      public void visibleAreaChanged(VisibleAreaChangedEvent visibleAreaChangedEvent) {
+//        //Point pt = mMapView.getVisibleArea().getExtent().getCenter();
+//        //Log.i(TAG, String.format("Point: X:%.6f, Y:%.6f", pt.getX(), pt.getY()));
+//        if (mWorldViewpoint == null) {
+//          if ((mMapView.getSpatialReference() != null) && (mMapView.getVisibleArea() != null)) {
+//            mWorldViewpoint = new Viewpoint(mMapView.getVisibleArea().getExtent());
+//          }
+//        }
+//      }
+//    });
+
+//    mMapView.addNavigationCompletedListener(new NavigationCompletedListener() {
+//      @Override
+//      public void navigationCompleted(NavigationCompletedEvent navigationCompletedEvent) {
+//        Point pt = mMapView.getVisibleArea().getExtent().getCenter();
+//        Log.i(TAG, String.format("CenterPoint: X:%.6f, Y:%.6f", pt.getX(), pt.getY()));
+//      }
+//    });
+    navCompletedListener = new LogCenterAndScale();
+    mMapView.addNavigationCompletedListener(navCompletedListener);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
+
 
   @Override
   public void onBackPressed() {
@@ -78,18 +163,78 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_location1) {
-      // Handle the camera action
-    } else if (id == R.id.nav_location2) {
+    if (id == R.id.nav_world_location1) {
+      jumpZoom(mWorldViewpoint, mViewpoint1);
+    }
+    else if (id == R.id.nav_world_location2) {
+      jumpZoom(mWorldViewpoint, mViewpoint2);
+    }
+    else if (id == R.id.nav_world_location3) {
+      jumpZoom(mWorldViewpoint, mViewpoint3);
+    }
+    else if (id == R.id.nav_world_location4) {
+      jumpZoom(mWorldViewpoint, mViewpoint4);
+    }
+    else if (id == R.id.nav_union_location1) {
+      if (GeometryEngine.intersects(mMapView.getVisibleArea().getExtent(), mViewpoint1.getTargetGeometry())) {
+        // New target already present inside the current extent, so zoom directly to it.
+        mMapView.setViewpointWithDurationAsync(mViewpoint1, 2);
+      }
+      else {
+        // Union current location with target viewpoint.
+       Geometry union = GeometryEngine.union(mMapView.getVisibleArea().getExtent().getCenter(), mViewpoint1.getTargetGeometry());
+       if ((union != null) && (!union.isEmpty())) {
+         Log.i(TAG, "Union GeometryType:" + union.getGeometryType().name());
+         Viewpoint unionViewpoint = new Viewpoint(union.getExtent());
+         jumpZoom(unionViewpoint, mViewpoint1);
+        }
+      }
 
-    } else if (id == R.id.nav_location3) {
-
-    } else if (id == R.id.nav_location4) {
-
+    }
+    else if (id == R.id.nav_world_location2) {
+      jumpZoom(mWorldViewpoint, mViewpoint2);
+    }
+    else if (id == R.id.nav_world_location3) {
+      jumpZoom(mWorldViewpoint, mViewpoint3);
+    }
+    else if (id == R.id.nav_world_location4) {
+      jumpZoom(mWorldViewpoint, mViewpoint4);
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
     return true;
+  }
+
+  private void jumpZoom(Viewpoint firstViewpoint, final Viewpoint secondViewpoint) {
+    //Log.i(TAG, "Calling first setViewpoint");
+    final ListenableFuture<Boolean> booleanListenableFuture = mMapView.setViewpointWithDurationAsync(firstViewpoint, 2);
+    booleanListenableFuture.addDoneListener(new Runnable() {
+      @Override
+      public void run() {
+        //Log.i(TAG, "In AddDoneListener Run");
+        try {
+          if (booleanListenableFuture.get()) {
+            //Log.i(TAG, "AddDoneListener Run get=true");
+            // First navigation is complete.
+            mMapView.setViewpointWithDurationAsync(secondViewpoint, 2);
+          }
+        } catch (InterruptedException | ExecutionException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    mMapView.pause();
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    mMapView.resume();
   }
 }
