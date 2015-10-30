@@ -163,42 +163,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
+    Geometry selectedGeometry = null;
+    Viewpoint selectedViewpoint = null;
     if (id == R.id.nav_world_location1) {
-      jumpZoom(mWorldViewpoint, mViewpoint1);
+      selectedViewpoint = mViewpoint1;
     }
     else if (id == R.id.nav_world_location2) {
-      jumpZoom(mWorldViewpoint, mViewpoint2);
+      selectedViewpoint = mViewpoint2;
     }
     else if (id == R.id.nav_world_location3) {
-      jumpZoom(mWorldViewpoint, mViewpoint3);
+      selectedViewpoint = mViewpoint3;
     }
-    else if (id == R.id.nav_world_location4) {
-      jumpZoom(mWorldViewpoint, mViewpoint4);
+    else { //if (id == R.id.nav_world_location4) {
+      selectedViewpoint = mViewpoint4;
     }
-    else if (id == R.id.nav_union_location1) {
-      if (GeometryEngine.intersects(mMapView.getVisibleArea().getExtent(), mViewpoint1.getTargetGeometry())) {
-        // New target already present inside the current extent, so zoom directly to it.
-        mMapView.setViewpointWithDurationAsync(mViewpoint1, 2);
-      }
-      else {
-        // Union current location with target viewpoint.
-       Geometry union = GeometryEngine.union(mMapView.getVisibleArea().getExtent().getCenter(), mViewpoint1.getTargetGeometry());
-       if ((union != null) && (!union.isEmpty())) {
-         Log.i(TAG, "Union GeometryType:" + union.getGeometryType().name());
-         Viewpoint unionViewpoint = new Viewpoint(union.getExtent());
-         jumpZoom(unionViewpoint, mViewpoint1);
-        }
-      }
 
+
+//    else if (id == R.id.nav_union_location1) {
+//    }
+//    else if (id == R.id.nav_union_location2) {
+//    }
+//    else if (id == R.id.nav_union_location3) {
+//    }
+//    else if (id == R.id.nav_union_location4) {
+//    }
+
+    // If new target already inside the current extent, then zoom directly to it.
+    if (GeometryEngine.intersects(mMapView.getVisibleArea(), selectedViewpoint.getTargetGeometry())) {
+      mMapView.setViewpointWithDurationAsync(selectedViewpoint, 3);
     }
-    else if (id == R.id.nav_world_location2) {
-      jumpZoom(mWorldViewpoint, mViewpoint2);
-    }
-    else if (id == R.id.nav_world_location3) {
-      jumpZoom(mWorldViewpoint, mViewpoint3);
-    }
-    else if (id == R.id.nav_world_location4) {
-      jumpZoom(mWorldViewpoint, mViewpoint4);
+    else {
+      // If target is outside of current extent, zoom out first to see both extents, then zoom back in.
+      Geometry union = GeometryEngine.union(mMapView.getVisibleArea().getExtent().getCenter(), selectedViewpoint.getTargetGeometry());
+      if ((union != null) && (!union.isEmpty())) {
+        Log.i(TAG, "Union GeometryType:" + union.getGeometryType().name());
+        Viewpoint unionViewpoint = new Viewpoint(union.getExtent());
+        jumpZoom(unionViewpoint, selectedViewpoint);
+      }
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
   private void jumpZoom(Viewpoint firstViewpoint, final Viewpoint secondViewpoint) {
     //Log.i(TAG, "Calling first setViewpoint");
-    final ListenableFuture<Boolean> booleanListenableFuture = mMapView.setViewpointWithDurationAsync(firstViewpoint, 2);
+    final ListenableFuture<Boolean> booleanListenableFuture = mMapView.setViewpointWithDurationAsync(firstViewpoint, 3);
     booleanListenableFuture.addDoneListener(new Runnable() {
       @Override
       public void run() {
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (booleanListenableFuture.get()) {
             //Log.i(TAG, "AddDoneListener Run get=true");
             // First navigation is complete.
-            mMapView.setViewpointWithDurationAsync(secondViewpoint, 2);
+            mMapView.setViewpointWithDurationAsync(secondViewpoint, 3);
           }
         } catch (InterruptedException | ExecutionException e) {
           e.printStackTrace();
