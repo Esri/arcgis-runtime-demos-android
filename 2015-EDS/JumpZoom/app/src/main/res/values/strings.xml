@@ -12,5 +12,8 @@
   <string name="navigation_drawer_location3">Neuschwanstein Castle</string>
   <string name="navigation_drawer_location4">Köln Cathedral</string>
 
+  <string name="navigation_drawer_zoom_world">World</string>
+  <string name="navigation_drawer_zoom_union">Union of places</string>
+
   <string name="action_settings">Settings</string>
 </resources>

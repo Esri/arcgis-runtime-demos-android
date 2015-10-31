@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <group android:checkableBehavior="single">
+  <group android:checkableBehavior="single"
+      android:id="@+id/nav_group_location">
     <item
         android:id="@+id/nav_world_location1"
         android:icon="@android:drawable/ic_menu_gallery"
@@ -20,24 +21,19 @@
         android:title="@string/navigation_drawer_location4"/>
   </group>
 
-  <group android:checkableBehavior="single">
-    <item
-        android:id="@+id/nav_union_location1"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:title="@string/navigation_drawer_location1"/>
-    <item
-        android:id="@+id/nav_union_location2"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:title="@string/navigation_drawer_location2"/>
-    <item
-        android:id="@+id/nav_union_location3"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:title="@string/navigation_drawer_location3"/>
-    <item
-        android:id="@+id/nav_union_location4"
-        android:icon="@android:drawable/ic_menu_gallery"
-        android:title="@string/navigation_drawer_location4"/>
-  </group>
-
-
+  <item android:title="Zoom out behaviour"
+        android:id="@+id/nav_group_zoom_behaviour">
+    <menu>
+      <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_zoom_world"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="@string/navigation_drawer_zoom_world"/>
+          <item
+              android:id="@+id/nav_zoom_union"
+              android:icon="@android:drawable/ic_menu_crop"
+              android:title="@string/navigation_drawer_zoom_union"/>
+      </group>
+    </menu>
+  </item>
 </menu>
