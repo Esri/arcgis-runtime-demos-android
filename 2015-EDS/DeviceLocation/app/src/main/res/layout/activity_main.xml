@@ -31,7 +31,7 @@
       android:layout_gravity="bottom|end"
       android:layout_margin="@dimen/fab_margin"
       android:src="@android:drawable/ic_menu_mylocation"
-      app:backgroundTint="@color/colorAccent"
+      app:backgroundTint="@color/colorAccentOff"
       />
 
 </android.support.design.widget.CoordinatorLayout>

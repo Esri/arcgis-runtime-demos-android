@@ -1,29 +1,23 @@
 package com.esri.runtime.android.devicelocation;
 
-import android.location.Location;
-import android.location.LocationListener;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
-
-
-//TODO - change theme accent color
-
-//TODO - make action bar buttons checkable based on selected navigation state
-// (make buttons turn of when user interacts with map??)
 
 public class MainActivity extends AppCompatActivity {
 
   private MapView mMapView;
   private LocationDisplayManager mLocationDisplayManager;
+  private FloatingActionButton mFab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,47 +29,26 @@ public class MainActivity extends AppCompatActivity {
     mMapView = (MapView) findViewById(R.id.mapView);
 
     mLocationDisplayManager = mMapView.getLocationDisplayManager();
-    mLocationDisplayManager.setLocationListener(new LocationListener() {
 
-      boolean locationChanged = false;
-
-      // Zooms to the current location when first GPS fix arrives.
-      @Override
-      public void onLocationChanged(Location loc) {
-        if (!locationChanged) {
-          locationChanged = true;
-          mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
-        }
-      }
-
-      @Override
-      public void onProviderDisabled(String arg0) {
-      }
-
-      @Override
-      public void onProviderEnabled(String arg0) {
-      }
-
-      @Override
-      public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-      }
-    });
-
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
+    mFab = (FloatingActionButton) findViewById(R.id.fab);
+    mFab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //TODO - change FAB accent color between on and off states
         if (mLocationDisplayManager != null) {
           if (mLocationDisplayManager.isStarted()) {
             mLocationDisplayManager.stop();
+            mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this,
+                R.color.colorAccentOff)));
           }
           else {
+            mMapView.setRotationAngle(0);
+            mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
             mLocationDisplayManager.start();
+            mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R
+                .color.colorAccentOn)));
           }
 
         }
-        //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
       }
     });
   }
@@ -92,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     int id = item.getItemId();
 
-    //TODO - could replace with pop-up FAB
     if (id == R.id.autopan_location) {
       mLocationDisplayManager.setAutoPanMode(LocationDisplayManager.AutoPanMode.LOCATION);
+      mMapView.setRotationAngle(0);
       return true;
     }
     else if (id == R.id.autopan_compass) {
