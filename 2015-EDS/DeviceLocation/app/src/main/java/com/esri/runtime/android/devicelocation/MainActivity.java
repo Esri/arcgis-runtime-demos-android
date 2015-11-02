@@ -51,6 +51,33 @@ public class MainActivity extends AppCompatActivity {
         }
       }
     });
+
+    //    // Can listen for location updates if required.
+    //    mLocationDisplayManager.setLocationListener(new LocationListener() {
+    //      @Override
+    //      public void onLocationChanged(Location location) {
+    //        if (location != null) {
+    //          if (location.hasAccuracy()) {
+    //            // Do something.
+    //          }
+    //        }
+    //      }
+    //
+    //      @Override
+    //      public void onStatusChanged(String s, int i, Bundle bundle) {
+    //
+    //      }
+    //
+    //      @Override
+    //      public void onProviderEnabled(String s) {
+    //
+    //      }
+    //
+    //      @Override
+    //      public void onProviderDisabled(String s) {
+    //
+    //      }
+    //    });
   }
 
   @Override
