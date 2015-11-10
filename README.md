@@ -1,4 +1,4 @@
-# arcgis-runtime-demos-android
+# Overview
 
 This is a repo to house Android demo applications that have been built by the Esri ArcGIS Runtime SDK for Android development team. Various demo apps from conferences, events and workshops will be placed in this single repo so they are easy to find.
 
@@ -9,11 +9,10 @@ Top level folders will identify the event for which demos have been built so the
 
 1.	Read the README.md in each application folder for instructions on how to run them, each application may target a specific IDE or Android SDK version.
 
-## Requirements
+## Prerequisites
 
-* Android SDK and a configured IDE
-* [ArcGIS Runtime SDK for Android](https://developers.arcgis.com/android/)
-* A little background with Android development
+* The samples are building with ```compileSdkVersion 21``` or higher which requires [JDK 7 or higher](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Android Studio](http://developer.android.com/sdk/index.html)
 
 ## Resources
 
