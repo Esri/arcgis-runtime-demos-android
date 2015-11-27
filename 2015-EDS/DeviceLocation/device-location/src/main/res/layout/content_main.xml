@@ -18,6 +18,4 @@
         mapoptions.ZoomLevel="16">
     </com.esri.android.map.MapView>
 
-
-
 </RelativeLayout>

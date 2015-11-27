@@ -8,6 +8,8 @@ http://www.esri.com/events/devsummit-europe
 
 A very simple app showing the different modes available for LocationDisplayManager - navigation, compass, and default.
 
+This app is written to target Marshmallow devices, and also demonstrates workflow for asking for location permissions, using the support library permissions API.
+
 Uses ArcGIS Runtime SDK for Android version 10.2.7.
 
 ## JumpZoom
