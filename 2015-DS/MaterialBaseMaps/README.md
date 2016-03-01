@@ -6,6 +6,9 @@ MainActivity                           | Maps Activity
 :-------------------------------------:|:-------------------------------------:
 ![MainActivity](BasemapsActivity.png)  | ![MapActivity](MapActivity.png)
 
+## Type Hierarchy
+![UML Type Hierarchy](TypeHierarchy.png)
+
 ## Licensing
 Copyright 2015 Esri
 
