@@ -12,6 +12,9 @@ build/
 /*.sublime-project
 *.sublime-workspace
 
+# Star UML project files
+*.mdj
+
 # Profiling
 captures/
 
