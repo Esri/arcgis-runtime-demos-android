@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wear Collection</string>
+    <string name="fetching_layers">Fetching previous feature layers...</string>
+    <string name="fetching_types">Fetching feature types...</string>
+    <string name="collecting_feature">Collecting new feature...</string>
+    <string name="collect_success">Successfully collected feature!</string>
+    <string name="collect_failure">Failed to collect feature.</string>
+</resources>
