@@ -63,16 +63,16 @@ import com.esri.arcgisruntime.tasks.route.Stop;
 
 /**
  * Demonstrates how to find a route between two {@link Stop}s on a Map using an
- * online {@link Route} service.
+ * offline {@link Route} route package.
  * <p>
  * Use {@link RouteParameters} to define a {@link RouteTask} when you want to
- * find a route between {@link Stop}s. Online route task solves a route from an
- * online route service. Typically this type of network analysis is known as
+ * find a route between {@link Stop}s. Offline route task solves a route from an
+ * offline routing package. Typically this type of network analysis is known as
  * routing, example being business {@link DirectionMessage}s that changes
  * frequently, such as displaying a route stops of vehicles as they make
  * deliveries.
  * <p>
- * To add a Route Task from an online service:
+ * To add a Route Task from an offline service:
  * <ol>
  * <li>Create an RouteTask using an URL from an online service.</li>
  * <li>Set its parameters via {@link RouteParameters}.</li>
