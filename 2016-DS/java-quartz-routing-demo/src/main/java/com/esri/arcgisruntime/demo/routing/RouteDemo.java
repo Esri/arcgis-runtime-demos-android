@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
  See the License for the specific language governing permissions and
 limitations under the License.  */
 
-package demo;
+package com.esri.arcgisruntime.demo.routing;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -142,7 +142,7 @@ public class RouteDemo extends Application {
       mapView.getGraphicsOverlays().add(routeGraphicsOverlay);
 
       // create the route task
-			routeTask = new RouteTask("./data/RuntimeSanFrancisco.geodatabase", "Streets_ND");
+	  routeTask = new RouteTask("./data/RuntimeSanFrancisco.geodatabase", "Streets_ND");
       routeTask.loadAsync();
       routeTask.addDoneLoadingListener(() -> {
         try {
