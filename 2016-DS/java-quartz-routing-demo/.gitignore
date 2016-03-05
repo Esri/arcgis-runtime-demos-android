@@ -6,7 +6,7 @@
 gen/
 libs/
 out/
-ArcGISRuntime100.0.0/
+arcgis-java-sdk-100.0.0
 
 # Local configuration file (sdk path, etc)
 local.properties
