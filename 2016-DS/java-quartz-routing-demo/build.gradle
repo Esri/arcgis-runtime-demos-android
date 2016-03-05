@@ -1,0 +1,26 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+repositories {
+    jcenter()
+    maven{
+        url 'http://android:8080/artifactory/arcgis'
+    }
+}
+
+mainClassName = 'com.esri.arcgisruntime.demo.routing.RouteDemo'
+
+dependencies {
+    compile 'com.esri.arcgisruntime:arcgis-java:100.0.0-1264'
+    compile 'commons-codec:commons-codec:1.+'
+    compile 'commons-logging:commons-logging:1.1.+'
+    compile 'org.controlsfx:controlsfx:8.40.+'
+}
+
+sourceSets {
+  main {
+    java.srcDir 'src/main/java'
+  }
+}
