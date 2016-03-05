@@ -13,7 +13,7 @@ repositories {
 mainClassName = 'com.esri.arcgisruntime.demo.routing.RouteDemo'
 
 dependencies {
-    compile 'com.esri.arcgisruntime:arcgis-java:100.0.0-beta-2'
+    compile 'com.esri.arcgisruntime:arcgis-java:100.0.0-beta-2 '
     compile 'commons-codec:commons-codec:1.+'
     compile 'commons-logging:commons-logging:1.1.+'
     compile 'org.controlsfx:controlsfx:8.40.+'
