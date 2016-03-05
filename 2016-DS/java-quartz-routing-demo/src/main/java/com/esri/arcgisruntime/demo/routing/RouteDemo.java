@@ -77,7 +77,7 @@ import com.esri.arcgisruntime.tasks.route.Stop;
  * <li>Display the route by adding it to a {@link GraphicsOverlay}.</li>
  * </ol>
  */
-public class RouteDemo extends Application {
+class RouteDemo extends Application {
 
   private MapView mapView;
   private RouteTask routeTask;
@@ -142,7 +142,7 @@ public class RouteDemo extends Application {
       mapView.getGraphicsOverlays().add(routeGraphicsOverlay);
 
       // create the route task
-      routeTask = new RouteTask("./SanFrancisco/RuntimeSanFrancisco.geodatabase", "Streets_ND");
+      routeTask = new RouteTask("./data/RuntimeSanFrancisco.geodatabase", "Streets_ND");
       routeTask.loadAsync();
       routeTask.addDoneLoadingListener(() -> {
         try {
@@ -155,7 +155,7 @@ public class RouteDemo extends Application {
       });
 
       // create the locator task
-      locatorTask = new LocatorTask("./SanFrancisco/SanFranciscoLocator.loc");
+      locatorTask = new LocatorTask("./data/SanFranciscoLocator.loc");
       locatorTask.loadAsync();
       locatorTask.addDoneLoadingListener(() -> {
         try {
