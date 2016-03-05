@@ -77,7 +77,7 @@ import com.esri.arcgisruntime.tasks.route.Stop;
  * <li>Display the route by adding it to a {@link GraphicsOverlay}.</li>
  * </ol>
  */
-class RouteDemo extends Application {
+public class RouteDemo extends Application {
 
   private MapView mapView;
   private RouteTask routeTask;
