@@ -20,6 +20,7 @@
 
 package com.esri.arcgisruntime.wearcollection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -79,12 +80,16 @@ public class RequestListenerService extends WearableListenerService {
     Log.i("Test", "Successfully connected to Google Api Service");
     // Get the path of the message and handle it appropriately
     String path = event.getPath();
-    if (LAYER_REQUEST.equals(path)) {
-      handleLayerRequest(event, client);
-    } else if (FEATURE_TYPE_REQUEST.equals(path)) {
-      handleFeatureTypeRequest(event, client);
-    } else if (FEATURE_TYPE_RESPONSE.equals(path)) {
-      handleFeatureTypeResponse(event, client);
+    switch(path) {
+      case LAYER_REQUEST:
+        handleLayerRequest(event, client);
+        break;
+      case FEATURE_TYPE_REQUEST:
+        handleFeatureTypeRequest(event, client);
+        break;
+      case FEATURE_TYPE_RESPONSE:
+        handleFeatureTypeResponse(event, client);
+        break;
     }
   }
 
@@ -102,7 +107,7 @@ public class RequestListenerService extends WearableListenerService {
     PutDataMapRequest req = PutDataMapRequest.create(LAYER_RESPONSE);
     DataMap dm = req.getDataMap();
     // Put an array list of layer names into the data map
-    dm.putStringArray("layers", sLayerMap.keySet().toArray(new String[sLayerMap.size()]));
+    dm.putStringArrayList("layers", new ArrayList<>(sLayerMap.keySet()));
     // Put the current time into the data map, which forces an onDataChanged event (this event
     // only occurs when data actually changes, so putting the time ensures something always changes)
     dm.putLong("Time", System.currentTimeMillis());

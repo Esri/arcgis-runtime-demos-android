@@ -154,12 +154,16 @@ public class CollectionActivity extends WearableActivity implements DataApi.Data
       if (event.getType() == DataEvent.TYPE_CHANGED) {
         DataItem item = event.getDataItem();
         String path = item.getUri().getPath();
-        if (path.equals(LAYER_RESPONSE)) {
-          handleLayerResponse(item);
-        } else if (path.equals(FEATURE_TYPE_RESPONSE)) {
-          handleFeatureTypeResponse(item);
-        } else if (path.equals(STATUS_RESPONSE)) {
-          handleStatusResponse(item);
+        switch (path) {
+          case LAYER_RESPONSE:
+            handleLayerResponse(item);
+            break;
+          case FEATURE_TYPE_RESPONSE:
+            handleFeatureTypeResponse(item);
+            break;
+          case STATUS_RESPONSE:
+            handleStatusResponse(item);
+            break;
         }
       }
     }

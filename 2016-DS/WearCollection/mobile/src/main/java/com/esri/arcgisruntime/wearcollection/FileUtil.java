@@ -23,10 +23,11 @@ package com.esri.arcgisruntime.wearcollection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+
+import android.util.Log;
 
 /**
  * Provides convenience methods for saving and loading the previous list of layers
@@ -35,7 +36,8 @@ import java.util.HashMap;
 public class FileUtil {
 
   // The name of the file to save/load
-  private static final String FILE_NAME = "layers.ser";
+  private static final String FILE_NAME = "layers";
+  private static final String FILE_EXTENSION = ".ser";
   private static File sSerFile;
 
   // The HashMap of layer names to their URLs
@@ -50,6 +52,9 @@ public class FileUtil {
     // If the layer list is null, load them from the file
     if (sLayers == null) {
       load();
+      if (sLayers.size() == 0) {
+        sLayers.put("Recreation", "http://sampleserver6.arcgisonline.com/arcgis/rest/services/LocalGovernment/Recreation/FeatureServer/0");
+      }
     }
     return sLayers;
   }
@@ -85,7 +90,7 @@ public class FileUtil {
       oos = new ObjectOutputStream(fos);
       oos.writeObject(sLayers);
     } catch (Exception e) {
-
+      Log.e("Test", "Could no save feature layer list: " + e.getMessage());
     } finally {
       // Make sure the streams get closed
       try {
@@ -108,10 +113,8 @@ public class FileUtil {
     FileInputStream fis = null;
     ObjectInputStream ois = null;
     try {
-      // Get the temporary storage directory
-      File tempDirectory = getDefaultTempFolder();
       // Check if the file already exists
-      sSerFile = new File(tempDirectory, FILE_NAME);
+      sSerFile = File.createTempFile(FILE_NAME, FILE_EXTENSION);
       if (sSerFile.exists()) {
         // If it does, read the file and deserialize the HashMap
         fis = new FileInputStream(sSerFile);
@@ -137,23 +140,5 @@ public class FileUtil {
         // Tried to close files
       }
     }
-  }
-
-  /**
-   * Gets the default directory for storing temporary files.
-   *
-   * @return the default directory for temporary files
-   * @throws IOException if there is an issue determining the directory
-   */
-  private static File getDefaultTempFolder() throws IOException {
-    // Try to create a dummy temp file and get its parent directory
-    // If there is an issue, through an exception
-    File tempFolder = null;
-    File dummyFile = File.createTempFile("dummy", null);
-    if (dummyFile != null) {
-      tempFolder = dummyFile.getParentFile();
-      dummyFile.delete();
-    }
-    return tempFolder;
   }
 }

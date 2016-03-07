@@ -22,6 +22,7 @@ package com.esri.arcgisruntime.wearcollection;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.wearable.view.WearableListView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -63,8 +64,8 @@ public class WearableListItemLayout extends LinearLayout
   public WearableListItemLayout(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     mFadedTextAlpha = getResources().getInteger(R.integer.action_text_faded_alpha) / 100f;
-    mFadedCircleColor = getResources().getColor(R.color.grey);
-    mChosenCircleColor = getResources().getColor(R.color.blue);
+    mFadedCircleColor = ContextCompat.getColor(context, R.color.grey);
+    mChosenCircleColor = ContextCompat.getColor(context, R.color.blue);
   }
 
   // Get references to the icon and text in the item layout definition
