@@ -100,7 +100,7 @@ public class MainActivity extends Activity{
     }
 
     /**
-     * Retrieve basemaps portal item id to sent to MapActivity
+     * Retrieve basemaps portal item id to send to MapActivity
      */
     private void fetchBasemaps(){
         TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
