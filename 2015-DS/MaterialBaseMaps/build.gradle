@@ -13,7 +13,7 @@ allprojects {
     repositories {
         jcenter()
         maven {
-            url 'https://dl.bintray.com/esri/arcgis'
+            url 'https://esri.bintray.com/arcgis'
         }
     }
 }
