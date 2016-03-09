@@ -23,6 +23,7 @@ package com.esri.arcgisruntime.wearcollection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -36,8 +37,7 @@ import android.util.Log;
 public class FileUtil {
 
   // The name of the file to save/load
-  private static final String FILE_NAME = "layers";
-  private static final String FILE_EXTENSION = ".ser";
+  private static final String FILE_NAME = "layers.ser";
   private static File sSerFile;
 
   // The HashMap of layer names to their URLs
@@ -113,8 +113,10 @@ public class FileUtil {
     FileInputStream fis = null;
     ObjectInputStream ois = null;
     try {
+      // Get the temporary storage directory
+      File tempDirectory = getDefaultTempFolder();
       // Check if the file already exists
-      sSerFile = File.createTempFile(FILE_NAME, FILE_EXTENSION);
+      sSerFile = new File(tempDirectory, FILE_NAME);
       if (sSerFile.exists()) {
         // If it does, read the file and deserialize the HashMap
         fis = new FileInputStream(sSerFile);
@@ -140,5 +142,21 @@ public class FileUtil {
         // Tried to close files
       }
     }
+  }
+
+  /**
+   * Gets the default directory for storing temporary files.
+   *
+   * @return the default directory for temporary files
+   * @throws IOException if there is an issue determining the directory
+   */
+  private static File getDefaultTempFolder() throws IOException {
+    // Try to create a dummy temp file and get its parent directory
+    // If there is an issue, through an exception
+    File tempFolder;
+    File dummyFile = File.createTempFile("dummy", null);
+    tempFolder = dummyFile.getParentFile();
+    dummyFile.delete();
+    return tempFolder;
   }
 }
