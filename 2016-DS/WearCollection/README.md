@@ -7,7 +7,7 @@ This app showcases the ability to collect new features using an [Android Wear](h
 * An Android Wear device
 * An Android mobile device
 
-## Instructions
+## Usage Instructions
 You must install the "mobile" module onto a phone/tablet, and the "wear" module onto your Wear device. Below are separate instructions for how you can use both the mobile and wear applications
 
 ### Mobile app
