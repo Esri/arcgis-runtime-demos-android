@@ -29,7 +29,7 @@ The description below describes how the app was set up and run during the demo, 
  - When the device location gets close or gets farther away from the county boundary, the frequency of location updates changes.
 
 ## Licensing
-Copyright 2015 Esri
+Copyright 2016 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
