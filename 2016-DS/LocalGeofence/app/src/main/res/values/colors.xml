@@ -1,0 +1,13 @@
+<resources>
+
+  <color name="black_overlay">#66000000</color>
+
+  <color name="material_blue_500">#2196f3</color>
+  <color name="material_blue_700">#1976D2</color>
+  <color name="material_green_A200">#a5d6a7</color>
+
+  <color name="primary">#d20b0d</color>
+  <color name="primary_dark">#8a0a0c</color>
+  <color name="esri_darker_gray">#FF333333</color>
+
+</resources>

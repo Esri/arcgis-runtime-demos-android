@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/alertItemCardView"
+        android:layout_margin="5dp"
+     >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            >
+            <!--ImageView android:id="@+id/alertItemStartLocationUpdates" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:layout_marginRight="16dp"  android:layout_marginLeft="6dp" android:gravity="center"
+                /-->
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/alertItemThumbnail"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                />
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="vertical"  android:id="@+id/alertItemDetails"
+                          android:layout_toRightOf="@+id/alertItemThumbnail">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alertItemTitle"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@color/esri_darker_gray"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alertItemFeatureName"
+                    android:textColor="@color/esri_darker_gray"
+                    android:layout_below="@+id/alertItemTitle"
+                    android:textStyle="bold|italic"
+                    />
+            </LinearLayout>
+
+            <android.support.v7.widget.SwitchCompat android:id="@+id/alertItemFetchLocationUpdates" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:layout_marginRight="6dp" android:layout_marginLeft="16dp" android:gravity="center"
+                          android:layout_alignParentRight="true"
+                          android:layout_toRightOf="@+id/alertItemDetails"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
