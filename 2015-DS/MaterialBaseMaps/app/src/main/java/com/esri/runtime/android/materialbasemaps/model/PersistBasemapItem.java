@@ -29,14 +29,14 @@ import java.util.HashMap;
  */
 public class PersistBasemapItem {
 
-    private static final PersistBasemapItem ourInstance = new PersistBasemapItem();
-
     public static PersistBasemapItem getInstance(){
         return ourInstance;
     }
 
+    public final HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<>();
+
     private PersistBasemapItem(){}
 
-    public final HashMap<String, ArrayList<BasemapItem>> storage = new HashMap<>();
+    private static final PersistBasemapItem ourInstance = new PersistBasemapItem();
 
 }
