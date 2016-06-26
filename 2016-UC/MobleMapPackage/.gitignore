@@ -1,0 +1,24 @@
+# Local configuration file (sdk path, etc)
+local.properties
+.gradle/
+
+# Intellij project files
+*.ipr
+*.iml
+.idea/
+build/
+
+# SublimeText
+/*.sublime-project
+*.sublime-workspace
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
