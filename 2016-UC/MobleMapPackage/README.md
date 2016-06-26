@@ -14,7 +14,7 @@ Project root build.gradle:
 
 ```groovy
 dependencies {
-    classpath 'com.android.tools.build:gradle:1.2.3'
+    classpath 'com.android.tools.build:gradle:2.1.2'
     classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:[version]'
 }
 ```
@@ -24,7 +24,7 @@ App module build.gradle:
 ```groovy
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:[version]'
-    compile 'com.esri.arcgisruntime:arcgis-android:100.0.0-[buildnum]'
+    compile 'com.esri.arcgisruntime:arcgis-android:100.0.0-beta-3'
 }
 ```
 
