@@ -1,0 +1,15 @@
+<resources>
+  <string name="app_name">JumpZoom</string>
+
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="navigation_drawer_caption1">Choose a place</string>
+  <string name="navigation_drawer_caption2">...and jump to zoom</string>
+
+  <string name="navigation_drawer_location1">Berlin Congress Center</string>
+  <string name="navigation_drawer_location2">Brandenberg Gate</string>
+  <string name="navigation_drawer_location3">Neuschwanstein Castle</string>
+  <string name="navigation_drawer_location4">Köln Cathedral</string>
+
+</resources>

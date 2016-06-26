@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">DeviceLocation</string>
+  <string name="action_location">Location</string>
+  <string name="action_compass">Compasss</string>
+  <string name="action_navigation">Navigation</string>
+  <string name="location_permission_denied">LocationDisplayManager cannot run because location permission was denied</string>
+</resources>

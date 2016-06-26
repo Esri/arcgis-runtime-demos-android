@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+  <item android:id="@+id/autopan_location"
+        android:title="@string/action_location"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_dialog_map"
+        app:showAsAction="always"/>
+  <item android:id="@+id/autopan_compass"
+        android:title="@string/action_compass"
+        android:orderInCategory="200"
+        android:icon="@android:drawable/ic_menu_compass"
+        app:showAsAction="always"/>
+  <item android:id="@+id/autopan_navigation"
+        android:title="@string/action_navigation"
+        android:orderInCategory="300"
+        android:icon="@android:drawable/ic_menu_directions"
+        app:showAsAction="always"/>
+</menu>
