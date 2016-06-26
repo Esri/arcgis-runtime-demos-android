@@ -2,15 +2,34 @@
 local.properties
 .gradle/
 
+# Directories #
+/bin/
+gen/
+libs/
+out/
+arcgis-java-sdk-100.0.0/
+data/
+
 # Intellij project files
 *.ipr
 *.iml
 .idea/
 build/
 
+# Eclipse #
+.project
+.classpath
+.factorypath
+.project
+.settings
+eclipsebin
+
 # SublimeText
 /*.sublime-project
 *.sublime-workspace
+
+# Star UML project files
+*.mdj
 
 # Profiling
 captures/

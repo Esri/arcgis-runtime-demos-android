@@ -83,7 +83,7 @@ public class MainActivity extends Activity{
 
         mRecyclerView.setAdapter(mBasemapAdapter);
 
-        // If basemap item is persisted do not got out to service to fetch them again
+        // If basemap item is persisted do not go out to service to fetch them again
         if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
             // populate basemapItems with persited BasemapItems
             ArrayList<BasemapItem> basemapItems = PersistBasemapItem.getInstance().storage.get("basemap-items");
@@ -100,7 +100,7 @@ public class MainActivity extends Activity{
     }
 
     /**
-     * Retrieve basemaps portal item id to sent to MapActivity
+     * Retrieve basemaps portal item id to send to MapActivity
      */
     private void fetchBasemaps(){
         TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
