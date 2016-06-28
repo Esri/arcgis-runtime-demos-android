@@ -18,4 +18,4 @@ Quartz Beta 2 demo showing how to chain together asynchronous navigation methods
 
 Uses ArcGIS Runtime SDK for Android Quartz release, Beta 2.
 
-***Note: Quartz Beta 2 this is not yet publicly available - compiling against Beta 1 will give compile errors, as navigation methods in Beta 1 do not return ListenableFuture. Code provided for information only.***
+***Note: Quartz Beta 2 was released in March 2016. Beta 3 is now available.***
