@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,12 +18,12 @@ import com.esri.arcgisruntime.geometry.GeometryEngine;
 import com.esri.arcgisruntime.geometry.Point;
 import com.esri.arcgisruntime.geometry.SpatialReferences;
 import com.esri.arcgisruntime.mapping.Basemap;
-import com.esri.arcgisruntime.mapping.Map;
+import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.GeoView;
 import com.esri.arcgisruntime.mapping.view.MapView;
-import com.esri.arcgisruntime.mapping.view.NavigationCompletedEvent;
-import com.esri.arcgisruntime.mapping.view.NavigationCompletedListener;
+import com.esri.arcgisruntime.mapping.view.NavigationChangedEvent;
+import com.esri.arcgisruntime.mapping.view.NavigationChangedListener;
 
 import java.util.concurrent.ExecutionException;
 
@@ -43,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
   private LogCenterAndScale navCompletedListener;
 
-  private class LogCenterAndScale implements NavigationCompletedListener
+  private class LogCenterAndScale implements NavigationChangedListener
   {
     @Override
-    public void navigationCompleted(NavigationCompletedEvent navigationCompletedEvent) {
+    public void navigationChanged(NavigationChangedEvent navigationCompletedEvent) {
       if (navigationCompletedEvent != null) {
         GeoView source = navigationCompletedEvent.getSource();
         if (source instanceof MapView) {
@@ -67,17 +66,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     setSupportActionBar(toolbar);
 
     mMapView = (MapView) findViewById(R.id.mapView);
-    Map map = new Map(Basemap.Type.IMAGERY_WITH_LABELS, 0, 0, 1);
+    ArcGISMap map = new ArcGISMap(Basemap.Type.IMAGERY_WITH_LABELS, 0, 0, 1);
     mMapView.setMap(map);
 
     navCompletedListener = new LogCenterAndScale();
-    mMapView.addNavigationCompletedListener(navCompletedListener);
+    mMapView.addNavigationChangedListener(navCompletedListener);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        mMapView.setViewpointWithDurationAsync(mWorldViewpoint, 2);
+        mMapView.setViewpointAsync(mWorldViewpoint, 2);
       }
     });
 
@@ -136,16 +135,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
   private void jumpZoom(Viewpoint firstViewpoint, final Viewpoint secondViewpoint) {
     if (firstViewpoint == null) return;
-    booleanListenableFuture = mMapView.setViewpointWithDurationAsync(firstViewpoint, 3);
+
+    booleanListenableFuture = mMapView.setViewpointAsync(firstViewpoint, 3);
 
     if (secondViewpoint == null) return;
+
     booleanListenableFuture.addDoneListener(new Runnable() {
       @Override
       public void run() {
         try {
           if (booleanListenableFuture.get()) {
             // First navigation is complete, was not interrupted by the user or another navigation.
-            mMapView.setViewpointWithDurationAsync(secondViewpoint, 3);
+            mMapView.setViewpointAsync(secondViewpoint, 3);
           }
         } catch (InterruptedException | ExecutionException e) {
           e.printStackTrace();
