@@ -1,10 +1,8 @@
 # Jump Zoom
 
-Quartz Beta 2 demo showing how to chain together asynchronous navigation methods, waiting until one is complete before beginning a second navigation call. If first navigation is cancelled by the user interacting with the MapView, then the second navigation call is not made. Uses MapView navigation methods that return ListenableFuture.
+Demo app showing how to chain together asynchronous navigation methods, waiting until one is complete before beginning a second navigation call. If first navigation is cancelled by the user interacting with the MapView, then the second navigation call is not made. Uses MapView navigation methods that return ListenableFuture.
 
-Uses ArcGIS Runtime SDK for Android Quartz release, Beta 2.
-
-***Note: Quartz Beta 2 was released in March 2016. Check the [Esri Maven repository on Bintray](https://bintray.com/esri/arcgis/arcgis-android/view) for the latest release.***
+Uses ArcGIS Runtime SDK for Android v100.0.0.
 
 ![JumpZoom1](JumpZoom_demo_screenshot1.png)
 ![JumpZoom2](JumpZoom_demo_screenshot2.png)
@@ -26,7 +24,7 @@ Tap the menu icon to open the navigation drawer, and choose different locations 
 You can use the default gestures on the map to zoom in or out and pan the map; this will cancel any current programmatic navigation.
 
 ## Licensing
-Copyright 2015 Esri
+Copyright 2016 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
