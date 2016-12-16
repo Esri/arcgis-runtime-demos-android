@@ -3,4 +3,7 @@
 
     <string name="imageview_content_desc">Basemap Thumbnail</string>
     <string name="imagebutton_content_desc">Turn GPS on/off</string>
+
+    <!-- service urls -->
+    <string name="portal_url">http://www.arcgis.com</string>
 </resources>
