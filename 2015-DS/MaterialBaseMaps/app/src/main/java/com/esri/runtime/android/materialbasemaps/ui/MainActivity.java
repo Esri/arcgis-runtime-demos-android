@@ -1,4 +1,4 @@
-/* Copyright 2015 Esri
+/* Copyright 2016 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -20,6 +20,7 @@
 
 package com.esri.runtime.android.materialbasemaps.ui;
 
+import java.util.ArrayList;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -40,8 +41,6 @@ import com.esri.runtime.android.materialbasemaps.presenter.FetchBasemapsItemId;
 import com.esri.runtime.android.materialbasemaps.presenter.OnTaskCompleted;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -53,6 +52,7 @@ public class MainActivity extends Activity{
 
     private BasemapAdapter mBasemapAdapter;
     private ArrayList<BasemapItem> mBasemapList;
+    private String portalUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class MainActivity extends Activity{
 
         // inject our progress bar and recycler view
         ButterKnife.inject(this);
+        portalUrl = getResources().getString(R.string.portal_url);
         // array of basemap items to have available to load as basemaps
         mBasemapList = new ArrayList<>();
 
@@ -69,7 +70,7 @@ public class MainActivity extends Activity{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // create an instance of adapter
-        mBasemapAdapter = new BasemapAdapter( mBasemapList);
+        mBasemapAdapter = new BasemapAdapter(mBasemapList);
 
         // click listener to send portal id to MapActivity
         mBasemapAdapter.setOnBaseMapClickListener(new BasemapClickListener() {
@@ -85,7 +86,7 @@ public class MainActivity extends Activity{
 
         // If basemap item is persisted do not go out to service to fetch them again
         if(PersistBasemapItem.getInstance().storage.get("basemap-items") != null){
-            // populate basemapItems with persited BasemapItems
+            // populate basemapItems with persisted BasemapItems
             ArrayList<BasemapItem> basemapItems = PersistBasemapItem.getInstance().storage.get("basemap-items");
             mBasemapList.clear();
             mBasemapList.addAll(basemapItems);
@@ -96,24 +97,22 @@ public class MainActivity extends Activity{
             // search and collect basemap portal ids on background thread
             fetchBasemaps();
         }
-
     }
 
     /**
      * Retrieve basemaps portal item id to send to MapActivity
      */
     private void fetchBasemaps(){
-        TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, new OnTaskCompleted() {
+        TaskExecutor.getInstance().getThreadPool().submit(new FetchBasemapsItemId(this, portalUrl, new OnTaskCompleted() {
             @Override
             public void processResults(ArrayList<BasemapItem> basemapItems) {
                 mProgressBar.setVisibility(View.INVISIBLE);
-                mBasemapList.clear();
+//                mBasemapList.clear();
                 mBasemapList.addAll(basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
                 PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
             }
         }));
-
     }
 
     /**
@@ -125,6 +124,7 @@ public class MainActivity extends Activity{
      */
     private void sendBasemapItemInfo(Context context, String portalId, String title){
         Intent intent = new Intent(context, MapActivity.class);
+        intent.putExtra("portalUrl", portalUrl);
         intent.putExtra("portalId", portalId);
         intent.putExtra("title", title);
         // create activity animation
@@ -139,11 +139,4 @@ public class MainActivity extends Activity{
             fetchBasemaps();
         }
     }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-
-    }
-
 }
