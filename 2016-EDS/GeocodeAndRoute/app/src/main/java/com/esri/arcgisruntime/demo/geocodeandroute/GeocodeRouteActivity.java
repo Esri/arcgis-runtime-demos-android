@@ -21,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -59,8 +58,6 @@ import java.util.concurrent.ExecutionException;
 
 public class GeocodeRouteActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
-
-  private static final String TAG = GeocodeRouteActivity.class.getSimpleName();
 
   private final String extern = Environment.getExternalStorageDirectory().getPath();
 
@@ -126,7 +123,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
+    drawer.addDrawerListener(toggle);
     toggle.syncState();
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -191,6 +188,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
             }
 
             // Set suitable extent
+            // NOTE: Update this viewpoint to suit your own datasets.
             Point center = new Point(-13044462.0, 4036514.0, mMap.getSpatialReference());
             mMapView.setViewpointAsync(new Viewpoint(center, 13557.599));
 
@@ -213,6 +211,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
    * @return local absolute path to the .tpk file, or null if the file cannot be found.
    */
   private String getTpkPath() {
+    // NOTE: Update this path value to suit your own datasets.
     File tpkFile = new File(extern, getString(R.string.tpk_path));
     if (!tpkFile.exists()) {
       Snackbar.make(mMapView, String.format(getString(R.string.file_not_found), tpkFile.getAbsolutePath()),
@@ -230,6 +229,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
    * @return local absolute path to the .mmpk file, or null if the file cannot be found.
    */
   private String getMmpkPath() {
+    // NOTE: Update this path value to suit your own datasets.
     File mmpkFile = new File(extern, getString(R.string.mmpk_path));
     if (!mmpkFile.exists()) {
       Snackbar.make(mMapView, String.format(getString(R.string.file_not_found), mmpkFile.getAbsolutePath()),
@@ -400,6 +400,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
           if (geocodeResults.size() > 0) {
             // Get the top geocoded location from the result and use it.
             mGeocodedLocation = geocodeResults.get(0);
+            // NOTE: Update the attribute name to suit your own datasets.
             displayGeocodeResult(mGeocodedLocation.getDisplayLocation(),
                 mGeocodedLocation.getAttributes().get(getString(R.string.locator_name)).toString());
           }
@@ -435,6 +436,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
     if (graphicsOverlay == null) return;
 
     // Create graphic object for resulting location, depending on which type of location has been found.
+    // NOTE: Update the locator name to suit your own datasets.
     if (locatorName.contentEquals(getString(R.string.address_loc_name))) {
       if (mAddressResult == null) {
         mAddressResult = new Graphic(resultPoint, mAddressSymbol);
@@ -444,6 +446,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
         mAddressResult.setGeometry(resultPoint);
       }
     }
+    // NOTE: Update the locator name to suit your own datasets.
     else if (locatorName.contentEquals(getString(R.string.hydrant_loc_name))) {
       if (mHydrantResult == null) {
         mHydrantResult = new Graphic(resultPoint, mHydrantSymbol);
@@ -506,7 +509,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
       return;
     }
 
-    RouteParameters routeParams = null;
+    RouteParameters routeParams;
     try {
       routeParams = mRouteTask.createDefaultParametersAsync().get();
 
