@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Geocode and Route</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="storage_permission_denied">Storage permission denied</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="mmpk_path">TODO_MMPK_PATH</string>
+    <string name="tpk_path">TODO_TPK_PATH</string>
+
+    <string name="file_not_found" formatted="false">Could not find expected file:\n%s</string>
+    <string name="object_not_loaded" formatted="false">Failed to load the %s</string>
+    <string name="no_maps_in_mmpk" formatted="false">No maps were found in the mmpk at:\n%s</string>
+    <string name="network_dataset_not_found">Current map has no network datasets</string>
+
+    <string name="locator_task_not_set">LocatorTask is not set</string>
+    <string name="search_hint">Enter address</string>
+    <string name="geo_locate_error">Geocode failed on address</string>
+    <string name="location_not_found" formatted="false">Sorry, couldn\'t find - %s</string>
+
+    <string name="route_task_not_set">RouteTask is not set</string>
+    <string name="address_stop_not_set">No address location to solve route from</string>
+    <string name="hydrant_stop_not_set">"No hydrant location to solve route to</string>
+    <string name="route_name">Route_to_Hydrant</string>
+    <string name="stop1_name">Start</string>
+    <string name="stop2_name">Finish</string>
+    <string name="locator_name">Loc_name</string>
+    <string name="address_loc_name">CaliforniaNevadaLocator</string>
+    <string name="hydrant_loc_name">redhydrant</string>
+    <string name="route_params_error" formatted="false">Error creating route parameters:\n%s</string>
+    <string name="route_error" formatted="false">Error solving route:\n%s</string>
+    <string name="route_result_info" formatted="false">Distance=%.2f miles, Time=%.0f mins</string>
+
+    <!-- Search Suggestions -->
+    <string-array name="suggestion_items">
+        <item>100 10th St, redlands</item>
+        <item>2467</item>
+        <item>Enter address or pole number&#8230;</item>
+    </string-array>
+</resources>
