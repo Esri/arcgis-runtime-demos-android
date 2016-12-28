@@ -41,14 +41,11 @@ import com.esri.runtime.android.materialbasemaps.presenter.FetchBasemapsItemId;
 import com.esri.runtime.android.materialbasemaps.presenter.OnTaskCompleted;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 
 public class MainActivity extends Activity{
 
-    @InjectView(R.id.list) RecyclerView mRecyclerView;
-    @InjectView(R.id.progressBar) ProgressBar mProgressBar;
+    private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
 
     private BasemapAdapter mBasemapAdapter;
     private ArrayList<BasemapItem> mBasemapList;
@@ -60,14 +57,17 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
         // inject our progress bar and recycler view
-        ButterKnife.inject(this);
+//        ButterKnife.bind(this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         portalUrl = getResources().getString(R.string.portal_url);
         // array of basemap items to have available to load as basemaps
         mBasemapList = new ArrayList<>();
 
-        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
 
         // create an instance of adapter
         mBasemapAdapter = new BasemapAdapter(mBasemapList);
