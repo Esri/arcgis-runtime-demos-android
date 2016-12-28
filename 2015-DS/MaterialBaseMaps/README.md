@@ -6,11 +6,11 @@ MainActivity                           | Maps Activity
 :-------------------------------------:|:-------------------------------------:
 ![MainActivity](BasemapsActivity.png)  | ![MapActivity](MapActivity.png)
 
-## Type Hierarchy
-![UML Type Hierarchy](TypeHierarchy.png)
-
 ## Developer pattern
 This app has 2 UI activities, MainActivity to show a list of basemaps from ArcGIS Online and a MapActivity to open the selected basemap in a `MapView` and allow for turning on/off your GPS location. 
+
+### Type Hierarchy
+![UML Type Hierarchy](TypeHierarchy.png)
 
 ### MainActivity
 The MainActivity opens on start by creating a [RecyclerView](https://developer.android.com/training/material/lists-cards.html) card list and creating a `FetchBasemapsItemId` to query ArcGIS Online for a list of default [basemaps](http://www.esri.com/data/find-data#basemaps) to populate the `RecyclerView` card list.  The list is persisted in the `PersistBasemapItem` singleton allowing for only requiring a first time query of ArcGIS Online to get a list of Basemaps. Selecting a Basemap item from the list sends that items Portal Item ID and URL to the MapActivity to open in an `ArcGISMap`. 
