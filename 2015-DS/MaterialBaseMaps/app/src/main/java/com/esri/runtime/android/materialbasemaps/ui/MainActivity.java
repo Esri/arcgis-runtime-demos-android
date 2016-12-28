@@ -107,7 +107,7 @@ public class MainActivity extends Activity{
             @Override
             public void processResults(ArrayList<BasemapItem> basemapItems) {
                 mProgressBar.setVisibility(View.INVISIBLE);
-//                mBasemapList.clear();
+                mBasemapList.clear();
                 mBasemapList.addAll(basemapItems);
                 mBasemapAdapter.notifyDataSetChanged();
                 PersistBasemapItem.getInstance().storage.put("basemap-items", basemapItems);
