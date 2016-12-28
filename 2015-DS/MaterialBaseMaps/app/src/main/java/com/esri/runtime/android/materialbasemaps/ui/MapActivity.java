@@ -20,16 +20,18 @@
 
 package com.esri.runtime.android.materialbasemaps.ui;
 
-
 import java.util.concurrent.Callable;
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,12 +39,16 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.geometry.SpatialReferences;
+import com.esri.arcgisruntime.geometry.SpatialReference;
 import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
+import com.esri.arcgisruntime.mapping.view.LocationDisplay;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedEvent;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedListener;
 import com.esri.arcgisruntime.portal.Portal;
 import com.esri.arcgisruntime.portal.PortalItem;
 import com.esri.runtime.android.materialbasemaps.R;
@@ -54,16 +60,12 @@ import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
 public class MapActivity extends Activity{
 
     private MapView mMapView;
+    private LocationDisplay mLocationDisplay;
+    // define permission to request
+    private final String[] reqPermission = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
-    // GPS location tracking
+    // location tracking
     private boolean mIsLocationTracking;
-//    private Point mLocation = null;
-
-    // The circle area specified by search_radius and input lat/lon serves
-    // searching purpose.
-    // It is also used to construct the extent which map zooms to after the first
-    // GPS fix is retrieved.
-    private final static double SEARCH_RADIUS = 10;
 
     private static final String KEY_IS_LOCATION_TRACKING = "IsLocationTracking";
 
@@ -83,13 +85,11 @@ public class MapActivity extends Activity{
         String itemId = intent.getExtras().getString("portalId");
         String title = intent.getExtras().getString("title");
 
-        // adds back button to action bar
         ActionBar actionBar = getActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
         // load the basemap on a background thread
-//        String portalUrl = getResources().getString(R.string.portal_url);
         loadPortalItemIntoMapView(itemId, portalUrl);
 
         fab = (ImageButton) findViewById(R.id.fab);
@@ -103,17 +103,16 @@ public class MapActivity extends Activity{
             }
         };
         fab.setOutlineProvider(viewOutlineProvider);
-
     }
 
     public void onClick(View view){
         // Toggle location tracking on or off
         if (mIsLocationTracking) {
-            mMapView.getLocationDisplay().stop();
+            mLocationDisplay.stop();
             mIsLocationTracking = false;
             fab.setImageResource(R.mipmap.ic_action_location_off);
         } else {
-//            startLocationTracking();
+            startLocationTracking();
             fab.setImageResource(R.mipmap.ic_action_location_found);
         }
     }
@@ -127,11 +126,35 @@ public class MapActivity extends Activity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // navigate to parent activity
         NavUtils.navigateUpFromSameTask(this);
+        // stop location tracking if enabled
+        if(mIsLocationTracking){
+            mLocationDisplay.stop();
+            mIsLocationTracking = false;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(KEY_IS_LOCATION_TRACKING, mIsLocationTracking);
+    }
+
+    /**
+     * Handle the permissions request response
+     */
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mLocationDisplay.startAsync();
+        } else {
+            // report to user that permission was denied
+            Toast.makeText(MapActivity.this,
+                    getResources().getString(R.string.location_permission_denied),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -167,15 +190,20 @@ public class MapActivity extends Activity{
                                     PortalItem portalItem = new PortalItem(portal, portalItemId);
                                     // create an ArcGISMap from portal item
                                     final ArcGISMap portalMap = new ArcGISMap(portalItem);
-                                    //
-                                    // update the MapView with the basemap
                                     mMapView = new MapView(getApplicationContext());
+
+                                    // ensure MapView is loaded to set initial viewpoint
+                                    mMapView.addSpatialReferenceChangedListener(new SpatialReferenceChangedListener() {
+                                        @Override
+                                        public void spatialReferenceChanged(SpatialReferenceChangedEvent spatialReferenceChangedEvent) {
+                                            // create point in web mercator
+                                            Point initialPoint = new Point(-13617023.6399678998, 6040106.2917761272, SpatialReference.create(3857));
+                                            // set initial viewpoint to ~ zoom level 11
+                                            mMapView.setViewpointCenterAsync(initialPoint, 288895);
+                                        }
+                                    });
+
                                     mMapView.setMap(portalMap);
-
-                                    Log.d("MapView", "Scale: " + mMapView.getMapScale());
-                                    Point initialPoint = new Point(-122.3238046, 47.5972201, SpatialReferences.getWgs84());
-                                    mMapView.setViewpointCenterAsync(initialPoint);
-
                                     // Layout Parameters for MapView
                                     ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -197,50 +225,17 @@ public class MapActivity extends Activity{
     /**
      * Starts tracking GPS location.
      */
-//    private void startLocationTracking() {
-//        LocationDisplayManager locDispMgr = mMapView.getLocationDisplayManager();
-//        locDispMgr.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
-//        locDispMgr.setAllowNetworkLocation(true);
-//        locDispMgr.setLocationListener(new LocationListener() {
-//
-//            boolean locationChanged = false;
-//
-//            // Zooms to the current location when first GPS fix arrives
-//            @Override
-//            public void onLocationChanged(Location loc) {
-//                Point wgspoint = new Point(loc.getLongitude(), loc.getLatitude());
-//                mLocation = (Point) GeometryEngine.project(wgspoint, SpatialReference.create(4326),
-//                        mMapView.getSpatialReference());
-//                if (!locationChanged) {
-//                    locationChanged = true;
-//                    Unit mapUnit = mMapView.getSpatialReference().getUnit();
-//                    double zoomRadius = Unit.convertUnits(SEARCH_RADIUS, Unit.create(LinearUnit.Code.MILE_US), mapUnit);
-//                    Envelope zoomExtent = new Envelope(mLocation, zoomRadius, zoomRadius);
-//                    mMapView.setExtent(zoomExtent);
-//                }
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String arg0) {
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String arg0) {
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-//            }
-//        });
-//        locDispMgr.start();
-//        mIsLocationTracking = true;
-//    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean(KEY_IS_LOCATION_TRACKING, mIsLocationTracking);
+    private void startLocationTracking() {
+        mLocationDisplay = mMapView.getLocationDisplay();
+        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.RECENTER);
+        // For API level 23+ request fine location permission at runtime
+        if (ContextCompat.checkSelfPermission(MapActivity.this, reqPermission[0]) == PackageManager.PERMISSION_GRANTED) {
+            mLocationDisplay.startAsync();
+        } else {
+            // request permission
+            int requestCode = 2;
+            ActivityCompat.requestPermissions(MapActivity.this, reqPermission, requestCode);
+        }
+        mIsLocationTracking = true;
     }
-
 }
