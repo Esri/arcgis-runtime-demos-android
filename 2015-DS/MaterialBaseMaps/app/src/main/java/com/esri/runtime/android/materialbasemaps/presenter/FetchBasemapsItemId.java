@@ -69,7 +69,7 @@ public class FetchBasemapsItemId implements Callable<Void>{
     public Void call() throws Exception {
         final ArrayList<BasemapItem> basemapList = new ArrayList<>(12);
 
-        final Portal portal = new Portal("http://www.arcgis.com");
+        final Portal portal = new Portal(portalUrl);
         portal.loadAsync();
         portal.addDoneLoadingListener(new Runnable() {
             @Override
