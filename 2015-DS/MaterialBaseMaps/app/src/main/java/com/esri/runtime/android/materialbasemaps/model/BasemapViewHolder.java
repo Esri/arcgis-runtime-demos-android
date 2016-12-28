@@ -33,8 +33,8 @@ import com.esri.runtime.android.materialbasemaps.R;
  */
 public class BasemapViewHolder extends RecyclerView.ViewHolder {
 
-    TextView title;
-    ImageView image;
+    final TextView title;
+    final ImageView image;
 
     public BasemapViewHolder(View itemView) {
         super(itemView);
