@@ -161,7 +161,7 @@ public class MapActivity extends Activity{
     /**
      * Creates a new WebMap on a background thread based on the portal item id of the basemap
      * to be used.  Goes back to UI thread to use the WebMap as a new MapView to display in
-     * the ViewGroup layout.  Centers and zooms to default Palm Springs location.
+     * the ViewGroup layout.  Centers and zooms to Seattle area.
      *
      * @param portalItemId represents the basemap to be used as a new webmap
      * @param portalUrl represents the portal url to look up the portalItemId
@@ -173,11 +173,6 @@ public class MapActivity extends Activity{
 
                 final Portal portal = new Portal(portalUrl);
                 portal.loadAsync();
-
-                // create a PortalItem from the Item ID
-                PortalItem portalItem = new PortalItem(portal, portalItemId);
-                // create an ArcGISMap from portal item
-                final ArcGISMap portalMap = new ArcGISMap(portalItem);
 
                 runOnUiThread(new Runnable() {
                     @Override
