@@ -1,4 +1,4 @@
-/* Copyright 2015 Esri
+/* Copyright 2016 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -21,12 +21,11 @@
 package com.esri.runtime.android.materialbasemaps.model;
 
 
+import java.util.ArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 
 public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
 
@@ -53,9 +52,7 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
     public BasemapViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         // create a new view
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
-
         return new BasemapViewHolder(view);
-
     }
 
     /**
@@ -88,7 +85,4 @@ public class BasemapAdapter extends RecyclerView.Adapter<BasemapViewHolder> {
     public int getItemCount(){
         return items == null ? 0 : items.size();
     }
-
-
-
 }

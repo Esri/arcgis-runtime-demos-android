@@ -1,4 +1,4 @@
-/* Copyright 2015 Esri
+/* Copyright 2016 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -20,16 +20,18 @@
 
 package com.esri.runtime.android.materialbasemaps.ui;
 
-
+import java.util.concurrent.Callable;
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Outline;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,22 +39,20 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import com.esri.android.map.LocationDisplayManager;
-import com.esri.android.map.MapView;
-import com.esri.android.map.event.OnStatusChangedListener;
-import com.esri.core.geometry.Envelope;
-import com.esri.core.geometry.GeometryEngine;
-import com.esri.core.geometry.LinearUnit;
-import com.esri.core.geometry.Point;
-import com.esri.core.geometry.SpatialReference;
-import com.esri.core.geometry.Unit;
-import com.esri.core.portal.Portal;
-import com.esri.core.portal.WebMap;
+import com.esri.arcgisruntime.geometry.Point;
+import com.esri.arcgisruntime.geometry.SpatialReference;
+import com.esri.arcgisruntime.loadable.LoadStatus;
+import com.esri.arcgisruntime.mapping.ArcGISMap;
+import com.esri.arcgisruntime.mapping.view.LocationDisplay;
+import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedEvent;
+import com.esri.arcgisruntime.mapping.view.SpatialReferenceChangedListener;
+import com.esri.arcgisruntime.portal.Portal;
+import com.esri.arcgisruntime.portal.PortalItem;
 import com.esri.runtime.android.materialbasemaps.R;
 import com.esri.runtime.android.materialbasemaps.util.TaskExecutor;
-
-import java.util.concurrent.Callable;
 
 /**
  * Activity for Map and floating action bar button.
@@ -60,17 +60,12 @@ import java.util.concurrent.Callable;
 public class MapActivity extends Activity{
 
     private MapView mMapView;
-//    ArrayList<BasemapItem> mBasemapItem;
+    private LocationDisplay mLocationDisplay;
+    // define permission to request
+    private final String[] reqPermission = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
-    // GPS location tracking
+    // location tracking
     private boolean mIsLocationTracking;
-    private Point mLocation = null;
-
-    // The circle area specified by search_radius and input lat/lon serves
-    // searching purpose.
-    // It is also used to construct the extent which map zooms to after the first
-    // GPS fix is retrieved.
-    private final static double SEARCH_RADIUS = 10;
 
     private static final String KEY_IS_LOCATION_TRACKING = "IsLocationTracking";
 
@@ -86,16 +81,16 @@ public class MapActivity extends Activity{
         relativeMapLayout = (RelativeLayout) findViewById(R.id.relative);
         // receive portal id and title of the basemap to add to the map
         Intent intent = getIntent();
+        String portalUrl = intent.getExtras().getString("portalUrl");
         String itemId = intent.getExtras().getString("portalId");
         String title = intent.getExtras().getString("title");
 
-        // adds back button to action bar
         ActionBar actionBar = getActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(title);
         // load the basemap on a background thread
-        String portalUrl = "http://www.arcgis.com";
-        loadWebMapIntoMapView(itemId, portalUrl);
+        loadPortalItemIntoMapView(itemId, portalUrl);
 
         fab = (ImageButton) findViewById(R.id.fab);
 
@@ -108,13 +103,12 @@ public class MapActivity extends Activity{
             }
         };
         fab.setOutlineProvider(viewOutlineProvider);
-
     }
 
     public void onClick(View view){
         // Toggle location tracking on or off
         if (mIsLocationTracking) {
-            mMapView.getLocationDisplayManager().stop();
+            mLocationDisplay.stop();
             mIsLocationTracking = false;
             fab.setImageResource(R.mipmap.ic_action_location_off);
         } else {
@@ -132,114 +126,14 @@ public class MapActivity extends Activity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
+        // navigate to parent activity
         NavUtils.navigateUpFromSameTask(this);
-
+        // stop location tracking if enabled
+        if(mIsLocationTracking){
+            mLocationDisplay.stop();
+            mIsLocationTracking = false;
+        }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    /**
-     * Creates a new WebMap on a background thread based on the portal item id of the basemap
-     * to be used.  Goes back to UI thread to use the WebMap as a new MapView to display in
-     * the ViewGroup layout.  Centers and zooms to default Palm Springs location.
-     *
-     * @param portalItemId represents the basemap to be used as a new webmap
-     * @param portalUrl represents the portal url to look up the portalItemId
-     */
-    private void loadWebMapIntoMapView(final String portalItemId, final String portalUrl){
-        TaskExecutor.getInstance().getThreadPool().submit(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-
-                Portal portal = new Portal(portalUrl, null);
-                // load a webmap instance from portal item
-                final WebMap webmap = WebMap.newInstance(portalItemId, portal);
-
-                if(webmap != null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // udpate the MapView with the basemap
-                            mMapView = new MapView(getApplicationContext(), webmap, null, null);
-
-                            // Layout Parameters for MapView
-                            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT);
-
-                            mMapView.setLayoutParams(lp);
-                            // add MapView to layout
-                            relativeMapLayout.addView(mMapView);
-                            // enable wrap around date line
-                            mMapView.enableWrapAround(true);
-                            // attribute esri
-                            mMapView.setEsriLogoVisible(true);
-
-                            mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
-                                @Override
-                                public void onStatusChanged(Object source, STATUS status) {
-                                    if(mMapView == source && status == STATUS.INITIALIZED){
-                                        // zoom in into Palm Springs
-                                        mMapView.centerAndZoom(32.731605, -117.107523, 14);
-
-                                    }
-                                }
-                            });
-
-                        }
-                    });
-                }
-
-
-                return null;
-            }
-        });
-    }
-
-    /**
-     * Starts tracking GPS location.
-     */
-    private void startLocationTracking() {
-        LocationDisplayManager locDispMgr = mMapView.getLocationDisplayManager();
-        locDispMgr.setAutoPanMode(LocationDisplayManager.AutoPanMode.OFF);
-        locDispMgr.setAllowNetworkLocation(true);
-        locDispMgr.setLocationListener(new LocationListener() {
-
-            boolean locationChanged = false;
-
-            // Zooms to the current location when first GPS fix arrives
-            @Override
-            public void onLocationChanged(Location loc) {
-                Point wgspoint = new Point(loc.getLongitude(), loc.getLatitude());
-                mLocation = (Point) GeometryEngine.project(wgspoint, SpatialReference.create(4326),
-                        mMapView.getSpatialReference());
-                if (!locationChanged) {
-                    locationChanged = true;
-                    Unit mapUnit = mMapView.getSpatialReference().getUnit();
-                    double zoomRadius = Unit.convertUnits(SEARCH_RADIUS, Unit.create(LinearUnit.Code.MILE_US), mapUnit);
-                    Envelope zoomExtent = new Envelope(mLocation, zoomRadius, zoomRadius);
-                    mMapView.setExtent(zoomExtent);
-                }
-            }
-
-            @Override
-            public void onProviderDisabled(String arg0) {
-            }
-
-            @Override
-            public void onProviderEnabled(String arg0) {
-            }
-
-            @Override
-            public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-            }
-        });
-        locDispMgr.start();
-        mIsLocationTracking = true;
     }
 
     @Override
@@ -249,23 +143,94 @@ public class MapActivity extends Activity{
         outState.putBoolean(KEY_IS_LOCATION_TRACKING, mIsLocationTracking);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    /**
+     * Handle the permissions request response
+     */
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mLocationDisplay.startAsync();
+        } else {
+            // report to user that permission was denied
+            Toast.makeText(MapActivity.this,
+                    getResources().getString(R.string.location_permission_denied),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
 
+    /**
+     * Creates a new WebMap on a background thread based on the portal item id of the basemap
+     * to be used.  Goes back to UI thread to use the WebMap as a new MapView to display in
+     * the ViewGroup layout.  Centers and zooms to Seattle area.
+     *
+     * @param portalItemId represents the basemap to be used as a new webmap
+     * @param portalUrl represents the portal url to look up the portalItemId
+     */
+    private void loadPortalItemIntoMapView(final String portalItemId, final String portalUrl){
+        TaskExecutor.getInstance().getThreadPool().submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+
+                final Portal portal = new Portal(portalUrl);
+                portal.loadAsync();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        portal.addDoneLoadingListener(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(portal.getLoadStatus() == LoadStatus.LOADED){
+                                    // create a PortalItem from the Item ID
+                                    PortalItem portalItem = new PortalItem(portal, portalItemId);
+                                    // create an ArcGISMap from portal item
+                                    final ArcGISMap portalMap = new ArcGISMap(portalItem);
+                                    mMapView = new MapView(getApplicationContext());
+
+                                    // ensure MapView is loaded to set initial viewpoint
+                                    mMapView.addSpatialReferenceChangedListener(new SpatialReferenceChangedListener() {
+                                        @Override
+                                        public void spatialReferenceChanged(SpatialReferenceChangedEvent spatialReferenceChangedEvent) {
+                                            // create point in web mercator
+                                            Point initialPoint = new Point(-13617023.6399678998, 6040106.2917761272, SpatialReference.create(3857));
+                                            // set initial viewpoint to ~ zoom level 11
+                                            mMapView.setViewpointCenterAsync(initialPoint, 288895);
+                                        }
+                                    });
+
+                                    mMapView.setMap(portalMap);
+                                    // Layout Parameters for MapView
+                                    ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            ViewGroup.LayoutParams.MATCH_PARENT);
+
+                                    mMapView.setLayoutParams(lp);
+                                    // add MapView to layout
+                                    relativeMapLayout.addView(mMapView);
+                                }
+                            }
+                        });
+                    }
+                });
+                return null;
+            }
+        });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
+    /**
+     * Starts tracking GPS location.
+     */
+    private void startLocationTracking() {
+        mLocationDisplay = mMapView.getLocationDisplay();
+        mLocationDisplay.setAutoPanMode(LocationDisplay.AutoPanMode.RECENTER);
+        // For API level 23+ request fine location permission at runtime
+        if (ContextCompat.checkSelfPermission(MapActivity.this, reqPermission[0]) == PackageManager.PERMISSION_GRANTED) {
+            mLocationDisplay.startAsync();
+        } else {
+            // request permission
+            int requestCode = 2;
+            ActivityCompat.requestPermissions(MapActivity.this, reqPermission, requestCode);
+        }
+        mIsLocationTracking = true;
     }
-
 }

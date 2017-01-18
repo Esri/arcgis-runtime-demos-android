@@ -1,4 +1,4 @@
-/* Copyright 2015 Esri
+/* Copyright 2016 Esri
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -28,25 +28,18 @@ import android.widget.TextView;
 
 import com.esri.runtime.android.materialbasemaps.R;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 /**
  * ViewHolder for BasemapAdapter required by RecyclerView for caching views
  */
 public class BasemapViewHolder extends RecyclerView.ViewHolder {
 
-    @InjectView(R.id.basemapName) TextView title;
-    @InjectView(R.id.basemapImage) ImageView image;
-
-
+    final TextView title;
+    final ImageView image;
 
     public BasemapViewHolder(View itemView) {
         super(itemView);
 
-        ButterKnife.inject(this, itemView);
-
+        title = (TextView) itemView.findViewById(R.id.basemapName);
+        image = (ImageView) itemView.findViewById(R.id.basemapImage);
     }
-
-
 }
