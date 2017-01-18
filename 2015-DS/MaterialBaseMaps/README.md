@@ -43,7 +43,7 @@ mMapView.setMap(portalMap);
 A floating action button is provided to turn on GPS location to allow the app to zoom to the location of the device.  For devices using Android 6.0 and above, the app [requests permissions at runtime](https://developer.android.com/training/permissions/requesting.html) to allow for using `ACCESS_FINE_LOCATION` permission. 
 
 ## Licensing
-Copyright 2016 Esri
+Copyright 2017 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
