@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017 Esri.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.esri.arcgisruntime.example;
 
 import com.esri.arcgisruntime.geometry.GeometryEngine;
@@ -38,15 +54,14 @@ public class App extends Application {
             stage.setScene(scene);
             stage.show();
 
-            // create ArcGISMap with imagery basemap
-            ArcGISMap map = new ArcGISMap(Basemap.Type.TOPOGRAPHIC_VECTOR, 47.609201, -122.331597, 14);
+            // create ArcGISMap with vector navigation basemap
+            ArcGISMap map = new ArcGISMap(Basemap.Type.NAVIGATION_VECTOR, 47.609201, -122.331597, 14);
             // create a view and set map to it
             mapView = new MapView();
             mapView.setMap(map);
             // click event to display the callout
             mapView.setOnMouseClicked(e -> {
-                // check that the primary mouse button was clicked and user is not
-                // panning
+                // check that the primary mouse button was clicked and user is not panning
                 if (e.isStillSincePress() && e.getButton() == MouseButton.PRIMARY) {
                     // create a point from where the user clicked
                     Point2D point = new Point2D(e.getX(), e.getY());
