@@ -1,0 +1,43 @@
+# Java #
+*.class
+
+# Package Files #
+*.jar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Local configuration file (sdk path, etc)
+local.properties
+.gradle/
+/target/
+/jniLibs/
+/resources/
+
+# Intellij project files
+*.iml
+.idea/
+
+# Eclipse
+.metadata
+.project
+.classpath
+.settings/
+.loadpath
+.recommenders
+.factorypath
+
+# SublimeText
+/*.sublime-project
+*.sublime-workspace
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db

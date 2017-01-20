@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <groupId>com.esri.arcgisruntime.example</groupId>
+  <artifactId>maven-test</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>maven-test</name>
+  <url>http://maven.apache.org</url>
+
+  <repositories>
+    <repository>
+      <id>esri-arcgis</id>
+      <url>https://esri.bintray.com/arcgis</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>esri-arcgis</id>
+      <url>https://esri.bintray.com/arcgis</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.esri.arcgisruntime</groupId>
+      <artifactId>arcgis-java</artifactId>
+      <version>100.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.esri.arcgisruntime</groupId>
+        <artifactId>arcgis-java-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>arcgis</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <version>100.0.0</version>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+          <mainClass>com.esri.arcgisruntime.example.App</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
