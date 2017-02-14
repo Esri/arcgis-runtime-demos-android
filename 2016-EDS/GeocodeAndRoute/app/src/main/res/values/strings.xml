@@ -7,8 +7,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="mmpk_path">TODO_MMPK_PATH</string>
-    <string name="tpk_path">TODO_TPK_PATH</string>
+    <string name="mmpk_path">/sanfrancisco.mmpk</string>
+    <string name="tpk_path">/SanFrancisco.tpk</string>
 
     <string name="file_not_found" formatted="false">Could not find expected file:\n%s</string>
     <string name="object_not_loaded" formatted="false">Failed to load the %s</string>
@@ -19,14 +19,15 @@
     <string name="search_hint">Enter address</string>
     <string name="geo_locate_error">Geocode failed on address</string>
     <string name="location_not_found" formatted="false">Sorry, couldn\'t find - %s</string>
+    <string name="clear_results">Please clear results before finding another address</string>
 
     <string name="route_task_not_set">RouteTask is not set</string>
-    <string name="address_stop_not_set">No address location to solve route from</string>
-    <string name="hydrant_stop_not_set">"No hydrant location to solve route to</string>
-    <string name="route_name">Route_to_Hydrant</string>
+    <string name="address_from_stop_not_set">No address location to solve route from</string>
+    <string name="address_to_stop_not_set">"No address location to solve route to</string>
+    <string name="route_name">Route_to_Address</string>
     <string name="stop1_name">Start</string>
     <string name="stop2_name">Finish</string>
-    <string name="locator_name">Loc_name</string>
+    <string name="found_address_attribute_name">Match_addr</string>
     <string name="address_loc_name">CaliforniaNevadaLocator</string>
     <string name="hydrant_loc_name">redhydrant</string>
     <string name="route_params_error" formatted="false">Error creating route parameters:\n%s</string>
@@ -35,8 +36,8 @@
 
     <!-- Search Suggestions -->
     <string-array name="suggestion_items">
-        <item>100 10th St, redlands</item>
-        <item>2467</item>
-        <item>Enter address or pole number&#8230;</item>
+        <item>100 41st St, San Francisco</item>
+        <item>100 Bella Vista Way, San Francisco</item>
+        <item>Enter address&#8230;</item>
     </string-array>
 </resources>

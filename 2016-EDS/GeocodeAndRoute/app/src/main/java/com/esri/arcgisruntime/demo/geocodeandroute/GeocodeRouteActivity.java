@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +34,7 @@ import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.data.TileCache;
 import com.esri.arcgisruntime.geometry.Point;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
+import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Basemap;
@@ -59,7 +61,8 @@ import java.util.concurrent.ExecutionException;
 public class GeocodeRouteActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
-  private final String extern = Environment.getExternalStorageDirectory().getPath();
+
+  private final String extern = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
   // Permissions
   final int requestCode = 2;
@@ -78,10 +81,10 @@ public class GeocodeRouteActivity extends AppCompatActivity
   // Geocoding
   private LocatorTask mLocatorTask = null;
   private GeocodeParameters mGeocodeParameters;
-  private Graphic mAddressResult;
-  private Graphic mHydrantResult;
-  private PictureMarkerSymbol mAddressSymbol;
-  private PictureMarkerSymbol mHydrantSymbol;
+  private Graphic mFromAddressResult;
+  private Graphic mToAddressResult;
+  private PictureMarkerSymbol mFromAddressSymbol;
+  private PictureMarkerSymbol mToAddressSymbol;
   private GeocodeResult mGeocodedLocation;
 
   // Routing
@@ -172,7 +175,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
           return;
         }
         TileCache tileCache = new TileCache(getTpkPath());
-        ArcGISTiledLayer tiledLayer = new ArcGISTiledLayer(tileCache);
+        final ArcGISTiledLayer tiledLayer = new ArcGISTiledLayer(tileCache);
         mMap.setBasemap(new Basemap(tiledLayer));
 
         // No need to explicitly load the map, just set it into the MapView; that will trigger loading when displayed.
@@ -187,10 +190,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
               return;
             }
 
-            // Set suitable extent
-            // NOTE: Update this viewpoint to suit your own datasets.
-            Point center = new Point(-13044462.0, 4036514.0, mMap.getSpatialReference());
-            mMapView.setViewpointAsync(new Viewpoint(center, 13557.599));
+            mMapView.setViewpointGeometryAsync(tiledLayer.getFullExtent());
 
             setUpOfflineMapGeocoding();
             setupOfflineNetwork();
@@ -281,20 +281,20 @@ public class GeocodeRouteActivity extends AppCompatActivity
 
     //Create picture marker symbols from app resources for geocode results
     BitmapDrawable addressDrawable = (BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.pin_blank_orange);
-    mAddressSymbol = new PictureMarkerSymbol(addressDrawable);
-    mAddressSymbol.setHeight(64);
-    mAddressSymbol.setWidth(64);
-    mAddressSymbol.loadAsync();
-    mAddressSymbol.setLeaderOffsetY(32);
-    mAddressSymbol.setOffsetY(32);
+    mFromAddressSymbol = new PictureMarkerSymbol(addressDrawable);
+    mFromAddressSymbol.setHeight(64);
+    mFromAddressSymbol.setWidth(64);
+    mFromAddressSymbol.loadAsync();
+    mFromAddressSymbol.setLeaderOffsetY(32);
+    mFromAddressSymbol.setOffsetY(32);
 
     BitmapDrawable hydrantDrawable = (BitmapDrawable) ContextCompat.getDrawable(this, R.drawable.pin_circle_blue_d);
-    mHydrantSymbol = new PictureMarkerSymbol(hydrantDrawable);
-    mHydrantSymbol.setHeight(64);
-    mHydrantSymbol.setWidth(64);
-    mHydrantSymbol.loadAsync();
-    mHydrantSymbol.setLeaderOffsetY(32);
-    mHydrantSymbol.setOffsetY(32);
+    mToAddressSymbol = new PictureMarkerSymbol(hydrantDrawable);
+    mToAddressSymbol.setHeight(64);
+    mToAddressSymbol.setWidth(64);
+    mToAddressSymbol.loadAsync();
+    mToAddressSymbol.setLeaderOffsetY(32);
+    mToAddressSymbol.setOffsetY(32);
   }
 
   /**
@@ -387,6 +387,10 @@ public class GeocodeRouteActivity extends AppCompatActivity
       Snackbar.make(mMapView, getString(R.string.locator_task_not_set), Snackbar.LENGTH_SHORT).show();
       return;
     }
+    if ((mFromAddressResult != null) && (mToAddressResult != null)) {
+      Snackbar.make(mMapView, getString(R.string.clear_results), Snackbar.LENGTH_SHORT).show();
+      return;
+    }
 
     // Call geocodeAsync on LocatorTask, passing in an address
     final ListenableFuture<List<GeocodeResult>> geocodeFuture = mLocatorTask.geocodeAsync(address, mGeocodeParameters);
@@ -400,9 +404,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
           if (geocodeResults.size() > 0) {
             // Get the top geocoded location from the result and use it.
             mGeocodedLocation = geocodeResults.get(0);
-            // NOTE: Update the attribute name to suit your own datasets.
-            displayGeocodeResult(mGeocodedLocation.getDisplayLocation(),
-                mGeocodedLocation.getAttributes().get(getString(R.string.locator_name)).toString());
+            displayGeocodeResult(mGeocodedLocation);
           }
           else
           {
@@ -423,12 +425,10 @@ public class GeocodeRouteActivity extends AppCompatActivity
   }
 
   /**
-   * Displays the given geocode result, selecting appropriate symbol based on the locator name from combined locators
-   * in the mobile map package.
-   * @param resultPoint geographical location of the result
-   * @param locatorName name of the locator which found this result
+   * Displays the given geocode result, selecting appropriate symbol based on order of geocoded results found.
+   * @param geocodeResult geocoded result
    */
-  private void displayGeocodeResult(Point resultPoint, String locatorName) {
+  private void displayGeocodeResult(GeocodeResult geocodeResult) {
 
     if (mMapView.getCallout().isShowing()) {
       mMapView.getCallout().dismiss();
@@ -436,28 +436,17 @@ public class GeocodeRouteActivity extends AppCompatActivity
     if (graphicsOverlay == null) return;
 
     // Create graphic object for resulting location, depending on which type of location has been found.
-    // NOTE: Update the locator name to suit your own datasets.
-    if (locatorName.contentEquals(getString(R.string.address_loc_name))) {
-      if (mAddressResult == null) {
-        mAddressResult = new Graphic(resultPoint, mAddressSymbol);
-        graphicsOverlay.getGraphics().add(mAddressResult);
-      }
-      else {
-        mAddressResult.setGeometry(resultPoint);
-      }
+    if (mFromAddressResult == null) {
+      mFromAddressResult = new Graphic(mGeocodedLocation.getDisplayLocation(), mFromAddressSymbol);
+      graphicsOverlay.getGraphics().add(mFromAddressResult);
     }
-    // NOTE: Update the locator name to suit your own datasets.
-    else if (locatorName.contentEquals(getString(R.string.hydrant_loc_name))) {
-      if (mHydrantResult == null) {
-        mHydrantResult = new Graphic(resultPoint, mHydrantSymbol);
-        graphicsOverlay.getGraphics().add(mHydrantResult);
-      } else {
-        mHydrantResult.setGeometry(resultPoint);
-      }
+    else if (mToAddressResult == null) {
+      mToAddressResult = new Graphic(mGeocodedLocation.getDisplayLocation(), mToAddressSymbol);
+      graphicsOverlay.getGraphics().add(mToAddressResult);
     }
 
     // Zoom map to geocode result location
-    mMapView.setViewpointAsync(new Viewpoint(resultPoint, 8000), 3);
+    mMapView.setViewpointAsync(new Viewpoint(mGeocodedLocation.getDisplayLocation(), 8000), 3);
   }
 
 
@@ -495,12 +484,12 @@ public class GeocodeRouteActivity extends AppCompatActivity
    */
   private void solveRoute() {
 
-    if (mAddressResult == null) {
-      Snackbar.make(mMapView, getString(R.string.address_stop_not_set), Snackbar.LENGTH_SHORT).show();
+    if (mFromAddressResult == null) {
+      Snackbar.make(mMapView, getString(R.string.address_from_stop_not_set), Snackbar.LENGTH_SHORT).show();
       return;
     }
-    if (mHydrantResult == null) {
-      Snackbar.make(mMapView, getString(R.string.hydrant_stop_not_set), Snackbar.LENGTH_SHORT).show();
+    if (mToAddressResult == null) {
+      Snackbar.make(mMapView, getString(R.string.address_to_stop_not_set), Snackbar.LENGTH_SHORT).show();
       return;
     }
 
@@ -513,12 +502,12 @@ public class GeocodeRouteActivity extends AppCompatActivity
     try {
       routeParams = mRouteTask.createDefaultParametersAsync().get();
 
-      Stop start = new Stop((Point)mAddressResult.getGeometry());
+      Stop start = new Stop((Point)mFromAddressResult.getGeometry());
       start.setRouteName(getString(R.string.route_name));
       start.setName(getString(R.string.stop1_name));
       routeParams.getStops().add(start);
 
-      Stop finish = new Stop((Point)mHydrantResult.getGeometry());
+      Stop finish = new Stop((Point)mToAddressResult.getGeometry());
       finish.setRouteName(getString(R.string.route_name));
       finish.setName(getString(R.string.stop2_name));
       routeParams.getStops().add(finish);
@@ -543,6 +532,8 @@ public class GeocodeRouteActivity extends AppCompatActivity
               // Display route distance and time.
               Snackbar.make(mMapView, String.format(getString(R.string.route_result_info),
                   topRoute.getTotalLength(), topRoute.getTotalTime()), Snackbar.LENGTH_SHORT).show();
+
+              mMapView.setViewpointGeometryAsync(topRoute.getRouteGeometry());
 
             }
           } catch (InterruptedException | ExecutionException e) {
@@ -595,9 +586,9 @@ public class GeocodeRouteActivity extends AppCompatActivity
     if (id == R.id.nav_clear) {
       // clear graphics
       graphicsOverlay.getGraphics().clear();
-      mAddressResult = null;
+      mFromAddressResult = null;
       mRouteGraphic = null;
-      mHydrantResult = null;
+      mToAddressResult = null;
     }
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
