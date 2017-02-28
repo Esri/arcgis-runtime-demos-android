@@ -15,8 +15,8 @@ This was used in the 'ArcGIS Runtime SDKs: Working with apps online and offline'
 ## Prerequisites
 - Download the datasets used in this demo from ArcGIS Online on to your device; ensure they are both present in the `Download` folder on your device.
   - TODO - share Portal Items
-  - [SanFrancisco.mmpk](http://androidteam.maps.arcgis.com/home/item.html?id=8df86a1e63764cc2b62a51c80bcb99bc) - a mobile map package (.mmpk) containing a map, with a corresponding locator and network dataset.
-  - [SanFrancisco.tpk](http://androidteam.maps.arcgis.com/home/item.html?id=786558f8c01247e0ac550b421c56a3ea) - a tile cache (.tpk) file used as the basemap layer for the map.
+  - [SanFrancisco.mmpk](https://www.arcgis.com/home/item.html?id=8df86a1e63764cc2b62a51c80bcb99bc) - a mobile map package (.mmpk) containing a map, with a corresponding locator and network dataset.
+  - [SanFrancisco.tpk](https://www.arcgis.com/home/item.html?id=786558f8c01247e0ac550b421c56a3ea) - a tile cache (.tpk) file used as the basemap layer for the map.
 - App runs on Android API version 16 and above.
 - Requires local data storage permissions; on Android API versions 23 (Marshmallow) and above permissions will be requested from the user at run time.
 - Uses the 100.0.0 release of ArcGIS Runtime SDK for Android.
