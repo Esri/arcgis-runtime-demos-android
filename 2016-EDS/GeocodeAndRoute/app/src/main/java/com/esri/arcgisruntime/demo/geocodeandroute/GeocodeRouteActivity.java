@@ -1,5 +1,8 @@
 package com.esri.arcgisruntime.demo.geocodeandroute;
 
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,19 +13,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -34,7 +36,6 @@ import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.data.TileCache;
 import com.esri.arcgisruntime.geometry.Point;
 import com.esri.arcgisruntime.layers.ArcGISTiledLayer;
-import com.esri.arcgisruntime.layers.Layer;
 import com.esri.arcgisruntime.loadable.LoadStatus;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.Basemap;
@@ -54,10 +55,6 @@ import com.esri.arcgisruntime.tasks.networkanalysis.RouteResult;
 import com.esri.arcgisruntime.tasks.networkanalysis.RouteTask;
 import com.esri.arcgisruntime.tasks.networkanalysis.Stop;
 
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 public class GeocodeRouteActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,11 +62,11 @@ public class GeocodeRouteActivity extends AppCompatActivity
   private final String extern = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
   // Permissions
-  final int requestCode = 2;
-  final String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+  private final int requestCode = 2;
+  private final String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
   // UI
-  Spinner mSpinner;
+  private Spinner mSpinner;
   private SearchView mSearchview;
   private MapView mMapView;
 
@@ -89,7 +86,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
 
   // Routing
   private RouteTask mRouteTask = null;
-  private SimpleLineSymbol mSolvedRouteSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.GREEN, 4.0f);
+  private final SimpleLineSymbol mSolvedRouteSymbol = new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.GREEN, 4.0f);
   private Graphic mRouteGraphic;
 
   @Override
@@ -262,7 +259,6 @@ public class GeocodeRouteActivity extends AppCompatActivity
         if (mLocatorTask.getLoadStatus() != LoadStatus.LOADED) {
           Snackbar.make(mMapView, String.format(getString(R.string.object_not_loaded), "LocatorTask"),
               Snackbar.LENGTH_SHORT).show();
-          return;
         }
       }
     });
@@ -323,8 +319,9 @@ public class GeocodeRouteActivity extends AppCompatActivity
 
     // Create an ArrayAdapter using the string array and a default spinner layout
     final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item) {
+      @NonNull
       @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
+      public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         View v = super.getView(position, convertView, parent);
         if (position == getCount()) {
@@ -404,7 +401,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
           if (geocodeResults.size() > 0) {
             // Get the top geocoded location from the result and use it.
             mGeocodedLocation = geocodeResults.get(0);
-            displayGeocodeResult(mGeocodedLocation);
+            displayGeocodeResult();
           }
           else
           {
@@ -426,9 +423,8 @@ public class GeocodeRouteActivity extends AppCompatActivity
 
   /**
    * Displays the given geocode result, selecting appropriate symbol based on order of geocoded results found.
-   * @param geocodeResult geocoded result
    */
-  private void displayGeocodeResult(GeocodeResult geocodeResult) {
+  private void displayGeocodeResult() {
 
     if (mMapView.getCallout().isShowing()) {
       mMapView.getCallout().dismiss();
@@ -471,7 +467,6 @@ public class GeocodeRouteActivity extends AppCompatActivity
         if (mRouteTask.getLoadStatus() != LoadStatus.LOADED) {
           Snackbar.make(mMapView, String.format(getString(R.string.object_not_loaded), "RouteTask"),
               Snackbar.LENGTH_SHORT).show();
-          return;
         }
       }
     });
@@ -517,7 +512,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
         @Override
         public void run() {
           // Show results of solved route.
-          RouteResult routeResult = null;
+          RouteResult routeResult;
           try {
             routeResult = routeFuture.get();
             if (routeResult.getRoutes().size() > 0) {
@@ -579,7 +574,7 @@ public class GeocodeRouteActivity extends AppCompatActivity
   }
   
   @Override
-  public boolean onNavigationItemSelected(MenuItem item) {
+  public boolean onNavigationItemSelected(@NonNull MenuItem item) {
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
