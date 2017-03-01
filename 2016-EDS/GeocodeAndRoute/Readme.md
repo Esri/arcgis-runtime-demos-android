@@ -23,11 +23,11 @@ This was used in the 'ArcGIS Runtime SDKs: Working with apps online and offline'
 ## Running the app
 1. From the spinner, select the first address point to geocode, or type an address within the map area shown in San Francsico in to the search box and press enter.
   - The geocoded location is shown as a graphic on the map; a different symbol is used for the first found address (which is used as the Start location) and the second found address (which is used at the Finish location).
-1. When two addresses have been geocoded, tap the floating action button to solve the route between the locations.
+1. From the spinner, select the second address point to geocode, or type in an address.  When two addresses have been geocoded, tap the floating action button to solve the route between the locations.
   - The route is shown as a graphic on the map.
 
 ## Licensing
-Copyright 2016 Esri
+Copyright 2017 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
