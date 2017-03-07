@@ -1,5 +1,6 @@
 package com.esri.arcgisruntime.geometrydemo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,12 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.esri.arcgisruntime.mapping.BasemapType;
-import com.esri.arcgisruntime.mapping.Map;
+import com.esri.arcgisruntime.mapping.ArcGISMap;
+import com.esri.arcgisruntime.mapping.Basemap;
 import com.esri.arcgisruntime.mapping.view.Graphic;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
-import com.esri.arcgisruntime.symbology.RgbColor;
 import com.esri.arcgisruntime.symbology.SimpleMarkerSymbol;
 import com.esri.core.geometry.Point;
 
@@ -41,13 +41,12 @@ public class MainActivity extends AppCompatActivity {
         // inflate MapView from layout
         mMapView = (MapView) findViewById(R.id.mapView);
         // create a map with the BasemapType topographic
-        Map mMap = new Map(BasemapType.TOPOGRAPHIC, 34.056295, -117.195800, 16);
+        ArcGISMap mMap = new ArcGISMap(Basemap.Type.NAVIGATION_VECTOR, 34.056295, -117.195800, 16);
         // set the map to be displayed in this view
         mMapView.setMap(mMap);
 
         // create color and symbols for drawing graphics
-        RgbColor blue = new RgbColor(0, 0, 255, 255);
-        SimpleMarkerSymbol markerSymbol = new SimpleMarkerSymbol(blue, 14, SimpleMarkerSymbol.Style.TRIANGLE);
+        SimpleMarkerSymbol markerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.Style.TRIANGLE, Color.BLUE, 14);
 
         GraphicsOverlay overlay = new GraphicsOverlay();
         Graphic pntGraphic = new Graphic(createPoint().getX(), createPoint().getY());
