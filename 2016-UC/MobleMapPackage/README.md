@@ -24,16 +24,17 @@ App module build.gradle:
 ```groovy
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:[version]'
-    compile 'com.esri.arcgisruntime:arcgis-android:100.0.0-beta-3'
+    compile 'com.esri.arcgisruntime:arcgis-android:100.0.0'
 }
 ```
 
 ### Configure kotlin-plugin
-Add the _kotlin-plugin_ to your app module plugins in your app module build.gradle:
+Add the _kotlin-plugin_ & _Kotlin Android Extensions_ to your app module plugins in your app module build.gradle:
 
 ```groovy
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions' 
 ```
 
 ### Configure Kotlin source sets
@@ -50,7 +51,40 @@ sourceSets {
 - MobileMapPackage
 
 ## Sample Pattern
-This sample takes a Mobile Map Package that was created in ArcGIS Pro, and displays a `Map` from within the package in a `MapView`. This is accomplished by calling `MobileMapPackage.loadAsyc()` and waiting for its load status to be completed. Once the package is loaded, you can access its maps, and assign one of the maps to be viewed in the `MapView`.
+This demo takes a Mobile Map Package that was created in ArcGIS Pro, and displays a `Map` from within the package in a `MapView`. This is accomplished by calling `MobileMapPackage.loadAsyc()` and waiting for its load status to be completed. Once the package is loaded, you can access its maps, and assign one of the maps to be viewed in the `MapView`.
+
+This demo takes advantage of [Kotlin Android Extensions](http://kotlinlang.org/docs/tutorials/android-plugin.html) which enhances the development experience by removing `findViewById()` to instantiate a `MapView`. 
+
+### Configure the dependency
+You enable the Android Extensions Gradle plugin by adding the following to the app module build.gradle file: 
+
+```groovy
+apply plugin: 'kotlin-android-extensions'
+```
+
+### Import synthetic properties
+You can import all widget properties from the `activity_main` layout resource all at once by adding the following import: 
+
+```kotlin
+import kotlinx.android.synthetic.main.activity_main.*
+```
+
+Now we can invoke the corresponding extension properties for the views in the XML file, specifically `mapView`: 
+
+```xml
+<!-- MapView -->
+<com.esri.arcgisruntime.mapping.view.MapView
+    android:id="@+id/mapView"
+    ...
+    >
+</com.esri.arcgisruntime.mapping.view.MapView>
+```
+
+Now you can directly access `mapView` in code without declaring it first: 
+
+```kotlin
+mapView!!.map = mapPackage.maps[0]
+```
 
 ## Provision your device
 1. Download the data from [ArcGIS Online](https://www.arcgis.com/home/item.html?id=e1f3a7254cb845b09450f54937c16061).  
