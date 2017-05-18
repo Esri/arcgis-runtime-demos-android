@@ -75,19 +75,8 @@ Now we can invoke the corresponding extension properties for the views in the XM
 <!-- MapView -->
 <com.esri.arcgisruntime.mapping.view.MapView
     android:id="@+id/mapView"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    app:layout_constraintLeft_toLeftOf="@+id/activity_main"
-    android:layout_marginLeft="16dp"
-    android:layout_marginStart="16dp"
-    app:layout_constraintTop_toTopOf="@+id/activity_main"
-    android:layout_marginTop="16dp"
-    app:layout_constraintRight_toRightOf="@+id/activity_main"
-    android:layout_marginRight="16dp"
-    android:layout_marginEnd="16dp"
-    app:layout_constraintBottom_toBottomOf="@+id/activity_main"
-    android:layout_marginBottom="16dp"
-    app:layout_constraintVertical_bias="1.0">
+    ...
+    >
 </com.esri.arcgisruntime.mapping.view.MapView>
 ```
 
