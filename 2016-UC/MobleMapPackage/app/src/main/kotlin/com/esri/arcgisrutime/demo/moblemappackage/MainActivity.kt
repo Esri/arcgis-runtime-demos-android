@@ -59,6 +59,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Handle the permissions request response
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            loadMobileMapPackage(mmpkFile)
+        } else {
+            // report to user that permission was denied
+            Toast.makeText(this@MainActivity, resources.getString(R.string.location_permission_denied),
+                    Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun loadMobileMapPackage(mmpkFile: String){
         // create the mobile map package
         val mapPackage = MobileMapPackage(mmpkFile)
