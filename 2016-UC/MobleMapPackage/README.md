@@ -14,7 +14,7 @@ Project root build.gradle:
 
 ```groovy
 dependencies {
-    classpath 'com.android.tools.build:gradle:2.1.2'
+    classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
     classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:[version]'
 }
 ```
@@ -24,7 +24,7 @@ App module build.gradle:
 ```groovy
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib:[version]'
-    compile 'com.esri.arcgisruntime:arcgis-android:100.0.0'
+    compile 'com.esri.arcgisruntime:arcgis-android:100.1.0'
 }
 ```
 
@@ -83,7 +83,7 @@ Now we can invoke the corresponding extension properties for the views in the XM
 Now you can directly access `mapView` in code without declaring it first: 
 
 ```kotlin
-mapView!!.map = mapPackage.maps[0]
+mapView.map = mapPackage.maps[0]
 ```
 
 ## Provision your device
