@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    compile 'com.esri.arcgisruntime:arcgis-android:100.1.0-1744'
+    compile 'com.esri.arcgisruntime:arcgis-android:100.1.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
