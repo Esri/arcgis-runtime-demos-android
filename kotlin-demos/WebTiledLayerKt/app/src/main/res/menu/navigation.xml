@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item
+      android:id="@+id/navigation_home"
+      android:icon="@drawable/ic_home_black_24dp"
+      android:title="@string/title_home"/>
+
+  <item
+      android:id="@+id/navigation_osm_france"
+      android:icon="@drawable/ic_looks_one_black_24dp"
+      android:title="@string/title_osm_france"/>
+
+  <item
+      android:id="@+id/navigation_osm_swiss"
+      android:icon="@drawable/ic_looks_two_black_24dp"
+      android:title="@string/title_OSM_CH"/>
+
+  <item
+      android:id="@+id/navigation_gsi_japan"
+      android:icon="@drawable/ic_looks_3_black_24dp"
+      android:title="@string/title_Japan"/>
+
+</menu>

@@ -1,0 +1,7 @@
+<resources>
+  <string name="app_name">WebTiledLayerKt</string>
+  <string name="title_home">Home</string>
+  <string name="title_osm_france">OSM France</string>
+  <string name="title_OSM_CH">OSM CH</string>
+  <string name="title_Japan">GSI Japan</string>
+</resources>
