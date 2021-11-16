@@ -13,12 +13,13 @@ The directory `GeotriggerMonitoringDemo-WithoutGeotriggers` demonstrates the app
 ## Instructions
 
 1. Fork and then clone the repo.
-2. Run the app and accept permission requests.
-3. Long-press the map to create a point of interest.
-4. Tap "Start Monitoring" to create a geotrigger with fences at the points of interest, buffered by 50.0 meters.
-5. Tap your device's home button to move the app to the background. Observe toast messages as your device enters and exits fences.
-6. Pull down the notification bar to view the foreground notification and tap "Stop" to stop monitoring.
-7. Tap "Clear points" to remove all points of interest.
+2. Set your api key in the `app/res/values/strings.xml` file.
+3. Run the app and accept permission requests.
+4. Long-press the map to create a point of interest.
+5. Tap "Start Monitoring" to create a geotrigger with fences at the points of interest, buffered by 50.0 meters.
+6. Tap your device's home button to move the app to the background. Observe toast messages as your device enters and exits fences.
+7. Pull down the notification bar to view the foreground notification and tap "Stop" to stop monitoring.
+8. Tap "Clear points" to remove all points of interest.
 
 ## Requirements
 

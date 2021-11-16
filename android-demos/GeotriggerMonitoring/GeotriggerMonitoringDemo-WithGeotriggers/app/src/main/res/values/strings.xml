@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Geotrigger Monitoring Demo</string>
-    <string name="API_KEY">AAPK1d2eca66633a445b843c2b357d760badeA0g3vL8_O4-lYBl-6C9-SbsiRlPpcUrB5HAs2pfJZoBTXMVGQ_GYj_b5_CXyXpL</string>
+    <string name="API_KEY">your-api-key</string>
 </resources>
