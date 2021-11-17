@@ -13,13 +13,15 @@ The directory `GeotriggerMonitoringDemo-WithoutGeotriggers` demonstrates the app
 ## Instructions
 
 1. Fork and then clone the repo.
-2. Set your api key in the `app/res/values/strings.xml` file.
+2. Set your API key in the `app/res/values/strings.xml` file. *
 3. Run the app and accept permission requests.
 4. Long-press the map to create a point of interest.
 5. Tap "Start Monitoring" to create a geotrigger with fences at the points of interest, buffered by 50.0 meters.
 6. Tap your device's home button to move the app to the background. Observe toast messages as your device enters and exits fences.
 7. Pull down the notification bar to view the foreground notification and tap "Stop" to stop monitoring.
 8. Tap "Clear points" to remove all points of interest.
+
+* API key: A permanent key that gives your application access to Esri location services. Visit your ArcGIS Developers Dashboard to create a new API key or access an existing API key.
 
 ## Requirements
 
@@ -41,7 +43,7 @@ Find a bug or want to request a new feature?  Please let us know by submitting a
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
 ## Licensing
-Copyright 2016 Esri
+Copyright 2021 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
