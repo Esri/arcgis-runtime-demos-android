@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Geotrigger Monitoring Demo</string>
+    <string name="API_KEY">your-api-key</string>
+</resources>
